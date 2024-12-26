@@ -5,15 +5,18 @@ TagManager:
   serializedVersion: 3
   tags:
   - CameraBound
+  - SpawnPoint
+  - MoveJoystick
+  - HeadJoystick
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
+  - GrassTree
+  - Player
   - 
   - 
   - 

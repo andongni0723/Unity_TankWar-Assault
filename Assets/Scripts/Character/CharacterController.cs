@@ -5,17 +5,31 @@ using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class CharacterController : NetworkBehaviour
 {
     [Header("Component")]
     public CinemachineCamera virtualCamera;
     public CinemachineConfiner3D cameraConfiner3D;
+    public GameObject tankHead;
+    public GameObject tankBody;
+    public GameObject tank;
+    
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
+    private VariableJoystick _moveJoystick;
+    private VariableJoystick _headJoystick;
+    
+    private CharacterShoot _characterShoot;
+    
     
     [Header("Settings")]
     public float moveSpeed = 5f;
+    public float gravityScale = 1f;
+    public const float GRAVITY = -9.81f;
+    public LayerMask groundLayer;
+    public bool useMobileRotate;
     
     [Header("Debug")]
     private Vector2 _moveDirection;
@@ -24,37 +38,152 @@ public class CharacterController : NetworkBehaviour
     {
         virtualCamera.gameObject.SetActive(IsOwner);
         if(!IsOwner) return;
+        
         Debug.LogWarning($"isHost: {IsHost}, isServer: {IsServer}, isClient: {IsClient}");
-        StartSetLocation();
+        InitialSpawnPoint();
     }
+    
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-        _inputSystem = new PlayerInputControl();
-        _inputSystem.Enable();
-        cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
-        
-        if(!IsHost)
-            transform.position += Vector3.forward * 2;
+        InitialComponent();
     }
 
     private void FixedUpdate()
     {
         if (!IsOwner) return;
+        
+        // Variable Update
         _moveDirection = _inputSystem.Player.Move.ReadValue<Vector2>();
-        Movement(_moveDirection);
+        _rb.AddForce(GRAVITY * gravityScale * Vector3.up, ForceMode.Acceleration);
+
+        // Player Input Control
+        HandlePlatformInputControl();
     }
 
-    private void StartSetLocation()
+    #region Initialize
+    
+    private void InitialComponent()
     {
-        transform.position = IsServer ? transform.position : new Vector3(0, 0.04f, 0);
-        transform.rotation = IsServer ? transform.rotation : Quaternion.Euler(0, 180, 0);
+        _rb = GetComponent<Rigidbody>();
+        _inputSystem = new PlayerInputControl();
+        _inputSystem.Enable();
+        _moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<VariableJoystick>();
+        _headJoystick = GameObject.FindWithTag("HeadJoystick").GetComponent<VariableJoystick>();
+        _characterShoot = GetComponent<CharacterShoot>();
+        
+        cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
+        
+        
+        #if UNITY_EDITOR    
+            if (!useMobileRotate) InitialInputSystemBinding();
+        #elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+            InitialInputSystemBinding();
+        #endif
     }
 
-    private void Movement(Vector2 readValue)
+    private void InitialInputSystemBinding()
     {
-        var dir = transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
+        _inputSystem.Player.Attack.performed += _ => DesktopCallShoot(); 
+    }
+
+    private void InitialSpawnPoint()
+    {
+        if (IsServer)
+        {
+            transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
+            tank.transform.rotation = GameObject.FindWithTag("SpawnPoint").transform.rotation;
+        }
+    }
+
+    #endregion
+
+    #region Platfrom Input Control
+
+    private void HandlePlatformInputControl()
+    {
+        #if UNITY_EDITOR    
+            if (useMobileRotate) MobileInputControl();
+            else DesktopInputControl();
+        #elif UNITY_ANDROID || UNITY_IOS
+            MobileInputControl();
+        #elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+            DesktopInputControl();
+        #endif 
+    }
+
+    private void MobileInputControl()
+    {
+        MobileMovement();
+        MobileRotate();
+        // MobileCallShoot(); //TODO: add cooldown 
+    }
+    
+    private void DesktopInputControl()
+    {
+        DesktopMovement(_moveDirection);
+        DesktopRotate();
+    } 
+
+    #endregion
+
+    #region Mobile Control
+    private void MobileMovement()
+    {
+        if (_moveJoystick.Horizontal == 0 && _moveJoystick.Vertical == 0) return;
+        
+        var dir = tank.transform.TransformDirection(new Vector3(-_moveJoystick.Vertical, 0, _moveJoystick.Horizontal));
         _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
             Time.fixedDeltaTime * moveSpeed * 5);
+        
+        float angleY = Mathf.Atan2(_moveJoystick.Vertical, _moveJoystick.Horizontal) * Mathf.Rad2Deg - 90;
+        tankBody.transform.localRotation = Quaternion.Euler(0, -angleY, 0);  
     }
+
+    private void MobileRotate()
+    {
+        if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
+
+        float angleY = Mathf.Atan2(_headJoystick.Vertical, _headJoystick.Horizontal) * Mathf.Rad2Deg - 90;
+        tankHead.transform.localRotation = Quaternion.Euler(-90, -angleY, 0); 
+    }
+    
+    private void MobileCallShoot()
+    {
+        if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
+        _characterShoot.Shoot();
+    }
+    #endregion
+
+    #region Desktop Control
+
+    private void DesktopMovement(Vector2 readValue)
+    {
+        var dir = tank.transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
+        _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
+            Time.fixedDeltaTime * moveSpeed * 5);
+        
+        if(_moveDirection == Vector2.zero) return;
+        
+        float angleY = Mathf.Atan2(readValue.y, readValue.x) * Mathf.Rad2Deg - 90;
+        tankBody.transform.localRotation = Quaternion.Euler(0, -angleY, 0);
+    }
+
+    private void DesktopRotate()
+    {
+        var ray = Camera.main.ScreenPointToRay(_inputSystem.Player.MousePosition.ReadValue<Vector2>());
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
+        {
+            Vector3 direction = hit.point - transform.position;
+            direction.y = 0;
+            float angleY = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg + 90;
+            tankHead.transform.rotation = Quaternion.Euler(-90, -angleY, 0);
+        }
+    }
+    
+    private void DesktopCallShoot()
+    {
+        _characterShoot.Shoot();
+    }
+    #endregion
 }
