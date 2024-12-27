@@ -3,21 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : PoolableObject
 {
-    //[Header("Component")]
+    [Header("Component")]
     private Rigidbody _rb;
     
     [Header("Settings")]
     public float speed = 10;
+    public PoolKey VFXPoolKey = PoolKey.RedHitVFX;
     //[Header("Debug")]
 
     private void Awake()
     {
         InitialComponent();
-        Destroy(gameObject, 3);
+        StartCoroutine(BackToPool());
     }
     
+    IEnumerator BackToPool()
+    {
+        yield return new WaitForSeconds(1);
+        // Instantiate(HitVFX, transform.position, Quaternion.identity);
+        var hitVFX = ObjectPoolManager.Instance.GetObject(VFXPoolKey);
+        hitVFX.transform.position = transform.position;
+        hitVFX.transform.rotation = Quaternion.identity;
+        ReturnToPool();
+    }
 
     private void InitialComponent()
     {

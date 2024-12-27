@@ -540,8 +540,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.71, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2240664190648364290}
   - {fileID: 8338996485940935080}
@@ -738,7 +738,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   firePoint: {fileID: 9049732922477498375}
-  bulletPrefab: {fileID: 5746248267764288696, guid: 0361641eb96504873949c85cf3456784, type: 3}
+  bulletPoolKey: 1
 --- !u!1 &5254793204538626857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,13 +1205,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6368075291069289412}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2968418, y: -0.64418674, z: 0.29970503, w: 0.6380325}
-  m_LocalPosition: {x: 8.448068, y: 9.885023, z: -0.5369842}
+  m_LocalRotation: {x: 0.3055308, y: -0.6376919, z: 0.3055308, w: 0.6376919}
+  m_LocalPosition: {x: 8.448068, y: 14, z: -0.5369842}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2240664190648364290}
-  m_LocalEulerAnglesHint: {x: 49.9, y: -90.55, z: 0}
+  m_LocalEulerAnglesHint: {x: 51.2, y: -90, z: 0}
 --- !u!114 &4611203385983456132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,7 +1236,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 66.7
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
