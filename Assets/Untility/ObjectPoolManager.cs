@@ -23,7 +23,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     [Header("Debug")]
     private static ObjectPoolManager _instance;
     
-    [OdinSerialize]
     private Dictionary<PoolKey, IObjectPool<GameObject>> _pools = new();
 
     [Header("Settings")]

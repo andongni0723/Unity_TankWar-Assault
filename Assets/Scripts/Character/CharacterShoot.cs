@@ -8,17 +8,53 @@ using UnityEngine.Serialization;
 public class CharacterShoot : NetworkBehaviour
 {
     [Header("Component")] 
+    private CharacterController _cc;
     public GameObject firePoint;
     
     [Header("Settings")]
-    public PoolKey bulletPoolKey = PoolKey.RedBullet;
+    public NetworkVariable<PoolKey> bulletPoolKey = new(PoolKey.BlueBullet, writePerm: NetworkVariableWritePermission.Owner);
+    // public PoolKey bulletPoolKey = PoolKey.BlueBullet;
     //[Header("Debug")]
 
-    public void Shoot()
+    private void Awake()
+    {
+        _cc = GetComponent<CharacterController>();
+    }
+
+    public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
-        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey);
-        bullet.transform.position = firePoint.transform.position;
-        bullet.transform.rotation = firePoint.transform.rotation;
+        bulletPoolKey.Value = _cc.team.Value == Team.Blue? PoolKey.BlueBullet : PoolKey.RedBullet;
+    }
+
+    public void ExecuteShoot()
+    {
+        if(!IsOwner) return;
+
+        var position = firePoint.transform.position;
+        var rotation = firePoint.transform.rotation;
+        ShootServerRpc(position, rotation);
+        Shoot(position, rotation);
+    }
+
+    [ServerRpc]
+    private void ShootServerRpc(Vector3 pos, Quaternion rot)
+    {
+        ShootClientRpc(pos, rot);
+    }
+    
+    [ClientRpc]
+    private void ShootClientRpc(Vector3 pos, Quaternion rot)
+    {
+        if(!IsOwner)
+            Shoot(pos, rot);
+    }
+
+    public void Shoot(Vector3 pos, Quaternion rot)
+    {
+        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey.Value);
+        bullet.transform.position = pos;
+        bullet.transform.rotation = rot;
+        // Debug.Log(firePoint.transform.rotation);
     }
 }

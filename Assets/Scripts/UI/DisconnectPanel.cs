@@ -12,9 +12,15 @@ public class DisconnectPanel : MonoBehaviour
     //[Header("Settings")]
     //[Header("Debug")]
 
-    private void Start()
+    private void OnEnable()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
+    }
+    
+    private void OnDisable()
+    {
+        if(NetworkManager.Singleton == null) return;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
     }
 
     private void OnClientDisconnect(ulong obj)

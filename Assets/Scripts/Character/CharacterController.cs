@@ -15,6 +15,7 @@ public class CharacterController : NetworkBehaviour
     public GameObject tankHead;
     public GameObject tankBody;
     public GameObject tank;
+    public Timer mobileShootTimer;
     
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
@@ -22,30 +23,28 @@ public class CharacterController : NetworkBehaviour
     private VariableJoystick _headJoystick;
     
     private CharacterShoot _characterShoot;
-    
+    private CharacterSetColor _characterSetColor;
     
     [Header("Settings")]
     public float moveSpeed = 5f;
     public float gravityScale = 1f;
-    public const float GRAVITY = -9.81f;
+    private const float GRAVITY = -9.81f;
     public LayerMask groundLayer;
     public bool useMobileRotate;
+    
+    public NetworkVariable<Team> team = new(0, writePerm: NetworkVariableWritePermission.Owner);
     
     [Header("Debug")]
     private Vector2 _moveDirection;
 
-    public override void OnNetworkSpawn()
-    {
-        virtualCamera.gameObject.SetActive(IsOwner);
-        if(!IsOwner) return;
-        
-        Debug.LogWarning($"isHost: {IsHost}, isServer: {IsServer}, isClient: {IsClient}");
-        InitialSpawnPoint();
-    }
+    public override void OnNetworkSpawn() => NetworkSpawnInitial();
+    private void Awake() => InitialComponent();
+    private void OnEnable() => MobileShootCoolDownEvent();
     
-    private void Awake()
+    public override void OnDestroy()
     {
-        InitialComponent();
+        _inputSystem.Disable();
+        base.OnDestroy();
     }
 
     private void FixedUpdate()
@@ -70,15 +69,28 @@ public class CharacterController : NetworkBehaviour
         _moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<VariableJoystick>();
         _headJoystick = GameObject.FindWithTag("HeadJoystick").GetComponent<VariableJoystick>();
         _characterShoot = GetComponent<CharacterShoot>();
-        
+        _characterSetColor = GetComponent<CharacterSetColor>();
         cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
-        
         
         #if UNITY_EDITOR    
             if (!useMobileRotate) InitialInputSystemBinding();
         #elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
             InitialInputSystemBinding();
         #endif
+    }
+    
+    private void NetworkSpawnInitial()
+    {
+        virtualCamera.gameObject.SetActive(IsOwner);
+        if (IsOwner)
+        {
+            Debug.LogWarning($"isHost: {IsHost}, isServer: {IsServer}, isClient: {IsClient}");
+            team.Value = IsHost ? Team.Blue : Team.Red;
+            EventHandler.CallOnPlayerSpawned();
+            InitialSpawnPoint();
+            SetTeamLayerServerRpc(team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Player") : LayerMask.NameToLayer("Red Player")); 
+        }
+        _characterSetColor.SetColorBasedOnOwner();
     }
 
     private void InitialInputSystemBinding()
@@ -93,6 +105,19 @@ public class CharacterController : NetworkBehaviour
             transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
             tank.transform.rotation = GameObject.FindWithTag("SpawnPoint").transform.rotation;
         }
+    }
+    
+    [ServerRpc]
+    private void SetTeamLayerServerRpc(int layer)
+    {
+        SetTeamLayerClientRpc(layer);
+    }
+
+    [ClientRpc]
+    private void SetTeamLayerClientRpc(int layer)
+    {
+        gameObject.layer = layer;
+        tank.layer = layer;
     }
 
     #endregion
@@ -115,7 +140,6 @@ public class CharacterController : NetworkBehaviour
     {
         MobileMovement();
         MobileRotate();
-        // MobileCallShoot(); //TODO: add cooldown 
     }
     
     private void DesktopInputControl()
@@ -147,10 +171,12 @@ public class CharacterController : NetworkBehaviour
         tankHead.transform.localRotation = Quaternion.Euler(-90, -angleY, 0); 
     }
     
+    private void MobileShootCoolDownEvent() => mobileShootTimer.OnTimerEnd += MobileCallShoot;
+    
     private void MobileCallShoot()
     {
         if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
-        _characterShoot.Shoot();
+        _characterShoot.ExecuteShoot();
     }
     #endregion
 
@@ -183,7 +209,7 @@ public class CharacterController : NetworkBehaviour
     
     private void DesktopCallShoot()
     {
-        _characterShoot.Shoot();
+        _characterShoot.ExecuteShoot();
     }
     #endregion
 }
