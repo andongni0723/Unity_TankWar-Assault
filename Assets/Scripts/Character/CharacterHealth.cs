@@ -20,6 +20,11 @@ public class CharacterHealth : NetworkBehaviour, IAttack
     private NetworkVariable<float> currentHealth = new(10, writePerm: NetworkVariableWritePermission.Owner);
 
 
+    public override void OnNetworkDespawn()
+    {
+        EventHandler.CallOnPlayerDied(IsOwner);
+    }
+    
     private void Awake()
     {
         InitialData();
