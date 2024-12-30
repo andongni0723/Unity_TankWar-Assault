@@ -6,6 +6,14 @@ using Unity.Netcode;
 
 public class ResetButton : MonoBehaviour
 {
+    [SceneName]
+    public string sceneName;
+   
+    public void LoadTargetScene()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+    
     // public void OnResetButtonClicked()
     // {
     //     if (NetworkManager.Singleton.IsServer)
@@ -26,10 +34,7 @@ public class ResetButton : MonoBehaviour
     //     QuitRoomAndResetScene();
     // }
     //
-    // public void LoadCurrentScene()
-    // {
-    //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    // }
+    
     //
     // private void QuitRoomAndResetScene()
     // {
