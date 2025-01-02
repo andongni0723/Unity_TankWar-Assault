@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,8 +21,13 @@ public class MenuButton : MonoBehaviour
     [Header("Settings")]
     public ButtonFunction buttonFunction;
     
+    [Header("Open Panel Settings")]
     [ShowIf("buttonFunction", ButtonFunction.OpenPanel)]
-    public GameObject targetPanel;
+    public UIAnimation targetPanel;
+    [ShowIf("buttonFunction", ButtonFunction.OpenPanel)]
+    public UIAnimation closePanel;
+    [ShowIf("buttonFunction", ButtonFunction.OpenPanel)]
+    public UnityEvent AfterOpenPanel;
     
     //[Header("Debug")]
     
@@ -42,7 +48,8 @@ public class MenuButton : MonoBehaviour
                 Application.Quit();
                 break;
             case ButtonFunction.OpenPanel:
-                //TODO: Open Panel
+                PanelManager.Instance.ChangePanel(closePanel, targetPanel);
+                AfterOpenPanel?.Invoke();
                 break;
         }
     }

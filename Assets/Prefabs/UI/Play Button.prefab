@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4160419359284119880}
   - component: {fileID: 7145121380306460962}
   - component: {fileID: 44570300860948008}
+  - component: {fileID: 3080941401393847810}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -182,12 +183,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.1
+  type: 0
   PlayOnAwake: 0
   waitTime: 0.1
   fromPositionX: -1000
   downScale: 0.9
   upScale: 1.1
   normalScale: 1
+--- !u!114 &3080941401393847810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5824073308905065052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f089a7e88692542d48a8a7cd453a4a5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonFunction: 0
+  targetPanel: {fileID: 0}
+  closePanel: {fileID: 0}
 --- !u!1 &8361156320166497602
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,15 +297,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80.5
-  m_fontSizeBase: 80.5
+  m_fontSize: 58.96
+  m_fontSizeBase: 58.96
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 3
+  m_fontStyle: 2
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 2.76
   m_wordSpacing: 5.96
@@ -318,7 +335,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -71.87732, y: 0, z: 0, w: 23.9}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
