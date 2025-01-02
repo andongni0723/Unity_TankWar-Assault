@@ -58,10 +58,8 @@ public class Bullet : PoolableObject
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hit1" + other.name);
         if (other.TryGetComponent<IAttack>(out var target))
         {
-            Debug.Log("Hit2");
             target.TakeDamage(damage);
             BackToPool();
         }

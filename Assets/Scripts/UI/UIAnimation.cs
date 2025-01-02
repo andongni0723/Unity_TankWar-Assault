@@ -24,16 +24,12 @@ public class UIAnimation : MonoBehaviour
     
     //[Header("Debug")]
     
-    private void Awake()
+    private void Start()
     {
         if (PlayOnAwake)
             PanelLeftInAnimation(waitTime);
-        
-        if(PlayOnAwake)
-            InvokeRepeating(nameof(PanelLeftInAnimation), 2f, 2f);
-        
     }
-    
+
     public void PanelLeftInAnimation(float _waitTime = 0)
     {
         Sequence sequence = DOTween.Sequence();

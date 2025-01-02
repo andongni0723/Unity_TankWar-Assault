@@ -181,10 +181,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0033f62ce5143458b44079b0485fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 0.1
+  PlayOnAwake: 0
+  waitTime: 0.1
+  fromPositionX: -1000
   downScale: 0.9
   upScale: 1.1
   normalScale: 1
-  duration: 0.1
 --- !u!1 &8361156320166497602
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,15 +255,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Play
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
-  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e95e628330cba4d048b0b3d8298e0f0e, type: 2}
+  m_sharedMaterial: {fileID: 3618905686217083266, guid: e95e628330cba4d048b0b3d8298e0f0e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4289901234
-  m_fontColor: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
+    rgba: 3505780213
+  m_fontColor: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0.8156863}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -277,17 +280,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 87.32
-  m_fontSizeBase: 87.32
+  m_fontSize: 80.5
+  m_fontSizeBase: 80.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 18
+  m_fontStyle: 3
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 5.08
+  m_characterSpacing: 2.76
   m_wordSpacing: 5.96
   m_lineSpacing: 0
   m_lineSpacingMax: 0
