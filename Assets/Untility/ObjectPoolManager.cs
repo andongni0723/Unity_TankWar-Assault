@@ -50,7 +50,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
 
         var pool = new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(prefab),
+            createFunc: () => Instantiate(prefab, parent: transform),
             actionOnGet: obj => obj.SetActive(true),
             actionOnRelease: obj => obj.SetActive(false),
             actionOnDestroy: obj => Destroy(obj),

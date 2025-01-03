@@ -46,14 +46,6 @@ public class UIAnimation : MonoBehaviour
         if (PlayOnAwake)
             PanelLeftInAnimation(startPos.x, waitTime);
     }
-    
-    // public void PanelStartLeftInAnimation(float _targetPositionX = 1200, float _waitTime = 0)
-    // {
-    //     var position = transform.localPosition;
-    //     position.x = 2500;
-    //     transform.localPosition = position;
-    //     PanelLeftInAnimation(_targetPositionX, _waitTime);
-    // }
 
     public void PanelLeftInAnimation(float _targetPositionX = 1200, float _waitTime = 0)
     {

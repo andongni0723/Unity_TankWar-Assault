@@ -9,7 +9,9 @@ using UnityEngine.UI;
 
 public enum ButtonFunction
 {
+    None,
     StartGame,
+    LeaveRoom,
     QuitGame,
     OpenPanel,
 }
@@ -42,7 +44,12 @@ public class MenuButton : MonoBehaviour
         switch (buttonFunction)
         {
             case ButtonFunction.StartGame:
-                SceneManager.LoadSceneAsync("GameScene");
+                _button.interactable = false;
+                SceneLoader.Instance.CallLoadScene("GameScene");
+                break;
+            case ButtonFunction.LeaveRoom:
+                _button.interactable = false;
+                SceneLoader.Instance.CallLoadScene("StartScene");
                 break;
             case ButtonFunction.QuitGame:
                 Application.Quit();

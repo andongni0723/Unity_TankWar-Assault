@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Services.Multiplayer;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using Unity.Multiplayer.Widgets;
 
 public class ResetButton : MonoBehaviour
 {
     [SceneName]
     public string sceneName;
+
+    private bool isFirstReset = false;
    
     private void Start()
     {
@@ -27,17 +31,20 @@ public class ResetButton : MonoBehaviour
         ShutdownRoom();
     }
 
-    private void ShutdownRoom()
+    public void ShutdownRoom()
     {
-        // 通知所有客戶端退出
+        if(isFirstReset) return;
+        
+        isFirstReset = true;
+        Debug.Log("SHUTDOWN ROOM");
         NetworkManager.Singleton.Shutdown();
-
-        // 可選：返回主菜單場景
         LoadTargetScene();
     }
     
+    
+    
     public void LoadTargetScene()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneLoader.Instance.CallLoadScene(sceneName);
     }
 }
