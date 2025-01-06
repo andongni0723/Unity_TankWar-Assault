@@ -30,9 +30,9 @@ public class SceneLoader : Singleton<SceneLoader>
     {
         currentScene = sceneDict[firstLoadScene];
         fadeCanvasGroup.alpha = 1;
-        currentScene.LoadSceneAsync(LoadSceneMode.Additive, true);
+        currentScene.LoadSceneAsync(LoadSceneMode.Additive, true).WaitForCompletion();
         fadeCanvasGroup.DOFade(0, 0.5f).WaitForCompletion();
-        Debug.Log("FirstLoad");
+        // Debug.Log("FirstLoad");
     }
 
     public void CallLoadScene(string sceneName)
