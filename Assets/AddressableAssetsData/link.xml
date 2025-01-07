@@ -1,6 +1,12 @@
 <linker>
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="An_ConnectionManager" preserve="all" />
+    <type fullname="CharacterCanvas" preserve="all" />
+    <type fullname="CharacterController" preserve="all" />
+    <type fullname="CharacterHealth" preserve="all" />
+    <type fullname="CharacterLaser" preserve="all" />
+    <type fullname="CharacterSetColor" preserve="all" />
+    <type fullname="CharacterShoot" preserve="all" />
     <type fullname="DisconnectPanel" preserve="all" />
     <type fullname="GameOverPanel" preserve="all" />
     <type fullname="MenuButton" preserve="all" />
@@ -8,8 +14,11 @@
     <type fullname="PanelManager" preserve="all" />
     <type fullname="ResetButton" preserve="all" />
     <type fullname="Test" preserve="all" />
+    <type fullname="Timer" preserve="all" />
     <type fullname="UIAnimation" preserve="all" />
     <type fullname="VariableJoystick" preserve="all" />
+    <type fullname=".PoolKey" preserve="nothing" serialized="true" />
+    <type fullname=".Team" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
     <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
@@ -21,6 +30,7 @@
   <assembly fullname="Unity.Cinemachine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="Unity.Cinemachine.CinemachineBrain" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineCamera" preserve="all" />
+    <type fullname="Unity.Cinemachine.CinemachineConfiner3D" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineSplineDolly" preserve="all" />
     <type fullname="Unity.Cinemachine.CameraTarget" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.CinemachineBlendDefinition" preserve="nothing" serialized="true" />
@@ -55,7 +65,10 @@
     <type fullname="Unity.Multiplayer.Widgets.QuickJoinSession" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Netcode.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="Unity.Netcode.Components.NetworkRigidbody" preserve="all" />
     <type fullname="Unity.Netcode.Components.NetworkTransform" preserve="all" />
+    <type fullname="Unity.Netcode.NetworkObject" preserve="all" />
+    <type fullname="Unity.Netcode.NetworkVariable`1" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Unity.Polybrush, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Polybrush.PolybrushMesh" preserve="all" />
@@ -126,6 +139,7 @@
     <type fullname="UnityEngine.LightingSettings" preserve="all" />
     <type fullname="UnityEngine.LightmapSettings" preserve="all" />
     <type fullname="UnityEngine.LightProbes" preserve="all" />
+    <type fullname="UnityEngine.LineRenderer" preserve="all" />
     <type fullname="UnityEngine.LODGroup" preserve="all" />
     <type fullname="UnityEngine.Material" preserve="all" />
     <type fullname="UnityEngine.Mesh" preserve="all" />
@@ -169,6 +183,7 @@
     <type fullname="UnityEngine.UI.Image" preserve="all" />
     <type fullname="UnityEngine.UI.Mask" preserve="all" />
     <type fullname="UnityEngine.UI.ScrollRect" preserve="all" />
+    <type fullname="UnityEngine.UI.Slider" preserve="all" />
     <type fullname="UnityEngine.UI.VerticalLayoutGroup" preserve="all" />
     <type fullname="UnityEngine.EventSystems.EventTrigger/Entry" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.EventSystems.EventTrigger/TriggerEvent" preserve="nothing" serialized="true" />
@@ -179,6 +194,7 @@
     <type fullname="UnityEngine.UI.Navigation" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.UI.ScrollRect/ScrollRectEvent" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.UI.SpriteState" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Slider/SliderEvent" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Canvas" preserve="all" />
