@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using TMPro;
 
 public enum Team
 {
@@ -12,7 +13,9 @@ public enum Team
 
 public class GameManager : MonoBehaviour
 {
-    //[Header("Component")]
+    [Header("Component")]
+    public TMP_Text versionText;
+    
     //[Header("Settings")]
     //[Header("Debug")]
 
@@ -23,5 +26,7 @@ public class GameManager : MonoBehaviour
 #elif UNITY_ANDROID || UNITY_IOS
         Application.targetFrameRate = 120;
 #endif
+        
+        versionText.text = $"v{Application.version}";
     }
 }

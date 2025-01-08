@@ -11,19 +11,28 @@ public class TeamManager : Singleton<TeamManager>
     //[Header("Settings")]
     //[Header("Debug")]
     public Team selfTeam;
+    
+    private CharacterController blueTeamCharacter;
+    private CharacterController redTeamCharacter;
 
     private void OnEnable()
     {
-        // EventHandler.OnPlayerSpawned += OnPlayerSpawned;
+        EventHandler.OnPlayerSpawned += OnPlayerSpawned;
     }
     
     private void OnDisable()
     {
-        // EventHandler.OnPlayerSpawned -= OnPlayerSpawned;
+        EventHandler.OnPlayerSpawned -= OnPlayerSpawned;
     }
 
-    private void OnPlayerSpawned()
+    private void OnPlayerSpawned(CharacterController character)
     {
-        selfTeam = NetworkManager.Singleton.IsHost ? Team.Blue : Team.Red;
+        (character.team.Value == Team.Blue ? ref blueTeamCharacter : ref redTeamCharacter) = character;
     }
+    
+    public CharacterController GetEnemyTeamCharacterController()
+    {
+        return NetworkManager.Singleton.IsHost ? redTeamCharacter : blueTeamCharacter;
+    }
+
 }

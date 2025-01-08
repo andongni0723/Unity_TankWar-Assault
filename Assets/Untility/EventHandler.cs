@@ -2,10 +2,17 @@ using UnityEngine.Events;
 
 public static class EventHandler
 {
-    public static UnityAction OnPlayerSpawned;
-    public static void CallOnPlayerSpawned()
+    public static UnityAction<CharacterController> OnPlayerSpawned;
+    public static void CallOnPlayerSpawned(CharacterController characterController)
     {
-        OnPlayerSpawned?.Invoke();
+        OnPlayerSpawned?.Invoke(characterController);
+    }
+    
+    
+    public static UnityAction<CharacterController> OnOwnerSpawned;
+    public static void CallOnOwnerSpawned(CharacterController characterController)
+    {
+        OnOwnerSpawned?.Invoke(characterController);
     }
     
     public static UnityAction<bool> OnPlayerDied;

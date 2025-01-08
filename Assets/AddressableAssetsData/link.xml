@@ -1,6 +1,7 @@
 <linker>
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="An_ConnectionManager" preserve="all" />
+    <type fullname="CharacterCameraController" preserve="all" />
     <type fullname="CharacterCanvas" preserve="all" />
     <type fullname="CharacterController" preserve="all" />
     <type fullname="CharacterHealth" preserve="all" />
@@ -13,6 +14,7 @@
     <type fullname="Obstacle" preserve="all" />
     <type fullname="PanelManager" preserve="all" />
     <type fullname="ResetButton" preserve="all" />
+    <type fullname="TeamManager" preserve="all" />
     <type fullname="Test" preserve="all" />
     <type fullname="Timer" preserve="all" />
     <type fullname="UIAnimation" preserve="all" />
@@ -31,6 +33,8 @@
     <type fullname="Unity.Cinemachine.CinemachineBrain" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineCamera" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineConfiner3D" preserve="all" />
+    <type fullname="Unity.Cinemachine.CinemachineOrbitalFollow" preserve="all" />
+    <type fullname="Unity.Cinemachine.CinemachineRotationComposer" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineSplineDolly" preserve="all" />
     <type fullname="Unity.Cinemachine.CameraTarget" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.CinemachineBlendDefinition" preserve="nothing" serialized="true" />
@@ -42,6 +46,15 @@
     <type fullname="Unity.Cinemachine.SplineAutoDolly" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.SplineAutoDolly/FixedSpeed" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.SplineSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.Cinemachine3OrbitRig/Orbit" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.Cinemachine3OrbitRig/Settings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.InputAxis" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.InputAxis/RecenteringSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.LookaheadSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.ScreenComposerSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.ScreenComposerSettings/DeadZoneSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.ScreenComposerSettings/HardLimitSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.TargetTracking.TrackerSettings" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Unity.InputSystem, Version=1.11.2.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.InputSystem.InputActionAsset" preserve="all" />

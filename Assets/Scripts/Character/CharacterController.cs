@@ -12,6 +12,7 @@ public class CharacterController : NetworkBehaviour
     [Header("Component")]
     public CinemachineCamera virtualCamera;
     public CinemachineConfiner3D cameraConfiner3D;
+    public GameObject cameraDirPoint;
     public GameObject tankHead;
     public GameObject tankBody;
     public GameObject tank;
@@ -24,6 +25,7 @@ public class CharacterController : NetworkBehaviour
     
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
+    private CharacterCameraController _characterCameraController;
     
     [Header("Settings")]
     public float moveSpeed = 5f;
@@ -36,6 +38,7 @@ public class CharacterController : NetworkBehaviour
     
     [Header("Debug")]
     private Vector2 _moveDirection;
+    private Camera _mainCamera;
 
     public override void OnNetworkSpawn() => NetworkSpawnInitial();
     private void Awake() => InitialComponent();
@@ -70,6 +73,8 @@ public class CharacterController : NetworkBehaviour
         _headJoystick = GameObject.FindWithTag("HeadJoystick").GetComponent<VariableJoystick>();
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
+        _characterCameraController = GetComponent<CharacterCameraController>();
+        _mainCamera = Camera.main;
         cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
         
         #if UNITY_EDITOR    
@@ -81,15 +86,17 @@ public class CharacterController : NetworkBehaviour
     
     private void NetworkSpawnInitial()
     {
-        virtualCamera.gameObject.SetActive(IsOwner);
         if (IsOwner)
         {
             Debug.LogWarning($"isHost: {IsHost}, isServer: {IsServer}, isClient: {IsClient}");
             team.Value = IsHost ? Team.Blue : Team.Red;
-            EventHandler.CallOnPlayerSpawned();
+            name = team.Value == Team.Blue ? "Blue Player" : "Red Player";
+            EventHandler.CallOnOwnerSpawned(this);
             InitialSpawnPoint();
             SetTeamLayerServerRpc(team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Player") : LayerMask.NameToLayer("Red Player")); 
         }
+        virtualCamera.gameObject.SetActive(IsOwner);
+        EventHandler.CallOnPlayerSpawned(this);
         _characterSetColor.SetColorBasedOnOwner();
     }
 
@@ -155,20 +162,27 @@ public class CharacterController : NetworkBehaviour
     {
         if (_moveJoystick.Horizontal == 0 && _moveJoystick.Vertical == 0) return;
         
-        var dir = tank.transform.TransformDirection(new Vector3(-_moveJoystick.Vertical, 0, _moveJoystick.Horizontal));
+        // Move
+        var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-_moveJoystick.Vertical, 0, _moveJoystick.Horizontal));
         _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
             Time.fixedDeltaTime * moveSpeed * 5);
         
-        float angleY = Mathf.Atan2(_moveJoystick.Vertical, _moveJoystick.Horizontal) * Mathf.Rad2Deg - 90;
-        tankBody.transform.localRotation = Quaternion.Euler(0, -angleY, 0);  
+        // Body Rotate
+        var inputDir = new Vector3(_moveJoystick.Horizontal, 0, _moveJoystick.Vertical);
+        var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
+        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg - 90;
+        tankBody.transform.localRotation = Quaternion.Euler(0, angleY, 0);  
     }
 
     private void MobileRotate()
     {
         if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
-
-        float angleY = Mathf.Atan2(_headJoystick.Vertical, _headJoystick.Horizontal) * Mathf.Rad2Deg - 90;
-        tankHead.transform.localRotation = Quaternion.Euler(-90, -angleY, 0); 
+        
+        // Head Rotate 
+        var inputDir = new Vector3(_headJoystick.Horizontal, 0, _headJoystick.Vertical);
+        var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
+        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg - 90;
+        tankHead.transform.localRotation = Quaternion.Euler(-90, angleY, 0); 
     }
     
     private void MobileShootCoolDownEvent() => mobileShootTimer.OnTimerEnd += MobileCallShoot;
@@ -184,19 +198,19 @@ public class CharacterController : NetworkBehaviour
 
     private void DesktopMovement(Vector2 readValue)
     {
-        var dir = tank.transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
+        var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
         _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
             Time.fixedDeltaTime * moveSpeed * 5);
         
         if(_moveDirection == Vector2.zero) return;
-        
-        float angleY = Mathf.Atan2(readValue.y, readValue.x) * Mathf.Rad2Deg - 90;
-        tankBody.transform.localRotation = Quaternion.Euler(0, -angleY, 0);
+        var localDir = cameraDirPoint.transform.TransformDirection(readValue);
+        float angleY = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg - 90;
+        tankBody.transform.localRotation = Quaternion.Euler(0, angleY, 0);
     }
 
     private void DesktopRotate()
     {
-        var ray = Camera.main.ScreenPointToRay(_inputSystem.Player.MousePosition.ReadValue<Vector2>());
+        var ray = _mainCamera.ScreenPointToRay(_inputSystem.Player.MousePosition.ReadValue<Vector2>());
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {

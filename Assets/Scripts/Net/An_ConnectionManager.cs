@@ -24,13 +24,16 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
     public UnityEvent<SessionException> FailedToJoinSession = new();
     
     [Header("Debug")]
-    private NetworkManager _networkManager;
     private ISession _session;
-
+    
     public override async void Awake()
     {
         base.Awake();
-        _networkManager = NetworkManager.Singleton;
+        await AwakeInitial();
+    }
+    
+    private async Task AwakeInitial()
+    {
         quickJoinButton.onClick.AddListener(CallQuickJoinSession);
         quickJoinButton.interactable = false;
         leaveButton.interactable = false;
@@ -38,6 +41,9 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
         quickJoinButton.interactable = true;
     }
     
+    /// <summary>
+    /// Match a session with the QuickJoinOptions. Call by Button Click.
+    /// </summary>
     public async void CallQuickJoinSession()
     {
         quickJoinButton.interactable = false;
@@ -69,7 +75,6 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
         }
         catch (SessionException e)
         {
-            // State = ConnectionState.Disconnected;
             FailedToJoinSession?.Invoke(e);
             Debug.LogException(e);
         } 
@@ -78,8 +83,6 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
     public async void LeaveSession()
     {
         if (_session != null)
-        {
             await _session.LeaveAsync();
-        }
     }
 }
