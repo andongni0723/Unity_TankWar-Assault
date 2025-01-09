@@ -14,6 +14,7 @@
     <type fullname="Obstacle" preserve="all" />
     <type fullname="PanelManager" preserve="all" />
     <type fullname="ResetButton" preserve="all" />
+    <type fullname="RotateGameObject" preserve="all" />
     <type fullname="TeamManager" preserve="all" />
     <type fullname="Test" preserve="all" />
     <type fullname="Timer" preserve="all" />

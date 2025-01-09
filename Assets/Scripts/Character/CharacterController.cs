@@ -181,7 +181,8 @@ public class CharacterController : NetworkBehaviour
         // Head Rotate 
         var inputDir = new Vector3(_headJoystick.Horizontal, 0, _headJoystick.Vertical);
         var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
-        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg - 90;
+        var addValue = team.Value == Team.Blue ? -90 : 90;
+        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg + addValue;
         tankHead.transform.localRotation = Quaternion.Euler(-90, angleY, 0); 
     }
     
