@@ -16,28 +16,35 @@ public class Bullet : PoolableObject
     public PoolKey VFXPoolKey = PoolKey.RedHitVFX;
     
     //[Header("Debug")]
-    private bool isReleased;
+    private bool _isReleased;
 
     private void Awake()
     {
         InitialComponent();
     }
-
+    
     private void OnEnable()
     {
-        isReleased = false;
-        destroyTimer.OnTimerEnd += BackToPool;
+        destroyTimer.OnTimerEnd += BackToPoolWithEffect;
+        _isReleased = false;
     }
 
     private void OnDisable()
     {
-        destroyTimer.OnTimerEnd -= BackToPool;
+        destroyTimer.OnTimerEnd -= BackToPoolWithEffect;
         _trailRenderer.Clear();
     }
-
-    private void FixedUpdate()
+    
+    /// <summary>
+    /// Call by CharacterShoot.cs when bullet is released
+    /// </summary>
+    /// <param name="pos">start position</param>
+    /// <param name="rot">start direction</param>
+    public void Initialize(Vector3 pos, Quaternion rot)
     {
-        _rb.linearVelocity = transform.up * speed;
+        transform.position = pos;
+        transform.rotation = rot;
+        _rb.linearVelocity = transform.up * speed; // Reset velocity
     }
     
     private void InitialComponent()
@@ -46,14 +53,19 @@ public class Bullet : PoolableObject
         _trailRenderer = GetComponent<TrailRenderer>();
     }
     
-    private void BackToPool()
+    private void BackToPoolWithEffect()
     {
-        if (isReleased) return;
-        isReleased = true;
+        if (_isReleased) return;
+        _isReleased = true;
+        SpawnHitVFX();
+        ReturnToPool();
+    }
+    
+    private void SpawnHitVFX()
+    {
         var hitVFX = ObjectPoolManager.Instance.GetObject(VFXPoolKey);
         hitVFX.transform.position = transform.position;
         hitVFX.transform.rotation = Quaternion.identity;
-        ReturnToPool();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,7 +73,7 @@ public class Bullet : PoolableObject
         if (other.TryGetComponent<IAttack>(out var target))
         {
             target.TakeDamage(damage);
-            BackToPool();
+            BackToPoolWithEffect();
         }
     }
 }

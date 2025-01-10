@@ -50,11 +50,12 @@ public class CharacterShoot : NetworkBehaviour
             Shoot(pos, rot);
     }
 
-    public void Shoot(Vector3 pos, Quaternion rot)
+    private void Shoot(Vector3 pos, Quaternion rot)
     {
-        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey.Value);
-        bullet.transform.position = pos;
-        bullet.transform.rotation = rot;
+        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey.Value).GetComponent<Bullet>();
+        bullet.Initialize(pos, rot);
+        // bullet.transform.position = pos;
+        // bullet.transform.rotation = rot;
         // Debug.Log(firePoint.transform.rotation);
     }
 }
