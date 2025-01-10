@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SaveDataKey
+{
+    none,
+    game_fps,
+    debug_mode
+}
+
 public class GameDataManager : Singleton<GameDataManager>
 {
     //[Header("Component")]
@@ -9,7 +16,8 @@ public class GameDataManager : Singleton<GameDataManager>
     //[Header("Debug")]
     
     [Header("Game Settings")]
-    [SerializeField] public int game_fps { get; private set; }
+    [SerializeField] public int gameFPS { get; private set; }
+    [SerializeField] public bool isDebugMode { get; private set; }
 
     public override void Awake()
     {
@@ -18,27 +26,29 @@ public class GameDataManager : Singleton<GameDataManager>
         ExecuteDataAction();
     }
     
-    public void UpdateSettingData(string dataKey, object dataValue)
+    public void UpdateSettingData(SaveDataKey dataKey, object dataValue)
     {
         switch (dataKey)
         {
-            case "game_fps":
-                PlayerPrefs.SetInt(dataKey, (int)dataValue);
-                game_fps = (int)dataValue;
-                Application.targetFrameRate = game_fps;
+            case SaveDataKey.game_fps:
+                PlayerPrefs.SetInt("game_fps", (int)dataValue);
+                gameFPS = (int)dataValue;
+                break;
+            case SaveDataKey.debug_mode:
+                PlayerPrefs.SetInt("debug_mode", (bool)dataValue ? 1 : 0);
+                isDebugMode = (bool)dataValue;
                 break;
         }
         ExecuteDataAction();
     }
+    private void ExecuteDataAction()
+    {
+        Application.targetFrameRate = gameFPS;
+    }
     
     private void RestoreSettingData()
     {
-        game_fps = PlayerPrefs.GetInt("game_fps", 60);
+        gameFPS = PlayerPrefs.GetInt("game_fps", 60);
+        isDebugMode = PlayerPrefs.GetInt("debug_mode", 1) == 1;
     }
-
-    private void ExecuteDataAction()
-    {
-        Application.targetFrameRate = game_fps;
-    }
-    
 }

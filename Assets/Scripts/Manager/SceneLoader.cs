@@ -26,13 +26,13 @@ public class SceneLoader : Singleton<SceneLoader>
         FirstLoadScene();
     }
 
-    private void FirstLoadScene()
+    private async void FirstLoadScene()
     {
         currentScene = sceneDict[firstLoadScene];
         fadeCanvasGroup.alpha = 1;
-        currentScene.LoadSceneAsync(LoadSceneMode.Additive, true).WaitForCompletion();
+        var handle = currentScene.LoadSceneAsync(LoadSceneMode.Additive, true);
+        await handle.Task;
         fadeCanvasGroup.DOFade(0, 0.5f).WaitForCompletion();
-        // Debug.Log("FirstLoad");
     }
 
     public void CallLoadScene(string sceneName)
