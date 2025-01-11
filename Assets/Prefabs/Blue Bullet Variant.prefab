@@ -105,6 +105,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5623878876307425536, guid: 0361641eb96504873949c85cf3456784, type: 3}
+      propertyPath: speed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5623878876307425536, guid: 0361641eb96504873949c85cf3456784, type: 3}
       propertyPath: HitVFX
       value: 
       objectReference: {fileID: 4914334673039054391, guid: 9fca5084f73f042969e2934e02dadce3, type: 3}

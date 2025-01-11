@@ -5085,7 +5085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolKey: 0
   destroyTimer: {fileID: 6910516447176394927}
-  speed: 15
+  speed: 35
   damage: 1
   VFXPoolKey: 2
 --- !u!114 &8379828533852755120

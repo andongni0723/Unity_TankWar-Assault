@@ -6,6 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class CharacterController : NetworkBehaviour
 {
@@ -21,28 +22,38 @@ public class CharacterController : NetworkBehaviour
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
     private VariableJoystick _moveJoystick;
+    private Slider _leftTrackSlider;
+    private Slider _rightTrackSlider;
+    private Button _shootButton;
     private VariableJoystick _headJoystick;
     
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
-    private CharacterCameraController _characterCameraController;
+    private CharacterMouseHandler _characterMouseHandler;
     
     [Header("Settings")]
     public float moveSpeed = 5f;
+    public float turnSpeed = 90;
     public float gravityScale = 1f;
     private const float GRAVITY = -9.81f;
     public LayerMask groundLayer;
     public bool useMobileRotate;
+    
+    public float tankHeadRotateSpeed = 30;
+    public float maxRotationSpeed = 360f;
     
     public NetworkVariable<Team> team = new(0, writePerm: NetworkVariableWritePermission.Owner);
     
     [Header("Debug")]
     private Vector2 _moveDirection;
     private Camera _mainCamera;
+    private float _previousAngle;    // 上一幀搖桿角度
+    private float _currentRotation;
+
 
     public override void OnNetworkSpawn() => NetworkSpawnInitial();
     private void Awake() => InitialComponent();
-    private void OnEnable() => MobileShootCoolDownEvent();
+    // private void OnEnable() => MobileShootCoolDownEvent();
     
     public override void OnDestroy()
     {
@@ -57,7 +68,7 @@ public class CharacterController : NetworkBehaviour
         // Variable Update
         _moveDirection = _inputSystem.Player.Move.ReadValue<Vector2>();
         _rb.AddForce(GRAVITY * gravityScale * Vector3.up, ForceMode.Acceleration);
-
+        
         // Player Input Control
         HandlePlatformInputControl();
     }
@@ -69,19 +80,28 @@ public class CharacterController : NetworkBehaviour
         _rb = GetComponent<Rigidbody>();
         _inputSystem = new PlayerInputControl();
         _inputSystem.Enable();
-        _moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<VariableJoystick>();
+        // _moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<VariableJoystick>();
+        _leftTrackSlider = GameObject.FindWithTag("LeftTrackSlider").GetComponent<Slider>();
+        _rightTrackSlider = GameObject.FindWithTag("RightTrackSlider").GetComponent<Slider>();
         _headJoystick = GameObject.FindWithTag("HeadJoystick").GetComponent<VariableJoystick>();
+        _shootButton = GameObject.FindWithTag("FireButton").GetComponent<Button>();
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
-        _characterCameraController = GetComponent<CharacterCameraController>();
+        _characterMouseHandler = GetComponent<CharacterMouseHandler>();
         _mainCamera = Camera.main;
         cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
+        _shootButton.onClick.AddListener(MobileCallShoot);
         
-        #if UNITY_EDITOR    
-            if (!useMobileRotate) InitialInputSystemBinding();
-        #elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+#if UNITY_EDITOR    
+        if (!useMobileRotate) 
             InitialInputSystemBinding();
-        #endif
+        else
+            DragMouseBinding();
+#elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        InitialInputSystemBinding();
+#elif UNITY_ANDROID || UNITY_IOS
+        DragMouseBinding();
+#endif
     }
     
     private void NetworkSpawnInitial()
@@ -102,7 +122,14 @@ public class CharacterController : NetworkBehaviour
 
     private void InitialInputSystemBinding()
     {
-        _inputSystem.Player.Attack.performed += _ => DesktopCallShoot(); 
+        _inputSystem.Player.Attack.performed += _ => DesktopCallShoot();
+        DragMouseBinding();
+    }
+
+    private void DragMouseBinding()
+    {
+        _inputSystem.Player.MouseDrag.started += _ => _characterMouseHandler.OnMouseClickStarted();
+        _inputSystem.Player.MouseDrag.canceled += _ => _characterMouseHandler.OnMouseClickCanceled();
     }
 
     private void InitialSpawnPoint()
@@ -145,56 +172,75 @@ public class CharacterController : NetworkBehaviour
 
     private void MobileInputControl()
     {
-        MobileMovement();
-        MobileRotate();
+        LeftAndRightSliderValueGetArrowDirection(_leftTrackSlider.value, _rightTrackSlider.value);
+        UpdateTankHeadRotation(_headJoystick.Horizontal, _headJoystick.Vertical);
+        FireButtonUIUpdate();
+        // MobileMovement();
+        // var dir = LeftAndRightSliderValueGetArrowDirection(_leftTrackSlider.value, _rightTrackSlider.value);
+        // MobileMovementWithDirection(dir);
+        // MobileRotate();
     }
     
     private void DesktopInputControl()
     {
-        DesktopMovement(_moveDirection);
+        // DesktopMovement(_moveDirection);
         DesktopRotate();
     } 
 
     #endregion
 
-    #region Mobile Control
-    private void MobileMovement()
+    #region New Mobile Control
+    private void LeftAndRightSliderValueGetArrowDirection(float leftTrack, float rightTrack)
     {
-        if (_moveJoystick.Horizontal == 0 && _moveJoystick.Vertical == 0) return;
-        
-        // Move
-        var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-_moveJoystick.Vertical, 0, _moveJoystick.Horizontal));
-        _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
-            Time.fixedDeltaTime * moveSpeed * 5);
-        
-        // Body Rotate
-        var inputDir = new Vector3(_moveJoystick.Horizontal, 0, _moveJoystick.Vertical);
-        var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
-        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg - 90;
-        tankBody.transform.localRotation = Quaternion.Euler(0, angleY, 0);  
-    }
+        leftTrack = Mathf.Clamp(leftTrack, -1f, 2f);
+        rightTrack = Mathf.Clamp(rightTrack, -1f, 2f);
 
-    private void MobileRotate()
-    {
-        if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
-        
-        // Head Rotate 
-        var inputDir = new Vector3(_headJoystick.Horizontal, 0, _headJoystick.Vertical);
-        var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
-        var addValue = team.Value == Team.Blue ? -90 : 90;
-        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg + addValue;
-        tankHead.transform.localRotation = Quaternion.Euler(-90, angleY, 0); 
+        // 計算坦克的前進方向和旋轉
+        float forwardMovement = (leftTrack + rightTrack) / 2f; // 平均值決定前進或後退的速度
+        float rotation = (rightTrack - leftTrack) / 2f;        // 差值決定旋轉的方向和速度
+
+        _rb.linearVelocity = -tankBody.transform.forward  * (forwardMovement * moveSpeed);
+        tankBody.transform.Rotate(0, -rotation * turnSpeed * Time.fixedDeltaTime, 0);
     }
     
-    private void MobileShootCoolDownEvent() => mobileShootTimer.OnTimerEnd += MobileCallShoot;
+    public void UpdateTankHeadRotation(float joystickX, float joystickY)
+    {
+        // 1. 當搖桿靜止時，維持當前旋轉角度
+        if (joystickX == 0 && joystickY == 0) return;
+
+        // 2. 計算當前搖桿角度（0° ~ 360°）
+        float currentAngle = Mathf.Atan2(joystickX, joystickY) * Mathf.Rad2Deg;
+        if (currentAngle < 0) currentAngle += 360;
+
+        // 3. 計算角度變化量
+        float deltaAngle = Mathf.DeltaAngle(_previousAngle, currentAngle);
+
+        // 4. 調整旋轉速度，累積旋轉角度
+        _currentRotation += Mathf.Clamp(deltaAngle, -maxRotationSpeed, maxRotationSpeed) * Time.deltaTime * tankHeadRotateSpeed;
+
+        // 5. 使用 Quaternion.RotateTowards 進行旋轉
+        Quaternion targetRotation = Quaternion.Euler(-90, _currentRotation, 0);
+        tankHead.transform.rotation = Quaternion.RotateTowards(tankHead.transform.rotation, targetRotation, maxRotationSpeed * Time.deltaTime);
+
+        // 6. 更新上一幀角度
+        _previousAngle = currentAngle;
+    }
+
+    private void FireButtonUIUpdate()
+    {
+        // fill amount 0 ~ 1
+        _shootButton.GetComponent<Image>().fillAmount =
+            mobileShootTimer.isPlay ? mobileShootTimer.currentTime / mobileShootTimer.time : 1;
+    }
     
     private void MobileCallShoot()
     {
-        if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
+        if(mobileShootTimer.isPlay) return;
         _characterShoot.ExecuteShoot();
+        mobileShootTimer.Play();
     }
     #endregion
-
+    
     #region Desktop Control
 
     private void DesktopMovement(Vector2 readValue)

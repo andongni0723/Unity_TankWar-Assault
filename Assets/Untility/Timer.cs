@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using UnityEngine.Serialization;
 
 public class Timer : MonoBehaviour
 {
@@ -15,30 +16,30 @@ public class Timer : MonoBehaviour
     
     //[Header("Debug")]
     public UnityAction OnTimerEnd;
-    private bool _isPlay;
-    private float _timer;
+    public bool isPlay { get; private set; }
+    public float currentTime { get; private set; }
     
     private void OnEnable()
     {
-        _timer = 0;
+        currentTime = 0;
         if (onAwakePlay) Play();
     }
 
     private void Update()
     {
-        if(isLoop || _isPlay) TimeUpdate();
+        if(isLoop || isPlay) TimeUpdate();
     }
 
     private void TimeUpdate()
     {
-        _timer += Time.deltaTime;
-        if (_timer < time) return;
+        currentTime += Time.deltaTime;
+        if (currentTime < time) return;
         
         // When Timer End
-        _isPlay = false;
-        _timer = 0;
+        isPlay = false;
+        currentTime = 0;
         OnTimerEnd?.Invoke();
-        if(isLoop) _isPlay = true;
+        if(isLoop) isPlay = true;
     }
 
     #region Tools
@@ -48,7 +49,7 @@ public class Timer : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        _isPlay = true;
+        isPlay = true;
     }
     
     /// <summary>
@@ -56,7 +57,7 @@ public class Timer : MonoBehaviour
     /// </summary>
     public void Stop()
     {
-        _isPlay = false;
+        isPlay = false;
     } 
     #endregion
 }

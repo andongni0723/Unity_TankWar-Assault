@@ -117,6 +117,126 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1066205036609702193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1017704371384887374}
+  - component: {fileID: 542380329134030537}
+  - component: {fileID: 4638676784993882955}
+  - component: {fileID: 5852925038998455905}
+  m_Layer: 7
+  m_Name: Tank Body Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1017704371384887374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066205036609702193}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000014901159, y: -0.94024, z: 0.34051254, w: 0.00000008940696}
+  m_LocalPosition: {x: -0, y: 7.6, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2487321863199302413}
+  m_LocalEulerAnglesHint: {x: 39.816, y: -185.7, z: 0}
+--- !u!114 &542380329134030537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066205036609702193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 0
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 3278325940234039880}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 66.7
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!114 &4638676784993882955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066205036609702193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Composition:
+    ScreenPosition: {x: 0, y: 0.23}
+    DeadZone:
+      Enabled: 0
+      Size: {x: 0.2, y: 0.2}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 0.8}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Damping: {x: 0.5, y: 0.5}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
+--- !u!114 &5852925038998455905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066205036609702193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d75924d76b05344aa410607bc57db98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoundingVolume: {fileID: 0}
+  SlowingDistance: 0
 --- !u!1 &1770770632683851985
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,6 +493,7 @@ GameObject:
   - component: {fileID: 6086766135366085347}
   - component: {fileID: 7579960982879017453}
   - component: {fileID: 5910012884818437124}
+  - component: {fileID: 6227963079642439853}
   m_Layer: 7
   m_Name: Character Camera
   m_TagString: Untagged
@@ -388,8 +509,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3719368004584307428}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30119437, y: 0.6397515, z: -0.3011943, w: 0.63975155}
-  m_LocalPosition: {x: -5.356964, y: 14.187508, z: -0.00000031789145}
+  m_LocalRotation: {x: 0.23221317, y: -0.66788995, z: 0.2322131, w: 0.6678901}
+  m_LocalPosition: {x: 4.643631, y: 7.8008413, z: -0.00000031789145}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -451,7 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: -1.07, y: -9.58, z: 0}
   TrackerSettings:
     BindingMode: 3
     PositionDamping: {x: 1, y: 1, z: 1}
@@ -473,7 +594,7 @@ MonoBehaviour:
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: 90
+    Value: -90
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -515,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Composition:
-    ScreenPosition: {x: 0, y: 0.26}
+    ScreenPosition: {x: 0, y: 0.29}
     DeadZone:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
@@ -545,6 +666,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoundingVolume: {fileID: 0}
   SlowingDistance: 0
+--- !u!114 &6227963079642439853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719368004584307428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a076c17fe76165e4f8ed21498b877bf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Modifiers:
+  - rid: 1956483346742640972
+  references:
+    version: 2
+    RefIds:
+    - rid: 1956483346742640972
+      type: {class: CinemachineFreeLookModifier/DistanceModifier, ns: Unity.Cinemachine, asm: Unity.Cinemachine}
+      data:
+        Distance:
+          Top: 10
+          Bottom: 10
 --- !u!1 &3720737546249089508
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,6 +1006,7 @@ GameObject:
   - component: {fileID: 873599091688959764}
   - component: {fileID: 6576103531753214556}
   - component: {fileID: 2986277277359475539}
+  - component: {fileID: 2313335004336489708}
   m_Layer: 8
   m_Name: Player Tank
   m_TagString: Player
@@ -1034,12 +1179,15 @@ MonoBehaviour:
   tankBody: {fileID: 5361342045780657979}
   tank: {fileID: 5488820985988123230}
   mobileShootTimer: {fileID: 1319338610672648664}
-  moveSpeed: 7.5
+  moveSpeed: 2
+  turnSpeed: 90
   gravityScale: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  useMobileRotate: 0
+  useMobileRotate: 1
+  tankHeadRotateSpeed: 1.5
+  maxRotationSpeed: 360
   team:
     m_InternalValue: 0
 --- !u!114 &8930088967599161619
@@ -1132,6 +1280,22 @@ MonoBehaviour:
   camOrbitalFollow: {fileID: 6086766135366085347}
   camDirPoint: {fileID: 231325874971451225}
   cameraUpdateTimer: {fileID: 476139334687782675}
+  dragSpeed: 0.1
+--- !u!114 &2313335004336489708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4549565909243780063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a7960c23dce45da9d625eafa2b3a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragAreas: []
+  isDragging: 0
+  mouseDelta: {x: 0, y: 0}
 --- !u!1 &4986717307105060746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,6 +1529,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1017704371384887374}
   - {fileID: 6395043393066815319}
   - {fileID: 144505667043320540}
   - {fileID: 7294383374376611509}
@@ -2450,11 +2615,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8327610283405923183, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
       propertyPath: time
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8327610283405923183, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
       propertyPath: isLoop
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8327610283405923183, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
       propertyPath: onAwakePlay

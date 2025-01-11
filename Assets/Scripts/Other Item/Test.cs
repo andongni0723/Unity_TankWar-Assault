@@ -24,4 +24,18 @@ public class Test : MonoBehaviour
             transform.position = targetPosition;
         }
     }
+
+
+    private Rigidbody2D rb;
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>(); // 取得「身上(掛載腳本的物件)」的Rigidbody2D 元件
+        
+        rb.linearVelocity = new Vector2(1, 0); // 設定速度
+        rb.angularVelocity = 1; // 設定角速度
+        rb.gravityScale = 1; // 重力比例
+        rb.AddForce(Vector2.right, ForceMode2D.Impulse); // 施加力量 (瞬間) J = FΔt
+        rb.AddForce(Vector2.right, ForceMode2D.Force);   // 施加力量 (持續) F = ma
+        rb.AddTorque(1, ForceMode2D.Impulse); // 施加扭力
+    }
 }

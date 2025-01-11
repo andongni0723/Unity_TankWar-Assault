@@ -3,9 +3,11 @@
     <type fullname="An_ConnectionManager" preserve="all" />
     <type fullname="Bullet" preserve="all" />
     <type fullname="CharacterCameraController" preserve="all" />
+    <type fullname="CharacterCanvas" preserve="all" />
     <type fullname="CharacterController" preserve="all" />
     <type fullname="CharacterHealth" preserve="all" />
     <type fullname="CharacterLaser" preserve="all" />
+    <type fullname="CharacterMouseHandler" preserve="all" />
     <type fullname="CharacterSetColor" preserve="all" />
     <type fullname="CharacterShoot" preserve="all" />
     <type fullname="DisconnectPanel" preserve="all" />
@@ -19,6 +21,7 @@
     <type fullname="TeamManager" preserve="all" />
     <type fullname="Test" preserve="all" />
     <type fullname="Timer" preserve="all" />
+    <type fullname="TrackSlider" preserve="all" />
     <type fullname="UIAnimation" preserve="all" />
     <type fullname="VariableJoystick" preserve="all" />
     <type fullname=".PoolKey" preserve="nothing" serialized="true" />
@@ -35,6 +38,7 @@
     <type fullname="Unity.Cinemachine.CinemachineBrain" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineCamera" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineConfiner3D" preserve="all" />
+    <type fullname="Unity.Cinemachine.CinemachineFreeLookModifier" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineOrbitalFollow" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineRotationComposer" preserve="all" />
     <type fullname="Unity.Cinemachine.CinemachineSplineDolly" preserve="all" />
@@ -50,6 +54,7 @@
     <type fullname="Unity.Cinemachine.SplineSettings" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.Cinemachine3OrbitRig/Orbit" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.Cinemachine3OrbitRig/Settings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.CinemachineFreeLookModifier/DistanceModifier" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.InputAxis" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.InputAxis/RecenteringSettings" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.LookaheadSettings" preserve="nothing" serialized="true" />
@@ -208,6 +213,7 @@
     <type fullname="UnityEngine.UI.Mask" preserve="all" />
     <type fullname="UnityEngine.UI.Scrollbar" preserve="all" />
     <type fullname="UnityEngine.UI.ScrollRect" preserve="all" />
+    <type fullname="UnityEngine.UI.Slider" preserve="all" />
     <type fullname="UnityEngine.UI.Toggle" preserve="all" />
     <type fullname="UnityEngine.UI.VerticalLayoutGroup" preserve="all" />
     <type fullname="UnityEngine.EventSystems.EventTrigger/Entry" preserve="nothing" serialized="true" />
@@ -221,6 +227,7 @@
     <type fullname="UnityEngine.UI.Scrollbar/ScrollEvent" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.UI.SpriteState" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.UI.Toggle/ToggleEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Slider/SliderEvent" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Canvas" preserve="all" />

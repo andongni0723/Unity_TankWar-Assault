@@ -13,50 +13,31 @@ public class CharacterCameraController : MonoBehaviour
     public Timer cameraUpdateTimer;
     
     private CharacterController _character;
+    private CharacterMouseHandler _mouseHandler;
     private CharacterController _enemyCharacter;
 
+    [Header("Settings")] 
+    public float dragSpeed = 2;
+    
     [Header("Debug")]
     private float cameraAngle; 
 
     private void Awake()
     {
         _character = GetComponent<CharacterController>();
+        _mouseHandler = GetComponent<CharacterMouseHandler>();
     }
-
-    private void OnEnable()
-    {
-        cameraUpdateTimer.OnTimerEnd += UpdateCameraOrbitHorizontalAxis;
-    }
-
-    private void OnDisable()
-    {
-        cameraUpdateTimer.OnTimerEnd -= UpdateCameraOrbitHorizontalAxis;
-    }
-
+    
     private void Update()
     {
+        UpdateCameraOrbitHorizontalAxisWithMouseDrag();
         camDirPoint.transform.localRotation = Quaternion.Euler(0, 90, -camOrbitalFollow.transform.eulerAngles.x);
     }
 
-    private void UpdateCameraOrbitHorizontalAxis()
+    private void UpdateCameraOrbitHorizontalAxisWithMouseDrag()
     {
-        if (!TryGetEnemyCharacter()) return;
-        
-        // Camera Look at Player to Enemy 
-        var enemyDir = _enemyCharacter.transform.position - _character.transform.position;
-        cameraAngle = Mathf.Atan2(enemyDir.x, enemyDir.z) * Mathf.Rad2Deg;
-        DOTween.To(
-            () => camOrbitalFollow.HorizontalAxis.Value, // 起始值
-            value => camOrbitalFollow.HorizontalAxis.Value = value, // 更新值
-            cameraAngle, // 目標值
-            3 // 過渡時間
-        ).SetEase(Ease.InOutSine);
-    }
-
-    private bool TryGetEnemyCharacter()
-    {
-        if (_enemyCharacter != null) return true;
-        _enemyCharacter = TeamManager.Instance.GetEnemyTeamCharacterController();
-        return _enemyCharacter != null;
+        if (!_mouseHandler.isDragging) return;
+        var delta = GameDataManager.Instance.isReverseX ? _mouseHandler.mouseDelta.x : -_mouseHandler.mouseDelta.x;
+        camOrbitalFollow.HorizontalAxis.Value += delta * dragSpeed;
     }
 }

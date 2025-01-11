@@ -6,7 +6,8 @@ public enum SaveDataKey
 {
     none,
     game_fps,
-    debug_mode
+    debug_mode,
+    reverse_x,
 }
 
 public class GameDataManager : Singleton<GameDataManager>
@@ -18,6 +19,7 @@ public class GameDataManager : Singleton<GameDataManager>
     [Header("Game Settings")]
     [SerializeField] public int gameFPS { get; private set; }
     [SerializeField] public bool isDebugMode { get; private set; }
+    [SerializeField] public bool isReverseX { get; private set; }
 
     public override void Awake()
     {
@@ -38,9 +40,14 @@ public class GameDataManager : Singleton<GameDataManager>
                 PlayerPrefs.SetInt("debug_mode", (bool)dataValue ? 1 : 0);
                 isDebugMode = (bool)dataValue;
                 break;
+            case SaveDataKey.reverse_x:
+                PlayerPrefs.SetInt("reverse_x", (bool)dataValue ? 1 : 0);
+                isReverseX = (bool)dataValue;
+                break;
         }
         ExecuteDataAction();
     }
+    
     private void ExecuteDataAction()
     {
         Application.targetFrameRate = gameFPS;
@@ -50,5 +57,6 @@ public class GameDataManager : Singleton<GameDataManager>
     {
         gameFPS = PlayerPrefs.GetInt("game_fps", 60);
         isDebugMode = PlayerPrefs.GetInt("debug_mode", 1) == 1;
+        isReverseX = PlayerPrefs.GetInt("reverse_x", 0) == 1;
     }
 }

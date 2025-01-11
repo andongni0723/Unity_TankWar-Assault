@@ -1047,7 +1047,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 45
+  field of view: 66.7
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1073,8 +1073,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763418506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.006011302, y: -0.90621614, z: 0.01289128, w: 0.4225755}
-  m_LocalPosition: {x: 29.446724, y: 5.4510074, z: -3.0796695}
+  m_LocalRotation: {x: 0.19342972, y: -0.65979636, z: 0.18152514, w: 0.7030664}
+  m_LocalPosition: {x: 27.519176, y: 11.186613, z: -4.1437283}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1329,9 +1329,12 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: game_fps
+    - Name: gameFPS
       Entry: 3
-      Data: 109
+      Data: 0
+    - Name: isDebugMode
+      Entry: 5
+      Data: false
 --- !u!1 &2060033780
 GameObject:
   m_ObjectHideFlags: 0
