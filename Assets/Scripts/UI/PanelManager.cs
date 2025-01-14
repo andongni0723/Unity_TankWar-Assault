@@ -5,11 +5,25 @@ using UnityEngine;
 public class PanelManager : Singleton<PanelManager>
 {
     //[Header("Component")]
-    //[Header("Settings")]
+    [Header("Settings")]
+    public GameObject StartPanel;
+    public List<GameObject> AllPanels;
     //[Header("Debug")]
     private const float OutScreenPositionX = 2500;
-    
-    
+
+    public override void Awake()
+    {
+        base.Awake();
+        InitialPanel();
+    }
+
+    private void InitialPanel()
+    {
+        foreach (var panel in AllPanels)
+            panel.SetActive(false);
+        StartPanel.SetActive(true);
+    }
+
     public void ChangePanel(UIAnimation from, UIAnimation to)
     {
         StartCoroutine(ChangePanelCoroutine(from, to));

@@ -46,16 +46,12 @@ public class CharacterShoot : NetworkBehaviour
     [ClientRpc]
     private void ShootClientRpc(Vector3 pos, Quaternion rot)
     {
-        if(!IsOwner)
-            Shoot(pos, rot);
+        if(!IsOwner) Shoot(pos, rot);
     }
 
     private void Shoot(Vector3 pos, Quaternion rot)
     {
         var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey.Value).GetComponent<Bullet>();
         bullet.Initialize(pos, rot);
-        // bullet.transform.position = pos;
-        // bullet.transform.rotation = rot;
-        // Debug.Log(firePoint.transform.rotation);
     }
 }

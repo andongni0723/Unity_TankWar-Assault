@@ -667,7 +667,7 @@ GameObject:
   - component: {fileID: 7644713810559848549}
   - component: {fileID: 8136664496036398741}
   m_Layer: 5
-  m_Name: Setting Field
+  m_Name: Setting Field (Dropdown)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

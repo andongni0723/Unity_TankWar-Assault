@@ -88,4 +88,4 @@ MonoBehaviour:
   scaleReferenceSize: 1080
   shaderPass: 0
   injectionPoint: 600
-  shader: {fileID: 0}
+  shader: {fileID: 4800000, guid: bb11bdc2e8aaf4c80b5315f3778d7ad4, type: 3}

@@ -80,27 +80,25 @@ public class CharacterController : NetworkBehaviour
         _rb = GetComponent<Rigidbody>();
         _inputSystem = new PlayerInputControl();
         _inputSystem.Enable();
-        // _moveJoystick = GameObject.FindWithTag("MoveJoystick").GetComponent<VariableJoystick>();
-        _leftTrackSlider = GameObject.FindWithTag("LeftTrackSlider").GetComponent<Slider>();
-        _rightTrackSlider = GameObject.FindWithTag("RightTrackSlider").GetComponent<Slider>();
-        _headJoystick = GameObject.FindWithTag("HeadJoystick").GetComponent<VariableJoystick>();
-        _shootButton = GameObject.FindWithTag("FireButton").GetComponent<Button>();
+        _leftTrackSlider = GameUIManager.Instance.leftTrackSlider;
+        _rightTrackSlider = GameUIManager.Instance.rightTrackSlider;
+        _headJoystick = GameUIManager.Instance.tankHeadJoystick;
+        _shootButton = GameUIManager.Instance.fireButton;
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
         _mainCamera = Camera.main;
         cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
-        _shootButton.onClick.AddListener(MobileCallShoot);
+        // _shootButton.onClick.AddListener(MobileCallShoot);
         
 #if UNITY_EDITOR    
-        if (!useMobileRotate) 
-            InitialInputSystemBinding();
-        else
-            DragMouseBinding();
+        InitialInputSystemBinding();
+        DesktopMoveBinding();
 #elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
         InitialInputSystemBinding();
+        DesktopMoveBinding();
 #elif UNITY_ANDROID || UNITY_IOS
-        DragMouseBinding();
+        InitialInputSystemBinding();
 #endif
     }
     
@@ -122,8 +120,44 @@ public class CharacterController : NetworkBehaviour
 
     private void InitialInputSystemBinding()
     {
-        _inputSystem.Player.Attack.performed += _ => DesktopCallShoot();
+        // _inputSystem.Player.Attack.performed += _ => DesktopCallShoot();
+        _inputSystem.Player.Fire.performed += _ => MobileCallShoot();
+        _inputSystem.Player.StopTank.performed += _ => StopTankMove();
         DragMouseBinding();
+    }
+
+    private void DesktopMoveBinding()
+    {
+        _inputSystem.Player.TankMoveLeft.performed += DesktopLeftTrackMovement;
+        _inputSystem.Player.TankMoveRight.performed += DesktopRightTrackMovement;
+    }
+
+    private void DesktopLeftTrackMovement(InputAction.CallbackContext ctx)
+    {
+        _leftTrackSlider.value = ctx.control.name switch
+        {
+            "1" => 2,
+            "q" => 1,
+            "a" => 0,
+            "z" => -1,
+        };
+    }
+    
+    private void DesktopRightTrackMovement(InputAction.CallbackContext ctx)
+    {
+        _rightTrackSlider.value = ctx.control.name switch
+        {
+            "3" => 2,
+            "e" => 1,
+            "d" => 0,
+            "c" => -1,
+        };
+    }
+
+    private void StopTankMove()
+    {
+        _leftTrackSlider.value = 0;
+        _rightTrackSlider.value = 0;
     }
 
     private void DragMouseBinding()
@@ -243,17 +277,17 @@ public class CharacterController : NetworkBehaviour
     
     #region Desktop Control
 
-    private void DesktopMovement(Vector2 readValue)
-    {
-        var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
-        _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
-            Time.fixedDeltaTime * moveSpeed * 5);
-        
-        if(_moveDirection == Vector2.zero) return;
-        var localDir = cameraDirPoint.transform.TransformDirection(readValue);
-        float angleY = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg - 90;
-        tankBody.transform.localRotation = Quaternion.Euler(0, angleY, 0);
-    }
+    // private void DesktopMovement(Vector2 readValue)
+    // {
+    //     var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
+    //     _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
+    //         Time.fixedDeltaTime * moveSpeed * 5);
+    //     
+    //     if(_moveDirection == Vector2.zero) return;
+    //     var localDir = cameraDirPoint.transform.TransformDirection(readValue);
+    //     float angleY = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg - 90;
+    //     tankBody.transform.localRotation = Quaternion.Euler(0, angleY, 0);
+    // }
 
     private void DesktopRotate()
     {

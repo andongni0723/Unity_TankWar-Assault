@@ -10,11 +10,9 @@ public class CharacterCameraController : MonoBehaviour
     public CinemachineOrbitalFollow camOrbitalFollow;
 
     public GameObject camDirPoint;
-    public Timer cameraUpdateTimer;
     
-    private CharacterController _character;
+    protected CharacterController _character;
     private CharacterMouseHandler _mouseHandler;
-    private CharacterController _enemyCharacter;
 
     [Header("Settings")] 
     public float dragSpeed = 2;
@@ -22,7 +20,7 @@ public class CharacterCameraController : MonoBehaviour
     [Header("Debug")]
     private float cameraAngle; 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _character = GetComponent<CharacterController>();
         _mouseHandler = GetComponent<CharacterMouseHandler>();

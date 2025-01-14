@@ -52,6 +52,10 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         healthBar.value = newvalue;
         healthText.text = newvalue + " / " + maxHealth;
         
+        #if PLATFORM_ANDROID
+        Handheld.Vibrate();
+        #endif
+        
         if (newvalue <= 0)
         {
             // gameObject.SetActive(false);

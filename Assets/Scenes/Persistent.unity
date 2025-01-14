@@ -1045,11 +1045,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 66.7
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1073,8 +1073,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763418506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19342972, y: -0.65979636, z: 0.18152514, w: 0.7030664}
-  m_LocalPosition: {x: 27.519176, y: 11.186613, z: -4.1437283}
+  m_LocalRotation: {x: 0.0019129765, y: 0.9496814, z: 0.0058012805, w: -0.31315818}
+  m_LocalPosition: {x: 53.55, y: 2.65, z: -3.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1335,6 +1335,15 @@ MonoBehaviour:
     - Name: isDebugMode
       Entry: 5
       Data: false
+    - Name: isReverseX
+      Entry: 5
+      Data: false
+    - Name: isAutoFollowEnemy
+      Entry: 5
+      Data: false
+    - Name: cameraDragSpeed
+      Entry: 4
+      Data: 0
 --- !u!1 &2060033780
 GameObject:
   m_ObjectHideFlags: 0
