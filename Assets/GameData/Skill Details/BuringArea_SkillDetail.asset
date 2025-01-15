@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1140ebf86c1b749c9816ea62a710f722, type: 3}
+  m_Name: BuringArea_SkillDetail
+  m_EditorClassIdentifier: 
+  skillName: Buring Area
+  skillID: S001
+  skillDescription: A buring area for 3 second, per second take 3 damage for enemy
+  skillLifeTime: 3
+  skillSprite: {fileID: 0}
+  skills:
+  - time: 0
+    skillActionDetails:
+      damage: 3
+      skillActionType: 1
+      aoe:
+        radius: 3
+      targeted:
+        isTargetEnemy: 0
+      onApplyEffects:
+      - {fileID: 11400000, guid: a1cf612151d8847af98bf64bb739ce95, type: 2}
+      onEndEffects: []
+  - time: 1
+    skillActionDetails:
+      damage: 0
+      skillActionType: 1
+      aoe:
+        radius: 3
+      targeted:
+        isTargetEnemy: 0
+      onApplyEffects:
+      - {fileID: 11400000, guid: a1cf612151d8847af98bf64bb739ce95, type: 2}
+      onEndEffects: []
+  - time: 2
+    skillActionDetails:
+      damage: 3
+      skillActionType: 1
+      aoe:
+        radius: 3
+      targeted:
+        isTargetEnemy: 0
+      onApplyEffects:
+      - {fileID: 11400000, guid: a1cf612151d8847af98bf64bb739ce95, type: 2}
+      onEndEffects: []

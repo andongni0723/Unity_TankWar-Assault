@@ -29,6 +29,8 @@ public class MenuButton : MonoBehaviour
     [ShowIf("buttonFunction", ButtonFunction.OpenPanel)]
     public UIAnimation closePanel;
     [ShowIf("buttonFunction", ButtonFunction.OpenPanel)]
+    public UnityEvent BeforeOpenPanel;
+    [ShowIf("buttonFunction", ButtonFunction.OpenPanel)]
     public UnityEvent AfterOpenPanel;
     
     //[Header("Debug")]
@@ -55,6 +57,7 @@ public class MenuButton : MonoBehaviour
                 Application.Quit();
                 break;
             case ButtonFunction.OpenPanel:
+                BeforeOpenPanel?.Invoke();
                 PanelManager.Instance.ChangePanel(closePanel, targetPanel);
                 AfterOpenPanel?.Invoke();
                 break;

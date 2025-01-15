@@ -2,6 +2,13 @@ using UnityEngine.Events;
 
 public static class EventHandler
 {
+    public static UnityAction<WeaponDetailsSO> OnWeaponSelectToggleSelected;
+    public static void CallOnWeaponSelectToggleSelected(WeaponDetailsSO weaponDetails)
+    {
+        OnWeaponSelectToggleSelected?.Invoke(weaponDetails);
+    }
+    
+    
     public static UnityAction<CharacterController> OnPlayerSpawned;
     public static void CallOnPlayerSpawned(CharacterController characterController)
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.Serialization;
 using UnityEngine;
 
 public enum SaveDataKey
@@ -12,10 +13,18 @@ public enum SaveDataKey
     camera_drag_speed,
 }
 
+public enum TankWeaponType
+{
+    None,
+    MainWeapon,
+    SubWeapon,
+}
+
 public class GameDataManager : Singleton<GameDataManager>
 {
     //[Header("Component")]
-    //[Header("Settings")]
+    [Header("Settings")]
+    public Dictionary<string, WeaponDetailsSO> weaponDetailsDict = new();
     //[Header("Debug")]
     
     [Header("Game Settings")]
@@ -24,14 +33,20 @@ public class GameDataManager : Singleton<GameDataManager>
     [SerializeField] public bool isReverseX { get; private set; }
     [SerializeField] public bool isAutoFollowEnemy { get; private set; }
     [SerializeField] public float cameraDragSpeed { get; private set; }
+    
+    [Header("Tank Settings")]
+    [SerializeField] public string tankMainWeaponID { get; private set; }
+    [SerializeField] public string tankSecondWeaponID { get; private set; }
 
     public override void Awake()
     {
         base.Awake();
         RestoreSettingData();
+        RestoreTankData();
         ExecuteDataAction();
     }
-    
+
+    #region Data Action
     public void UpdateSettingData(SaveDataKey dataKey, object dataValue)
     {
         switch (dataKey)
@@ -57,6 +72,21 @@ public class GameDataManager : Singleton<GameDataManager>
         }
         ExecuteDataAction();
     }
+
+    public void UpdateTankData(TankWeaponType dataKey, string weaponID)
+    {
+        switch (dataKey)
+        {
+            case TankWeaponType.MainWeapon:
+                tankMainWeaponID = weaponID;
+                PlayerPrefs.SetString("tank_main_weapon_id", weaponID);
+                break;
+            case TankWeaponType.SubWeapon:
+                tankSecondWeaponID = weaponID;
+                PlayerPrefs.SetString("tank_sub_weapon_id", weaponID);
+                break;
+        }
+    }
     
     private void ExecuteDataAction()
     {
@@ -70,5 +100,25 @@ public class GameDataManager : Singleton<GameDataManager>
         isReverseX = PlayerPrefs.GetInt("reverse_x", 0) == 1;
         isAutoFollowEnemy = PlayerPrefs.GetInt("auto_follow_enemy", 0) == 1;
         cameraDragSpeed = PlayerPrefs.GetFloat("camera_drag_speed", 0.5f);
+    }
+    
+    private void RestoreTankData()
+    {
+        tankMainWeaponID = PlayerPrefs.GetString("tank_main_weapon_id", "WM001");
+        tankSecondWeaponID = PlayerPrefs.GetString("tank_sub_weapon_id", "WS001");
+    }
+    #endregion
+    
+    /// <summary>
+    /// Use weapon ID to get weapon details
+    /// </summary>
+    /// <param name="weaponID"></param>
+    /// <returns></returns>
+    public WeaponDetailsSO UseWeaponIDGetWeaponDetails(string weaponID)
+    {
+        if (weaponDetailsDict.TryGetValue(weaponID, out var data)) return data;
+        // Not found
+        Debug.LogError("Weapon ID not found: " + weaponID);
+        return null;
     }
 }

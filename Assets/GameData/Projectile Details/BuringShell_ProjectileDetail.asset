@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BuringShell_ProjectileDetail
   m_EditorClassIdentifier: 
   projectileName: Buring Shell
-  shootingInterval: 1
   projectileSpeed: 20
   projectileLifeTime: 1
-  projectileDamage: 5
-  capacity: -1
-  reloadTime: 0
-  featureText: 
-  disadvantageText: 
+  projectileDamage: 2
+  projectilePrefab: {fileID: 0}
+  isOnEndAction: 1
+  onEndEffects: []
+  onEndSkills:
+  - {fileID: 11400000, guid: d05336430fba244deb13e56602edf017, type: 2}
