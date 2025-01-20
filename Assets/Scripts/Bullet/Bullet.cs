@@ -40,10 +40,11 @@ public class Bullet : PoolableObject
     /// </summary>
     /// <param name="pos">start position</param>
     /// <param name="rot">start direction</param>
-    public void Initialize(Vector3 pos, Quaternion rot)
+    public void Initialize(Vector3 pos, Quaternion rot, float offset = 0)
     {
         transform.position = pos;
         transform.rotation = rot;
+        transform.Rotate(Vector3.forward, offset);
         _rb.linearVelocity = transform.up * speed; // Reset velocity
     }
     

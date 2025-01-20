@@ -1,20 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Sirenix.Serialization;
+using Random = UnityEngine.Random;
 
 public class CharacterShoot : NetworkBehaviour
 {
     [Header("Component")] 
     private CharacterController _cc;
-    public GameObject firePoint;
+    [SerializeField]private GameObject _currentFirePoint;
     
     [Header("Settings")]
-    public NetworkVariable<PoolKey> bulletPoolKey = new(PoolKey.BlueBullet, writePerm: NetworkVariableWritePermission.Owner);
-    // public PoolKey bulletPoolKey = PoolKey.BlueBullet;
-    //[Header("Debug")]
+    public NetworkVariable<PoolKey> mainWeaponBulletPoolKey = new(PoolKey.BlueBullet, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<PoolKey> subWeaponBulletPoolKey = new(PoolKey.MachineGunBullet, writePerm: NetworkVariableWritePermission.Owner);
+    [OdinSerialize]public Dictionary<WeaponDetailsSO, GameObject> firePointDict = new();
+    
+    [Header("Debug")]
+    private TankWeaponType _currentWeaponType = TankWeaponType.MainWeapon; 
+    private WeaponDetailsSO _currentWeaponDetail;
 
     private void Awake()
     {
@@ -24,15 +31,22 @@ public class CharacterShoot : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
-        bulletPoolKey.Value = _cc.team.Value == Team.Blue? PoolKey.BlueBullet : PoolKey.RedBullet;
+        mainWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue? PoolKey.BlueBullet : PoolKey.RedBullet;
+    }
+    
+    public void ChangeWeapon(TankWeaponType newWeaponType, WeaponDetailsSO newWeaponDetail)
+    {
+        _currentWeaponType = newWeaponType;
+        _currentWeaponDetail = newWeaponDetail;
+        _cc.mobileShootTimer.time = _currentWeaponDetail.shootingInterval;
     }
 
     public void ExecuteShoot()
     {
         if(!IsOwner) return;
 
-        var position = firePoint.transform.position;
-        var rotation = firePoint.transform.rotation;
+        var position = _currentFirePoint.transform.position;
+        var rotation = _currentFirePoint.transform.rotation;
         ShootServerRpc(position, rotation);
         Shoot(position, rotation);
     }
@@ -51,7 +65,8 @@ public class CharacterShoot : NetworkBehaviour
 
     private void Shoot(Vector3 pos, Quaternion rot)
     {
-        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey.Value).GetComponent<Bullet>();
-        bullet.Initialize(pos, rot);
+        var bulletPoolKey = _currentWeaponType == TankWeaponType.MainWeapon ? mainWeaponBulletPoolKey.Value : subWeaponBulletPoolKey.Value;
+        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey).GetComponent<Bullet>();
+        bullet.Initialize(pos, rot, Random.Range(-5, 5));
     }
 }

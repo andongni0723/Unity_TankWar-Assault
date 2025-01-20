@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class CharacterSetColor : NetworkBehaviour
@@ -12,6 +13,7 @@ public class CharacterSetColor : NetworkBehaviour
     
     [Header("Settings")]
     public List<Renderer> ChangeColorRenderers = new();
+    public List<Renderer> machineGunChangeColorRenderers = new();
     //[Header("Debug")]
     
     private void Awake()
@@ -24,6 +26,11 @@ public class CharacterSetColor : NetworkBehaviour
         var color = _cc.team.Value == Team.Blue ? Color.blue : Color.red;
         // 更新所有渲染器的顏色
         foreach (var r in ChangeColorRenderers)
+        {
+            r.material.color = color;
+        }
+        
+        foreach (var r in machineGunChangeColorRenderers)
         {
             r.material.color = color;
         }

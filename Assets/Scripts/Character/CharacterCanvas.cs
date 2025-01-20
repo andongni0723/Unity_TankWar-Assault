@@ -10,7 +10,7 @@ public class CharacterCanvas : MonoBehaviour
     //[Header("Debug")]
 
 
-    private void Update()
+    private void FixedUpdate()
     {
         var dir = Camera.main.transform.position - transform.position;
         transform.rotation = Quaternion.LookRotation(-dir);

@@ -35,9 +35,12 @@ public class GameDataManager : Singleton<GameDataManager>
     [SerializeField] public float cameraDragSpeed { get; private set; }
     
     [Header("Tank Settings")]
-    [SerializeField] public string tankMainWeaponID { get; private set; }
-    [SerializeField] public string tankSecondWeaponID { get; private set; }
-
+    // [SerializeField] public string tankMainWeaponID { get; private set; }
+    // [SerializeField] public string tankSubWeaponID { get; private set; }
+    
+    [SerializeField] public WeaponDetailsSO tankMainWeaponDetails { get; private set; }
+    [SerializeField] public WeaponDetailsSO tankSubWeaponDetails { get; private set; }
+    
     public override void Awake()
     {
         base.Awake();
@@ -65,25 +68,27 @@ public class GameDataManager : Singleton<GameDataManager>
                 break;
             case SaveDataKey.auto_follow_enemy:
                 PlayerPrefs.SetInt("auto_follow_enemy", (bool)dataValue ? 1 : 0);
+                isAutoFollowEnemy = (bool)dataValue;
                 break;
             case SaveDataKey.camera_drag_speed:
                 PlayerPrefs.SetFloat("camera_drag_speed", float.Parse(dataValue.ToString()));
+                cameraDragSpeed = float.Parse(dataValue.ToString());
                 break;
         }
         ExecuteDataAction();
     }
 
-    public void UpdateTankData(TankWeaponType dataKey, string weaponID)
+    public void UpdateTankData(TankWeaponType dataKey, WeaponDetailsSO data)
     {
         switch (dataKey)
         {
             case TankWeaponType.MainWeapon:
-                tankMainWeaponID = weaponID;
-                PlayerPrefs.SetString("tank_main_weapon_id", weaponID);
+                tankMainWeaponDetails = data;
+                PlayerPrefs.SetString("tank_main_weapon_id", data.weaponID);
                 break;
             case TankWeaponType.SubWeapon:
-                tankSecondWeaponID = weaponID;
-                PlayerPrefs.SetString("tank_sub_weapon_id", weaponID);
+                tankMainWeaponDetails = data;
+                PlayerPrefs.SetString("tank_sub_weapon_id", data.weaponID);
                 break;
         }
     }
@@ -104,8 +109,8 @@ public class GameDataManager : Singleton<GameDataManager>
     
     private void RestoreTankData()
     {
-        tankMainWeaponID = PlayerPrefs.GetString("tank_main_weapon_id", "WM001");
-        tankSecondWeaponID = PlayerPrefs.GetString("tank_sub_weapon_id", "WS001");
+        tankMainWeaponDetails = UseWeaponIDGetWeaponDetails(PlayerPrefs.GetString("tank_main_weapon_id", "WM001"));
+        tankSubWeaponDetails = UseWeaponIDGetWeaponDetails(PlayerPrefs.GetString("tank_sub_weapon_id", "WS001"));
     }
     #endregion
     

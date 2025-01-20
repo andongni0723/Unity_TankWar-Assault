@@ -17,6 +17,7 @@ public class CharacterController : NetworkBehaviour
     public GameObject tankHead;
     public GameObject tankBody;
     public GameObject tank;
+    public GameObject groundCanvas;
     public Timer mobileShootTimer;
     
     private Rigidbody _rb;
@@ -24,8 +25,9 @@ public class CharacterController : NetworkBehaviour
     private VariableJoystick _moveJoystick;
     private Slider _leftTrackSlider;
     private Slider _rightTrackSlider;
-    private Button _shootButton;
     private VariableJoystick _headJoystick;
+    private Toggle _mainWeaponToggle;
+    private Toggle _subWeaponToggle;
     
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
@@ -53,7 +55,6 @@ public class CharacterController : NetworkBehaviour
 
     public override void OnNetworkSpawn() => NetworkSpawnInitial();
     private void Awake() => InitialComponent();
-    // private void OnEnable() => MobileShootCoolDownEvent();
     
     public override void OnDestroy()
     {
@@ -83,14 +84,14 @@ public class CharacterController : NetworkBehaviour
         _leftTrackSlider = GameUIManager.Instance.leftTrackSlider;
         _rightTrackSlider = GameUIManager.Instance.rightTrackSlider;
         _headJoystick = GameUIManager.Instance.tankHeadJoystick;
-        _shootButton = GameUIManager.Instance.fireButton;
+        _mainWeaponToggle = GameUIManager.Instance.mainWeaponUI.weaponToggle;
+        _subWeaponToggle = GameUIManager.Instance.subWeaponUI.weaponToggle;
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
         _mainCamera = Camera.main;
         cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
-        // _shootButton.onClick.AddListener(MobileCallShoot);
-        
+
 #if UNITY_EDITOR    
         InitialInputSystemBinding();
         DesktopMoveBinding();
@@ -101,7 +102,9 @@ public class CharacterController : NetworkBehaviour
         InitialInputSystemBinding();
 #endif
     }
+
     
+
     private void NetworkSpawnInitial()
     {
         if (IsOwner)
@@ -114,6 +117,7 @@ public class CharacterController : NetworkBehaviour
             SetTeamLayerServerRpc(team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Player") : LayerMask.NameToLayer("Red Player")); 
         }
         virtualCamera.gameObject.SetActive(IsOwner);
+        groundCanvas.SetActive(IsOwner);
         EventHandler.CallOnPlayerSpawned(this);
         _characterSetColor.SetColorBasedOnOwner();
     }
@@ -208,11 +212,6 @@ public class CharacterController : NetworkBehaviour
     {
         LeftAndRightSliderValueGetArrowDirection(_leftTrackSlider.value, _rightTrackSlider.value);
         UpdateTankHeadRotation(_headJoystick.Horizontal, _headJoystick.Vertical);
-        FireButtonUIUpdate();
-        // MobileMovement();
-        // var dir = LeftAndRightSliderValueGetArrowDirection(_leftTrackSlider.value, _rightTrackSlider.value);
-        // MobileMovementWithDirection(dir);
-        // MobileRotate();
     }
     
     private void DesktopInputControl()
@@ -239,8 +238,12 @@ public class CharacterController : NetworkBehaviour
     
     public void UpdateTankHeadRotation(float joystickX, float joystickY)
     {
-        // 1. 當搖桿靜止時，維持當前旋轉角度
-        if (joystickX == 0 && joystickY == 0) return;
+        // 1. 當搖桿靜止時，更新 _previousAngle 為當前旋轉角度
+        if (joystickX == 0 && joystickY == 0)
+        {
+            _currentRotation = tankHead.transform.rotation.eulerAngles.y;
+            return;
+        }
 
         // 2. 計算當前搖桿角度（0° ~ 360°）
         float currentAngle = Mathf.Atan2(joystickX, joystickY) * Mathf.Rad2Deg;
@@ -252,19 +255,16 @@ public class CharacterController : NetworkBehaviour
         // 4. 調整旋轉速度，累積旋轉角度
         _currentRotation += Mathf.Clamp(deltaAngle, -maxRotationSpeed, maxRotationSpeed) * Time.deltaTime * tankHeadRotateSpeed;
 
+
         // 5. 使用 Quaternion.RotateTowards 進行旋轉
         Quaternion targetRotation = Quaternion.Euler(-90, _currentRotation, 0);
         tankHead.transform.rotation = Quaternion.RotateTowards(tankHead.transform.rotation, targetRotation, maxRotationSpeed * Time.deltaTime);
-
+        
         // 6. 更新上一幀角度
         _previousAngle = currentAngle;
-    }
 
-    private void FireButtonUIUpdate()
-    {
-        // fill amount 0 ~ 1
-        _shootButton.GetComponent<Image>().fillAmount =
-            mobileShootTimer.isPlay ? mobileShootTimer.currentTime / mobileShootTimer.time : 1;
+        // Debug.Log("Current Angle: " + currentAngle + " Previous Angle: " + _previousAngle + " Delta Angle: " + deltaAngle + " Current Rotation: " + _currentRotation);
+
     }
     
     private void MobileCallShoot()
@@ -277,18 +277,6 @@ public class CharacterController : NetworkBehaviour
     
     #region Desktop Control
 
-    // private void DesktopMovement(Vector2 readValue)
-    // {
-    //     var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-readValue.y, 0, readValue.x));
-    //     _rb.linearVelocity = Vector3.MoveTowards(_rb.linearVelocity, dir.normalized * moveSpeed, 
-    //         Time.fixedDeltaTime * moveSpeed * 5);
-    //     
-    //     if(_moveDirection == Vector2.zero) return;
-    //     var localDir = cameraDirPoint.transform.TransformDirection(readValue);
-    //     float angleY = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg - 90;
-    //     tankBody.transform.localRotation = Quaternion.Euler(0, angleY, 0);
-    // }
-
     private void DesktopRotate()
     {
         var ray = _mainCamera.ScreenPointToRay(_inputSystem.Player.MousePosition.ReadValue<Vector2>());
@@ -300,11 +288,6 @@ public class CharacterController : NetworkBehaviour
             float angleY = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg + 90;
             tankHead.transform.rotation = Quaternion.Euler(-90, -angleY, 0);
         }
-    }
-    
-    private void DesktopCallShoot()
-    {
-        _characterShoot.ExecuteShoot();
     }
     #endregion
 }

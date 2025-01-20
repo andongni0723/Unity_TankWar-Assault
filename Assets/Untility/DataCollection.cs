@@ -2,8 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+
+[Serializable]
+public class WeaponGamePlayUI
+{
+    public Toggle weaponToggle;
+    public Image weaponImage;
+    public TMP_Text weaponNameText;
+    public TMP_Text weaponAmmoText;
+    public Image weaponImageFill;
+}
 
 [Serializable]
 public class ActionTimeline<T> where T : ActionTimeline<T>

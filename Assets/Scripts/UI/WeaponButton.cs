@@ -18,8 +18,8 @@ public class WeaponButton : MonoBehaviour
     private void OnEnable()
     {
         var weaponID = weaponType == TankWeaponType.MainWeapon
-            ? GameDataManager.Instance.tankMainWeaponID
-            : GameDataManager.Instance.tankSecondWeaponID;
+            ? GameDataManager.Instance.tankMainWeaponDetails.weaponID
+            : GameDataManager.Instance.tankSubWeaponDetails.weaponID;
         var weaponDetails = GameDataManager.Instance.UseWeaponIDGetWeaponDetails(weaponID);
         buttonText.text = weaponDetails.weaponName;
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameUIManager : Singleton<GameUIManager>
@@ -12,6 +13,10 @@ public class GameUIManager : Singleton<GameUIManager>
     public Button fireButton;
     public VariableJoystick tankHeadJoystick; 
     public List<RectTransform> dragAreas;
+    
+    [Space(15)]
+    public WeaponGamePlayUI mainWeaponUI;
+    public WeaponGamePlayUI subWeaponUI;
 
     //[Header("Settings")]
     //[Header("Debug")]

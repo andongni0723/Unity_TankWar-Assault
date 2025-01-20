@@ -13,7 +13,8 @@ public class WeaponPanel : MonoBehaviour
     
     [Header("Debug")]
     private TankWeaponType _currentOpenWeaponType;
-    private string _currentSelectedWeaponID;
+    // private string _currentSelectedWeaponID;
+    private WeaponDetailsSO _currentSelectedWeapon;
     
     private void OnEnable()
     {
@@ -27,7 +28,7 @@ public class WeaponPanel : MonoBehaviour
 
     private void OnWeaponSelectToggleSelected(WeaponDetailsSO data)
     {
-        _currentSelectedWeaponID = data.weaponID;
+        _currentSelectedWeapon = data;
     }
 
     public void ShowMainWeaponSelectGroup()
@@ -46,7 +47,7 @@ public class WeaponPanel : MonoBehaviour
     
     public void ConfirmWeapon()
     {
-        GameDataManager.Instance.UpdateTankData(_currentOpenWeaponType, _currentSelectedWeaponID);
+        GameDataManager.Instance.UpdateTankData(_currentOpenWeaponType, _currentSelectedWeapon);
         mainWeaponSelectGroup.SetActive(false);
         subWeaponSelectGroup.SetActive(false);
     }

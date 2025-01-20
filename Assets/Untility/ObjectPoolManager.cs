@@ -3,19 +3,12 @@ using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Pool;
 
-[SerializeField]
-public class PoolObject
-{
-    public string key;
-    public IObjectPool<GameObject> prefab;
-    public int defaultCapacity;
-    public int maxSize;
-}
-
 public enum PoolKey
 {
     RedBullet, BlueBullet, 
-    RedHitVFX, BlueHitVFX
+    RedHitVFX, BlueHitVFX,
+    RedBuringBullet, BlueBuringBullet,
+    MachineGunBullet, MachineGunHitVFX,
 }
 
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
@@ -41,7 +34,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     }
 
     // 註冊一個物件池
-    public void RegisterPool(PoolKey key, GameObject prefab, int defaultCapacity = 10, int maxSize = 50)
+    private void RegisterPool(PoolKey key, GameObject prefab, int defaultCapacity = 10, int maxSize = 50)
     {
         if (_pools.ContainsKey(key))
         {
