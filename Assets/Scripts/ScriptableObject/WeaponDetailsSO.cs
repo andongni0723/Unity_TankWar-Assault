@@ -9,6 +9,7 @@ public class WeaponDetailsSO : ScriptableObject
     public string weaponName;
     public string weaponID;
     public float shootingInterval;
+    public float spreadAngle;
     public int capacity;
     public float reloadTime;
     public ProjectileDetailsSO projectileDetails;

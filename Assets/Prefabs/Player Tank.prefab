@@ -1640,7 +1640,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   healthBar: {fileID: 1847749356194742286}
   healthText: {fileID: 1700044750149785210}
-  maxHealth: 10
+  maxHealth: 100
 --- !u!114 &873599091688959764
 MonoBehaviour:
   m_ObjectHideFlags: 0

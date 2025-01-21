@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class CharacterGamePlayUIView : MonoBehaviour
+public class CharacterGamePlayUIView : NetworkBehaviour
 {
     [Header("Component")] 
     private CharacterController _cc;
@@ -25,9 +26,16 @@ public class CharacterGamePlayUIView : MonoBehaviour
         _shootButtonImage = GameUIManager.Instance.fireButton.GetComponent<Image>();
         _mainWeaponUI = GameUIManager.Instance.mainWeaponUI;
         _subWeaponUI = GameUIManager.Instance.subWeaponUI;
-        _mainWeaponUI.weaponToggle.onValueChanged.AddListener(OnMainWeaponToggleChanged);
-        _subWeaponUI.weaponToggle.onValueChanged.AddListener(OnSubWeaponToggleChanged);
         InitializeGamePlayUI();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        
+        if(!IsOwner) return;
+        _mainWeaponUI.weaponToggle.onValueChanged.AddListener(OnMainWeaponToggleChanged);
+        _subWeaponUI.weaponToggle.onValueChanged.AddListener(OnSubWeaponToggleChanged); 
     }
 
     private void Update()

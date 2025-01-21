@@ -20,12 +20,13 @@ public class CharacterShoot : NetworkBehaviour
     [OdinSerialize]public Dictionary<WeaponDetailsSO, GameObject> firePointDict = new();
     
     [Header("Debug")]
-    private TankWeaponType _currentWeaponType = TankWeaponType.MainWeapon; 
+    public NetworkVariable<TankWeaponType> currentWeaponType = new(TankWeaponType.MainWeapon, writePerm: NetworkVariableWritePermission.Owner);
     private WeaponDetailsSO _currentWeaponDetail;
 
     private void Awake()
     {
         _cc = GetComponent<CharacterController>();
+        _currentWeaponDetail = GameDataManager.Instance.tankMainWeaponDetails;
     }
 
     public override void OnNetworkSpawn()
@@ -36,7 +37,8 @@ public class CharacterShoot : NetworkBehaviour
     
     public void ChangeWeapon(TankWeaponType newWeaponType, WeaponDetailsSO newWeaponDetail)
     {
-        _currentWeaponType = newWeaponType;
+        // _currentWeaponType = newWeaponType;
+        currentWeaponType.Value = newWeaponType;
         _currentWeaponDetail = newWeaponDetail;
         _cc.mobileShootTimer.time = _currentWeaponDetail.shootingInterval;
     }
@@ -65,8 +67,11 @@ public class CharacterShoot : NetworkBehaviour
 
     private void Shoot(Vector3 pos, Quaternion rot)
     {
-        var bulletPoolKey = _currentWeaponType == TankWeaponType.MainWeapon ? mainWeaponBulletPoolKey.Value : subWeaponBulletPoolKey.Value;
+        // var bulletPoolKey = _currentWeaponType == TankWeaponType.MainWeapon ? mainWeaponBulletPoolKey.Value : subWeaponBulletPoolKey.Value;
+        var bulletPoolKey = currentWeaponType.Value == TankWeaponType.MainWeapon ? mainWeaponBulletPoolKey.Value : subWeaponBulletPoolKey.Value;
         var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey).GetComponent<Bullet>();
-        bullet.Initialize(pos, rot, Random.Range(-5, 5));
+        bullet.gameObject.tag = _cc.team.Value == Team.Blue ? "Blue Skill" : "Red Skill";
+        bullet.gameObject.layer = _cc.team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Skill") : LayerMask.NameToLayer("Red Skill");
+        bullet.Initialize(pos, rot, Random.Range(-_currentWeaponDetail.spreadAngle, _currentWeaponDetail.spreadAngle));
     }
 }
