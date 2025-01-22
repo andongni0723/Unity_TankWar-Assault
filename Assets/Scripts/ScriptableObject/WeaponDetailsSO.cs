@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "WeaponDetailsSO", menuName = "ScriptableObject/WeaponDetailsSO")]
 public class WeaponDetailsSO : ScriptableObject
@@ -10,6 +11,7 @@ public class WeaponDetailsSO : ScriptableObject
     public string weaponID;
     public float shootingInterval;
     public float spreadAngle;
+    public bool infiniteAmmo;
     public int capacity;
     public float reloadTime;
     public ProjectileDetailsSO projectileDetails;

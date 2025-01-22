@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour
     public bool onAwakePlay = false;
     
     //[Header("Debug")]
-    public UnityAction OnTimerEnd;
+    public Action OnTimerEnd;
     public bool isPlay { get; private set; }
     public float currentTime { get; private set; }
     
@@ -47,10 +47,8 @@ public class Timer : MonoBehaviour
     /// <summary>
     /// Call this method to start the timer.
     /// </summary>
-    public void Play()
-    {
-        isPlay = true;
-    }
+    public void Play() => isPlay = true;  
+    public void Pause() => isPlay = false;
     
     /// <summary>
     /// Call this method to stop the timer.
@@ -58,6 +56,7 @@ public class Timer : MonoBehaviour
     public void Stop()
     {
         isPlay = false;
+        currentTime = 0;
     } 
     #endregion
 }

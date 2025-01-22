@@ -8,7 +8,7 @@ public class ProjectileDetailsSO : ScriptableObject
     public string projectileName;
     public float projectileSpeed;
     public float projectileLifeTime;
-    public float projectileDamage;
+    public int projectileDamage;
     public GameObject projectilePrefab;
 
     [ToggleGroup("isOnEndAction")] public bool isOnEndAction;

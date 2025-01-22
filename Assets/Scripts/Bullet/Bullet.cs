@@ -11,6 +11,7 @@ public class Bullet : PoolableObject
     private TrailRenderer _trailRenderer;
     
     [Header("Settings")]
+    public ProjectileDetailsSO projectileDetails;
     public float speed = 10;
     [Range(0, 10)] public int damage = 1;
     public PoolKey VFXPoolKey = PoolKey.RedHitVFX;
@@ -52,6 +53,7 @@ public class Bullet : PoolableObject
     {
         _rb = GetComponent<Rigidbody>();
         _trailRenderer = GetComponent<TrailRenderer>();
+        damage = projectileDetails.projectileDamage;
     }
     
     private void BackToPoolWithEffect()

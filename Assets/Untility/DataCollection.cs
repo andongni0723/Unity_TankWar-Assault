@@ -18,6 +18,15 @@ public class WeaponGamePlayUI
 }
 
 [Serializable]
+public class GameWeaponData
+{
+    public WeaponDetailsSO weaponDetails;
+    public Timer shootTimer;
+    public Timer reloadTimer;
+    public int currentAmmo;
+}
+
+[Serializable]
 public class ActionTimeline<T> where T : ActionTimeline<T>
 {
     public float time;

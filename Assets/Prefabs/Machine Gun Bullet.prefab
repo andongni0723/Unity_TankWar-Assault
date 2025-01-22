@@ -282,6 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolKey: 6
   destroyTimer: {fileID: 1139975453732472070}
+  projectileDetails: {fileID: 11400000, guid: 4efc6f3c17f0a41f9a8edcd098c4fa16, type: 2}
   speed: 50
   damage: 2
   VFXPoolKey: 7

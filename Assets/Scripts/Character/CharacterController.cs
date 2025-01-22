@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.Serialization;
 using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
@@ -18,7 +19,8 @@ public class CharacterController : NetworkBehaviour
     public GameObject tankBody;
     public GameObject tank;
     public GameObject groundCanvas;
-    public Timer mobileShootTimer;
+    // public Timer mobileShootTimer;
+    
     
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
@@ -26,8 +28,8 @@ public class CharacterController : NetworkBehaviour
     private Slider _leftTrackSlider;
     private Slider _rightTrackSlider;
     private VariableJoystick _headJoystick;
-    private Toggle _mainWeaponToggle;
-    private Toggle _subWeaponToggle;
+    // private Toggle _mainWeaponToggle;
+    // private Toggle _subWeaponToggle;
     
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
@@ -84,8 +86,6 @@ public class CharacterController : NetworkBehaviour
         _leftTrackSlider = GameUIManager.Instance.leftTrackSlider;
         _rightTrackSlider = GameUIManager.Instance.rightTrackSlider;
         _headJoystick = GameUIManager.Instance.tankHeadJoystick;
-        _mainWeaponToggle = GameUIManager.Instance.mainWeaponUI.weaponToggle;
-        _subWeaponToggle = GameUIManager.Instance.subWeaponUI.weaponToggle;
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
@@ -124,8 +124,8 @@ public class CharacterController : NetworkBehaviour
 
     private void InitialInputSystemBinding()
     {
-        // _inputSystem.Player.Attack.performed += _ => DesktopCallShoot();
-        _inputSystem.Player.Fire.performed += _ => MobileCallShoot();
+        _inputSystem.Player.Fire.started += _ => _characterShoot.StartShoot();
+        _inputSystem.Player.Fire.canceled += _ => _characterShoot.StopShoot();
         _inputSystem.Player.StopTank.performed += _ => StopTankMove();
         DragMouseBinding();
     }
@@ -267,12 +267,22 @@ public class CharacterController : NetworkBehaviour
 
     }
     
-    private void MobileCallShoot()
-    {
-        if(mobileShootTimer.isPlay) return;
-        _characterShoot.ExecuteShoot();
-        mobileShootTimer.Play();
-    }
+    // private void MobileCallShoot()
+    // {
+    //     // if(mobileShootTimer.isPlay) return;
+    //     // _characterShoot.ExecuteShoot();
+    //     // mobileShootTimer.Play();
+    // }
+    
+    // private void MobileCallStartShoot()
+    // {
+    //     _characterShoot.StartShoot();
+    // }
+    //
+    // private void MobileCallEndShoot()
+    // {
+    //     _characterShoot.StopShoot();
+    // }
     #endregion
     
     #region Desktop Control

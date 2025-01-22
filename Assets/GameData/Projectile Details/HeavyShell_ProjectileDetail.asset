@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: HeavyShell_ProjectileDetail
   m_EditorClassIdentifier: 
   projectileName: Heavy Shell
-  shootingInterval: 2
   projectileSpeed: 25
   projectileLifeTime: 5
-  projectileDamage: 10
-  capacity: -1
-  reloadTime: 0
-  featureText: 
-  disadvantageText: 
+  projectileDamage: 50
+  projectilePrefab: {fileID: 0}
+  isOnEndAction: 0
+  onEndEffects: []
+  onEndSkills: []
