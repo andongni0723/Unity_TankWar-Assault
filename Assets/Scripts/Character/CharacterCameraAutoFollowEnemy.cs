@@ -38,10 +38,14 @@ public class CharacterCameraAutoFollowEnemy : CharacterCameraController
         // Camera Look at Player to Enemy 
         var enemyDir = _enemyCharacter.transform.position - _character.transform.position;
         _cameraAngle = Mathf.Atan2(enemyDir.x, enemyDir.z) * Mathf.Rad2Deg;
+        var startAngle = camOrbitalFollow.HorizontalAxis.Value;
+        var shortestAngle = Mathf.DeltaAngle(startAngle, _cameraAngle);
+        var targetAngle = startAngle + shortestAngle;
+        
         DOTween.To(
-            () => camOrbitalFollow.HorizontalAxis.Value, // 起始值
+            () => startAngle, // 起始值
             value => camOrbitalFollow.HorizontalAxis.Value = value, // 更新值
-            _cameraAngle, // 目標值
+            targetAngle, // 目標值
             3 // 過渡時間
         ).SetEase(Ease.InOutSine);
     }

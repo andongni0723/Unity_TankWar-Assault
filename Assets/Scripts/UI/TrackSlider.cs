@@ -20,6 +20,6 @@ public class TrackSlider : MonoBehaviour
 
     private void OnSliderValueChanged(float newValue)
     {
-        trackText.text = newValue.ToString();
+        trackText.text = newValue.ToString("0.00");
     }
 }

@@ -345,6 +345,17 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""9e38e388-3fd0-4cdf-9fa6-c0b2c2b4d6bc"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TankMoveLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""91791601-4828-427e-8c8e-237154365597"",
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
@@ -380,6 +391,17 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""52f6ba29-0ae2-4105-ab14-2f7dcd33764e"",
                     ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TankMoveRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""436608ac-4b32-4ebd-8cc7-2fda4e287fbd"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

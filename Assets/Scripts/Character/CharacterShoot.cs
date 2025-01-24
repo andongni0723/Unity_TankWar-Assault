@@ -33,6 +33,9 @@ public class CharacterShoot : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        currentWeaponType.OnValueChanged += (pre, now) => 
+            currentWeaponData = GetCurrentWeaponData(now);
+        
         if (!IsOwner) return;
         mainWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue? PoolKey.BlueBullet : PoolKey.RedBullet;
     }
@@ -79,12 +82,14 @@ public class CharacterShoot : NetworkBehaviour
     {
         currentWeaponData.reloadTimer.Play();
         if(IsOwner) currentWeaponType.Value = newWeaponType;
-        currentWeaponData = GetCurrentWeaponData();
+        // currentWeaponData = GetCurrentWeaponData();
         currentWeaponData.reloadTimer.Stop();
     }
     
-    private GameWeaponData GetCurrentWeaponData() => 
-        currentWeaponType.Value == TankWeaponType.MainWeapon ? mainWeaponData : subWeaponData;
+    
+    private GameWeaponData GetCurrentWeaponData(TankWeaponType weaponType) => 
+        weaponType == TankWeaponType.MainWeapon ? mainWeaponData : subWeaponData;
+    private GameWeaponData GetCurrentWeaponData() => GetCurrentWeaponData(currentWeaponType.Value); 
     
     [ServerRpc]
     private void ChangeWeaponServerRpc(TankWeaponType newWeaponType)

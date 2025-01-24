@@ -54,6 +54,7 @@ public class MenuButton : MonoBehaviour
                 SceneLoader.Instance.CallLoadScene("StartScene");
                 break;
             case ButtonFunction.QuitGame:
+                if(An_ConnectionManager.Instance != null) An_ConnectionManager.Instance.LeaveSession();
                 Application.Quit();
                 break;
             case ButtonFunction.OpenPanel:

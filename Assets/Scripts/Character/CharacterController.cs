@@ -142,7 +142,7 @@ public class CharacterController : NetworkBehaviour
         {
             "1" => 2,
             "q" => 1,
-            "a" => 0,
+            "a" or "s" => 0,
             "z" => -1,
         };
     }
@@ -153,7 +153,7 @@ public class CharacterController : NetworkBehaviour
         {
             "3" => 2,
             "e" => 1,
-            "d" => 0,
+            "d" or "s" => 0,
             "c" => -1,
         };
     }
