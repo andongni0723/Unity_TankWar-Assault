@@ -47,20 +47,6 @@ public class ResetButton : MonoBehaviour
         An_ConnectionManager.Instance.LeaveSession();
         NetworkManager.Singleton.Shutdown();
         LoadTargetScene();
-
-        // var networkManager = NetworkManager.Singleton;
-        // if (networkManager.IsHost)
-        // {
-        //     networkManager.DisconnectClient(networkManager.LocalClientId);
-        //     networkManager.Shutdown();
-        // }
-        // else if (networkManager.IsClient)
-        // {
-        //     networkManager.DisconnectClient(networkManager.LocalClientId);
-        // }
-        //
-        // if(!networkManager.ShutdownInProgress)
-        //     networkManager.Shutdown();
     }
     
     public void LoadTargetScene()

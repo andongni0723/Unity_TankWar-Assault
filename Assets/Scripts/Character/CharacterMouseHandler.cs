@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class CharacterMouseHandler : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class CharacterMouseHandler : MonoBehaviour
         mouseDelta = Mouse.current.delta.ReadValue();
 #elif UNITY_ANDROID || UNITY_IOS
         mouseDelta = Touchscreen.current.delta.ReadValue();
-#endif 
+#endif
     }
 
     public void OnMouseClickStarted()

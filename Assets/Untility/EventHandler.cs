@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Events;
 
 public static class EventHandler
 {
@@ -14,6 +13,12 @@ public static class EventHandler
     public static void CallOnPlayerSpawned(CharacterController characterController)
     {
         OnPlayerSpawned?.Invoke(characterController);
+    }
+    
+    public static Action OnAllPlayerSpawned;
+    public static void CallOnAllPlayerSpawned()
+    {
+        OnAllPlayerSpawned?.Invoke();
     }
     
     

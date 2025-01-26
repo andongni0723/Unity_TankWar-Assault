@@ -86,8 +86,8 @@ public class GameDataManager : Singleton<GameDataManager>
                 tankMainWeaponDetails = data;
                 PlayerPrefs.SetString("tank_main_weapon_id", data.weaponID);
                 break;
-            case TankWeaponType.SubWeapon:
-                tankMainWeaponDetails = data;
+            case TankWeaponType.SubWeapon: 
+                tankSubWeaponDetails = data;
                 PlayerPrefs.SetString("tank_sub_weapon_id", data.weaponID);
                 break;
         }

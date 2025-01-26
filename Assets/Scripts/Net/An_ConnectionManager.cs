@@ -1,14 +1,11 @@
 using System;
 using UnityEngine;
 using System.Threading.Tasks;
-using Unity.Multiplayer.Widgets;
-using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Random = System.Random;
 
 public class An_ConnectionManager : Singleton<An_ConnectionManager>
 {
@@ -40,7 +37,7 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
         await UnityServices.InitializeAsync();
         quickJoinButton.interactable = true;
     }
-    
+
     /// <summary>
     /// Match a session with the QuickJoinOptions. Call by Button Click.
     /// </summary>
@@ -69,7 +66,6 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
             };
 
             _session = await MultiplayerService.Instance.MatchmakeSessionAsync(quickJoinOptions, sessionOptions);
-            
             JoinedSession?.Invoke(_session);
             leaveButton.interactable = true;
         }

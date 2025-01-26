@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.Serialization;
 using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CharacterController : NetworkBehaviour
@@ -103,8 +99,6 @@ public class CharacterController : NetworkBehaviour
 #endif
     }
 
-    
-
     private void NetworkSpawnInitial()
     {
         if (IsOwner)
@@ -116,10 +110,16 @@ public class CharacterController : NetworkBehaviour
             InitialSpawnPoint();
             SetTeamLayerServerRpc(team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Player") : LayerMask.NameToLayer("Red Player")); 
         }
+        
         virtualCamera.gameObject.SetActive(IsOwner);
         groundCanvas.SetActive(IsOwner);
-        EventHandler.CallOnPlayerSpawned(this);
         _characterSetColor.SetColorBasedOnOwner();
+        
+        EventHandler.CallOnPlayerSpawned(this);
+        
+        // If you are the second player
+        if(IsHost && !IsOwner || !IsHost && IsOwner)
+            EventHandler.CallOnAllPlayerSpawned(); 
     }
 
     private void InitialInputSystemBinding()
@@ -144,6 +144,7 @@ public class CharacterController : NetworkBehaviour
             "q" => 1,
             "a" or "s" => 0,
             "z" => -1,
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
     
@@ -155,6 +156,7 @@ public class CharacterController : NetworkBehaviour
             "e" => 1,
             "d" or "s" => 0,
             "c" => -1,
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
 

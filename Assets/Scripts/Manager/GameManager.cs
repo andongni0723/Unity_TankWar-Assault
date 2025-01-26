@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using TMPro;
 
@@ -20,8 +17,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text errorText;
     
     //[Header("Settings")]
-    //[Header("Debug")]
-
+    // [Header("Debug")]
+    
     private void Awake()
     {
         UpdateGameVersionText();
@@ -37,7 +34,6 @@ public class GameManager : MonoBehaviour
         Application.logMessageReceived -= OpenPanelShowError;
     }
 
-    
     #region Initialize
     private void UpdateGameVersionText() => versionText.text = $"v{Application.version}";
     #endregion
