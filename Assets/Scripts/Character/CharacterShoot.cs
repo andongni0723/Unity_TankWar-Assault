@@ -36,8 +36,15 @@ public class CharacterShoot : NetworkBehaviour
         currentWeaponType.OnValueChanged += (pre, now) => 
             currentWeaponData = GetCurrentWeaponData(now);
         
+        // Update bullet pool key
         if (!IsOwner) return;
-        mainWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue? PoolKey.BlueBullet : PoolKey.RedBullet;
+        mainWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue? 
+            mainWeaponData.weaponDetails.projectileDetails.bluePrefabPoolKey : 
+            mainWeaponData.weaponDetails.projectileDetails.redPrefabPoolKey;
+        
+        subWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue?
+            subWeaponData.weaponDetails.projectileDetails.bluePrefabPoolKey :
+            subWeaponData.weaponDetails.projectileDetails.redPrefabPoolKey;
     }
 
     private void Update()

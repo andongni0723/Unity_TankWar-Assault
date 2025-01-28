@@ -16,7 +16,8 @@ MonoBehaviour:
   projectileSpeed: 20
   projectileLifeTime: 1
   projectileDamage: 2
-  projectilePrefab: {fileID: 0}
+  redPrefabPoolKey: 4
+  bluePrefabPoolKey: 5
   isOnEndAction: 1
   onEndEffects: []
   onEndSkills:

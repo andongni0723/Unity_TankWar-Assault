@@ -16,6 +16,8 @@ MonoBehaviour:
   skillID: S001
   skillDescription: A buring area for 3 second, per second take 3 damage for enemy
   skillLifeTime: 3
+  skillRange: {x: 4, y: 0.05, z: 4}
+  skillPrefabPoolKey: 8
   skillSprite: {fileID: 0}
   skills:
   - time: 0

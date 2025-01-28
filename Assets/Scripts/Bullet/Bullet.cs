@@ -54,6 +54,7 @@ public class Bullet : PoolableObject
         _rb = GetComponent<Rigidbody>();
         _trailRenderer = GetComponent<TrailRenderer>();
         damage = projectileDetails.projectileDamage;
+        destroyTimer.time = projectileDetails.projectileLifeTime;
     }
     
     private void BackToPoolWithEffect()
@@ -76,7 +77,24 @@ public class Bullet : PoolableObject
         if (other.TryGetComponent<IAttack>(out var target))
         {
             target.TakeDamage(damage);
+            ExecuteOnEndEffect();
+            ExecuteOnEndSkill();
             BackToPoolWithEffect();
+        }
+    }
+    
+    private void ExecuteOnEndEffect()
+    {
+        
+    }
+
+    private void ExecuteOnEndSkill()
+    {
+        foreach (var skill in projectileDetails.onEndSkills)
+        {
+            var skillObj = ObjectPoolManager.Instance.GetObject(skill.skillPrefabPoolKey);
+            skillObj.GetComponent<BurningArea>().Initialize(skill);
+            skillObj.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
     }
 }

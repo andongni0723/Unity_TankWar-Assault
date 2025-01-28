@@ -43,4 +43,18 @@ public class Test : MonoBehaviour
         rb.AddForce(Vector2.right, ForceMode2D.Force);   // 施加力量 (持續) F = ma
         rb.AddTorque(1, ForceMode2D.Impulse); // 施加扭力
     }
+
+
+
+    private delegate void SkillAction(SkillDetailsSO data);
+
+    private SkillAction Action;
+    private void Test1()
+    {
+        Action += DD;
+    }
+
+    private void DD(SkillDetailsSO data)
+    {
+    }
 }
