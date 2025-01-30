@@ -1,30 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class BurningArea : PoolableObject
+public class BurningArea : SkillBase
 {
-    //[Header("Component")]
-    [Header("Settings")]
-    private SkillDetailsSO _skillDetails;
-    public Timer destroyTimer;
-    //[Header("Debug")]
+    [Header("Component")] 
+    public GameObject fireParticle;
+    public GameObject smokeParticle;
+    
+    // [Header("Settings")]
+    // [Header("Debug")]
 
-    public void Initialize(SkillDetailsSO skillDetails)
+    protected override void ChildInitialize(SkillDetailsSO skillDetails)
     {
         _skillDetails = skillDetails;
-        transform.localScale = _skillDetails.skillRange;
+        transform.localScale = skillDetails.skillRange;
+        fireParticle.transform.localScale = Vector3.one;
+        smokeParticle.transform.localScale = Vector3.one;
         destroyTimer.time = _skillDetails.skillLifeTime;
     }
 
-    private void Awake()
+    protected override void ReturnToPoolAction()
     {
-        destroyTimer.OnTimerEnd += ReturnToPoolAction;
+        fireParticle.transform.DOScale(Vector3.zero, 0.1f);
+        smokeParticle.transform.DOScale(Vector3.zero, 0.1f);
+        transform.DOScale(Vector3.zero, 0.3f).OnComplete(ReturnToPool);
     }
 
-    private void ReturnToPoolAction()
+
+    private void OnTriggerEnter(Collider other)
     {
-        transform.DOScale(Vector3.zero, 0.3f).OnComplete(ReturnToPool);
+        
     }
 }

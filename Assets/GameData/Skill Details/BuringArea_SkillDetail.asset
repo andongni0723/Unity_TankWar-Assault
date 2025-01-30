@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Buring Area
   skillID: S001
-  skillDescription: A buring area for 3 second, per second take 3 damage for enemy
+  skillDescription: A buring area for 3 second, per second take 20 damage for enemy
   skillLifeTime: 3
-  skillRange: {x: 4, y: 0.05, z: 4}
+  skillRange: {x: 1, y: 1, z: 1}
   skillPrefabPoolKey: 8
   skillSprite: {fileID: 0}
   skills:
   - time: 0
     skillActionDetails:
-      damage: 3
+      damage: 20
       skillActionType: 1
       aoe:
-        radius: 3
+        radius: 2
       targeted:
         isTargetEnemy: 0
       onApplyEffects:
@@ -33,7 +33,7 @@ MonoBehaviour:
       onEndEffects: []
   - time: 1
     skillActionDetails:
-      damage: 0
+      damage: 20
       skillActionType: 1
       aoe:
         radius: 3
@@ -44,7 +44,7 @@ MonoBehaviour:
       onEndEffects: []
   - time: 2
     skillActionDetails:
-      damage: 3
+      damage: 20
       skillActionType: 1
       aoe:
         radius: 3

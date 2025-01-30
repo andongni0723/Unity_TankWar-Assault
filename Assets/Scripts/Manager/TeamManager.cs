@@ -14,6 +14,7 @@ public class TeamManager : Singleton<TeamManager>
     
     private CharacterController blueTeamCharacter;
     private CharacterController redTeamCharacter;
+    public List<CharacterController> CharactersList = new();
 
     private void OnEnable()
     {
@@ -28,6 +29,12 @@ public class TeamManager : Singleton<TeamManager>
     private void OnPlayerSpawned(CharacterController character)
     {
         (character.team.Value == Team.Blue ? ref blueTeamCharacter : ref redTeamCharacter) = character;
+        CharactersList.Add(character);
+    }
+
+    public CharacterController GetSelfTeamCharacterController()
+    {
+        return NetworkManager.Singleton.IsHost ? blueTeamCharacter : redTeamCharacter;
     }
     
     public CharacterController GetEnemyTeamCharacterController()

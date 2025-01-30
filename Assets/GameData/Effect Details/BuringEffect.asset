@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Buring
   effectID: E001
-  effectSprite: {fileID: 0}
+  effectSprite: {fileID: 21300000, guid: 3fde9a692d64c4f7eb2498d38750a2a5, type: 3}
   effectDescription: 
   effectType: 2
   statusDetails:

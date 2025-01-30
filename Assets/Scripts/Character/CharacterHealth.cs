@@ -8,7 +8,8 @@ using UnityEngine.UI;
 
 public class CharacterHealth : NetworkBehaviour, IAttack
 {
-    [Header("Component")]
+    [Header("Component")] 
+    private DamageSpawner _damageSpawner;
     public Slider healthBar;
     public TMP_Text healthText;
     
@@ -46,6 +47,7 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth.Value;
         healthText.text = currentHealth.Value + " / " + maxHealth; 
+        _damageSpawner = GetComponent<DamageSpawner>();
     }
     private void OnHealthChanged(float previousvalue, float newvalue)
     {
@@ -58,8 +60,6 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         
         if (newvalue <= 0)
         {
-            // gameObject.SetActive(false);
-            // NetworkObject.Destroy(gameObject);
             RequestDespawnServerRpc();
         } 
     }
@@ -72,9 +72,9 @@ public class CharacterHealth : NetworkBehaviour, IAttack
 
     public void TakeDamage(int damage)
     {
-        if(!IsOwner) return;
-        
+        if (!IsOwner) return;
+
         currentHealth.Value -= damage;
-        
-    }
+        _damageSpawner.SpawnDamageText(-damage, transform.position);
+}
 }

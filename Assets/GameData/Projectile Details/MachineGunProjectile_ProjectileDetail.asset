@@ -15,7 +15,7 @@ MonoBehaviour:
   projectileName: Machine Gun Projectile
   projectileSpeed: 35
   projectileLifeTime: 5
-  projectileDamage: 2
+  projectileDamage: 1
   redPrefabPoolKey: 6
   bluePrefabPoolKey: 6
   isOnEndAction: 0

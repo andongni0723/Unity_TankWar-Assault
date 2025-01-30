@@ -15,7 +15,7 @@ MonoBehaviour:
   projectileName: Buring Shell
   projectileSpeed: 20
   projectileLifeTime: 1
-  projectileDamage: 2
+  projectileDamage: 20
   redPrefabPoolKey: 4
   bluePrefabPoolKey: 5
   isOnEndAction: 1

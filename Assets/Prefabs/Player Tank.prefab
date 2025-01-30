@@ -1423,6 +1423,8 @@ GameObject:
   - component: {fileID: 6057306855708630855}
   - component: {fileID: 2313335004336489708}
   - component: {fileID: 6340445897916694420}
+  - component: {fileID: 996309395770492206}
+  - component: {fileID: 3180804139230053587}
   m_Layer: 8
   m_Name: Player Tank
   m_TagString: Player
@@ -1757,6 +1759,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &996309395770492206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4549565909243780063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18319f53d2b846838c1db510a488461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _effectList: []
+--- !u!114 &3180804139230053587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4549565909243780063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea84734e11724ef5a67cc33c42ee7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageTextPrefab: {fileID: 2463447232471844388, guid: 5513cf51d1be54f6183063698f38fef0, type: 3}
+  canvas: {fileID: 8909009696691664788}
 --- !u!1 &4691878073045373156
 GameObject:
   m_ObjectHideFlags: 0

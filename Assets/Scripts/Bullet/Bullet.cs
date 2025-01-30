@@ -61,6 +61,8 @@ public class Bullet : PoolableObject
     {
         if (_isReleased) return;
         _isReleased = true;
+        ExecuteOnEndEffect();
+        ExecuteOnEndSkill();
         SpawnHitVFX();
         ReturnToPool();
     }
@@ -77,8 +79,6 @@ public class Bullet : PoolableObject
         if (other.TryGetComponent<IAttack>(out var target))
         {
             target.TakeDamage(damage);
-            ExecuteOnEndEffect();
-            ExecuteOnEndSkill();
             BackToPoolWithEffect();
         }
     }
@@ -93,7 +93,7 @@ public class Bullet : PoolableObject
         foreach (var skill in projectileDetails.onEndSkills)
         {
             var skillObj = ObjectPoolManager.Instance.GetObject(skill.skillPrefabPoolKey);
-            skillObj.GetComponent<BurningArea>().Initialize(skill);
+            skillObj.GetComponent<SkillBase>().Initialize(skill);
             skillObj.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
     }
