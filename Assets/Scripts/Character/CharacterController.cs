@@ -168,6 +168,7 @@ public class CharacterController : NetworkBehaviour
 
     private void DragMouseBinding()
     {
+        if(!GameDataManager.Instance.canDragCamera) return;
         _inputSystem.Player.MouseDrag.started += _ => _characterMouseHandler.OnMouseClickStarted();
         _inputSystem.Player.MouseDrag.canceled += _ => _characterMouseHandler.OnMouseClickCanceled();
     }

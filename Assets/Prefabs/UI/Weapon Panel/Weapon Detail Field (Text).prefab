@@ -74,8 +74,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4288522240
-  m_fontColor: {r: 0, g: 0.6603774, b: 0.61396444, a: 1}
+    rgba: 4294309365
+  m_fontColor: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5972179133587013967, guid: 4b25391b4ab614453a985334648a01b2, type: 3}
       propertyPath: m_Name
-      value: Projectile Name (1) Variant
+      value: Weapon Detail Field (Text)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

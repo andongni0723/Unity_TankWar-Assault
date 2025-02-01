@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4053692225213976953, guid: cc92161d56ede4f85a272ea37416ba40, type: 3}
       propertyPath: m_Name
-      value: Blue Burning Area  Variant
+      value: Blue Burning Area
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

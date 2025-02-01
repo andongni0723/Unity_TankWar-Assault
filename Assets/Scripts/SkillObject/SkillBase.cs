@@ -58,7 +58,6 @@ public class SkillBase : PoolableObject
             skillTimer.time = action.time - _currentTime;
             skillTimer.Play();
             yield return new WaitUntil(() => !skillTimer.isPlay);
-            Debug.LogWarning("Next" + action.time);
             SkillAction(action.skillActionDetails);
             _currentTime += skillTimer.time;
         }

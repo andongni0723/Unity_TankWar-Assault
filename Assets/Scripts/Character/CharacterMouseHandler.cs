@@ -20,6 +20,7 @@ public class CharacterMouseHandler : MonoBehaviour
 
     private void Start()
     {
+        if (!GameDataManager.Instance.canDragCamera) enabled = false;
         dragAreas = GameUIManager.Instance.dragAreas;
     }
 

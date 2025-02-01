@@ -9,6 +9,7 @@ public class WeaponButton : MonoBehaviour
 {
     [Header("Component")] 
     public TMP_Text buttonText;
+    public TMP_Text sceneNameText;
 
     [Header("Settings")]
     public TankWeaponType weaponType;
@@ -22,5 +23,6 @@ public class WeaponButton : MonoBehaviour
             : GameDataManager.Instance.tankSubWeaponDetails.weaponID;
         var weaponDetails = GameDataManager.Instance.UseWeaponIDGetWeaponDetails(weaponID);
         buttonText.text = weaponDetails.weaponName;
+        sceneNameText.text = weaponDetails.weaponName;
     }
 }

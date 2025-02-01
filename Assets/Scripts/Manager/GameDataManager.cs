@@ -11,6 +11,7 @@ public enum SaveDataKey
     reverse_x,
     auto_follow_enemy,
     camera_drag_speed,
+    drag_camera,
 }
 
 public enum TankWeaponType
@@ -33,11 +34,9 @@ public class GameDataManager : Singleton<GameDataManager>
     [SerializeField] public bool isReverseX { get; private set; }
     [SerializeField] public bool isAutoFollowEnemy { get; private set; }
     [SerializeField] public float cameraDragSpeed { get; private set; }
+    [SerializeField] public bool canDragCamera { get; private set; }
     
     [Header("Tank Settings")]
-    // [SerializeField] public string tankMainWeaponID { get; private set; }
-    // [SerializeField] public string tankSubWeaponID { get; private set; }
-    
     [SerializeField] public WeaponDetailsSO tankMainWeaponDetails { get; private set; }
     [SerializeField] public WeaponDetailsSO tankSubWeaponDetails { get; private set; }
     
@@ -74,6 +73,10 @@ public class GameDataManager : Singleton<GameDataManager>
                 PlayerPrefs.SetFloat("camera_drag_speed", float.Parse(dataValue.ToString()));
                 cameraDragSpeed = float.Parse(dataValue.ToString());
                 break;
+            case SaveDataKey.drag_camera:
+                PlayerPrefs.SetInt("drag_camera", (bool)dataValue ? 1 : 0);
+                canDragCamera = (bool)dataValue;
+                break;
         }
         ExecuteDataAction();
     }
@@ -105,12 +108,14 @@ public class GameDataManager : Singleton<GameDataManager>
         isReverseX = PlayerPrefs.GetInt("reverse_x", 0) == 1;
         isAutoFollowEnemy = PlayerPrefs.GetInt("auto_follow_enemy", 0) == 1;
         cameraDragSpeed = PlayerPrefs.GetFloat("camera_drag_speed", 0.5f);
+        canDragCamera = PlayerPrefs.GetInt("drag_camera", 1) == 1;
     }
     
     private void RestoreTankData()
     {
         tankMainWeaponDetails = UseWeaponIDGetWeaponDetails(PlayerPrefs.GetString("tank_main_weapon_id", "WM001"));
         tankSubWeaponDetails = UseWeaponIDGetWeaponDetails(PlayerPrefs.GetString("tank_sub_weapon_id", "WS001"));
+        
     }
     #endregion
     
