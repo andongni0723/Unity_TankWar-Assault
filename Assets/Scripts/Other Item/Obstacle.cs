@@ -1,9 +1,14 @@
-public class Obstacle : PoolableObject, IAttack
+using UnityEngine;
+
+public class Obstacle : MonoBehaviour, IAttack
 {
-    public bool isDestroyWhenHit = false;
+    public int health = 1; 
+    public bool isDestructible = false;
     public void TakeDamage(int damage)
     {
-        if (isDestroyWhenHit)
-            ReturnToPool();
+        if(isDestructible) return;
+        health -= damage;
+        if (health <= 0)
+            gameObject.SetActive(false);
     }
 }

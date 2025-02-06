@@ -1,10 +1,7 @@
 <linker>
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="An_ConnectionManager" preserve="all" />
-    <type fullname="Bullet" preserve="all" />
-    <type fullname="BurningArea" preserve="all" />
     <type fullname="CharacterCameraAutoFollowEnemy" preserve="all" />
-    <type fullname="CharacterCameraController" preserve="all" />
     <type fullname="CharacterCanvas" preserve="all" />
     <type fullname="CharacterController" preserve="all" />
     <type fullname="CharacterGamePlayUIView" preserve="all" />
@@ -21,7 +18,6 @@
     <type fullname="EffectDetailsSO" preserve="all" />
     <type fullname="GameOverPanel" preserve="all" />
     <type fullname="GameUIManager" preserve="all" />
-    <type fullname="HitVFX" preserve="all" />
     <type fullname="MenuButton" preserve="all" />
     <type fullname="Obstacle" preserve="all" />
     <type fullname="PanelManager" preserve="all" />
@@ -30,11 +26,11 @@
     <type fullname="RotateGameObject" preserve="all" />
     <type fullname="SettingFieldUI" preserve="all" />
     <type fullname="SkillDetailsSO" preserve="all" />
+    <type fullname="SpawnManager" preserve="all" />
     <type fullname="StartCountdownCanvas" preserve="all" />
     <type fullname="TankWeaponSelectGroup" preserve="all" />
     <type fullname="TankWeaponSelectToggle" preserve="all" />
     <type fullname="TeamManager" preserve="all" />
-    <type fullname="Test" preserve="all" />
     <type fullname="Timer" preserve="all" />
     <type fullname="TrackSlider" preserve="all" />
     <type fullname="UIAnimation" preserve="all" />
@@ -211,7 +207,6 @@
     <type fullname="UnityEngine.Sprite" preserve="all" />
     <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
     <type fullname="UnityEngine.Texture2D" preserve="all" />
-    <type fullname="UnityEngine.TrailRenderer" preserve="all" />
     <type fullname="UnityEngine.Transform" preserve="all" />
     <type fullname="UnityEngine.Events.ArgumentCache" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.Events.PersistentCallGroup" preserve="nothing" serialized="true" />
@@ -220,17 +215,12 @@
     <type fullname="UnityEngine.RectOffset" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.Events.UnityEvent`1" preserve="nothing" serialized="true" />
   </assembly>
-  <assembly fullname="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-    <type fullname="UnityEngine.ParticleSystem" preserve="all" />
-    <type fullname="UnityEngine.ParticleSystemRenderer" preserve="all" />
-  </assembly>
   <assembly fullname="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.BoxCollider" preserve="all" />
     <type fullname="UnityEngine.CapsuleCollider" preserve="all" />
     <type fullname="UnityEngine.MeshCollider" preserve="all" />
     <type fullname="UnityEngine.PhysicsMaterial" preserve="all" />
     <type fullname="UnityEngine.Rigidbody" preserve="all" />
-    <type fullname="UnityEngine.SphereCollider" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.TerrainPhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.TerrainCollider" preserve="all" />

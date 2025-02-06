@@ -1,6 +1,7 @@
 using System;
 using Unity.Cinemachine;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -15,8 +16,6 @@ public class CharacterController : NetworkBehaviour
     public GameObject tankBody;
     public GameObject tank;
     public GameObject groundCanvas;
-    // public Timer mobileShootTimer;
-    
     
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
@@ -24,8 +23,6 @@ public class CharacterController : NetworkBehaviour
     private Slider _leftTrackSlider;
     private Slider _rightTrackSlider;
     private VariableJoystick _headJoystick;
-    // private Toggle _mainWeaponToggle;
-    // private Toggle _subWeaponToggle;
     
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
@@ -53,7 +50,12 @@ public class CharacterController : NetworkBehaviour
 
     public override void OnNetworkSpawn() => NetworkSpawnInitial();
     private void Awake() => InitialComponent();
-    
+
+    private void OnEnable()
+    {
+        EventHandler.OnAllPlayerSpawned += InitialSpawnPoint;
+    }
+
     public override void OnDestroy()
     {
         _inputSystem.Disable();
@@ -105,12 +107,12 @@ public class CharacterController : NetworkBehaviour
         {
             Debug.LogWarning($"isHost: {IsHost}, isServer: {IsServer}, isClient: {IsClient}");
             team.Value = IsHost ? Team.Blue : Team.Red;
-            name = team.Value == Team.Blue ? "Blue Player" : "Red Player";
             EventHandler.CallOnOwnerSpawned(this);
             InitialSpawnPoint();
             SetTeamLayerServerRpc(team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Player") : LayerMask.NameToLayer("Red Player")); 
         }
         
+        name = team.Value == Team.Blue ? "Blue Player" : "Red Player";
         virtualCamera.gameObject.SetActive(IsOwner);
         groundCanvas.SetActive(IsOwner);
         _characterSetColor.SetColorBasedOnOwner();
@@ -175,11 +177,10 @@ public class CharacterController : NetworkBehaviour
 
     private void InitialSpawnPoint()
     {
-        if (IsServer)
-        {
-            transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
-            tank.transform.rotation = GameObject.FindWithTag("SpawnPoint").transform.rotation;
-        }
+        Debug.Log("Initial Spawn Point");
+        var spawnPoint = SpawnManager.Instance.GetStartSpawnPoint(team.Value);
+        transform.position = spawnPoint.transform.position;
+        tank.transform.rotation = spawnPoint.transform.rotation;
     }
     
     [ServerRpc]
