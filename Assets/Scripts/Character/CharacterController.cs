@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEditor;
@@ -53,7 +54,7 @@ public class CharacterController : NetworkBehaviour
 
     private void OnEnable()
     {
-        EventHandler.OnAllPlayerSpawned += InitialSpawnPoint;
+        // EventHandler.OnAllPlayerSpawned += InitialSpawnPoint;
     }
 
     public override void OnDestroy()
@@ -88,7 +89,7 @@ public class CharacterController : NetworkBehaviour
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
         _mainCamera = Camera.main;
-        cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
+        // cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
 
 #if UNITY_EDITOR    
         InitialInputSystemBinding();
@@ -177,7 +178,14 @@ public class CharacterController : NetworkBehaviour
 
     private void InitialSpawnPoint()
     {
-        Debug.Log("Initial Spawn Point");
+        if(!IsOwner) return;
+        StartCoroutine(WaitInitialSpawnPoint());
+    }
+    
+    private IEnumerator WaitInitialSpawnPoint()
+    {
+        yield return null;
+        // var spawnPoint = team.Value == Team.Blue ? GameObject.FindWithTag("SpawnPointBlue") : GameObject.FindWithTag("SpawnPointRed");
         var spawnPoint = SpawnManager.Instance.GetStartSpawnPoint(team.Value);
         transform.position = spawnPoint.transform.position;
         tank.transform.rotation = spawnPoint.transform.rotation;

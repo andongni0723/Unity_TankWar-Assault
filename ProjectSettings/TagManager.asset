@@ -16,6 +16,8 @@ TagManager:
   - RightTrackSlider
   - FireButton
   - DragArea
+  - SpawnPointBlue
+  - SpawnPointRed
   layers:
   - Default
   - TransparentFX
