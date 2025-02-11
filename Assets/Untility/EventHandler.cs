@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public static class EventHandler
 {
@@ -18,6 +19,7 @@ public static class EventHandler
     public static Action OnAllPlayerSpawned;
     public static void CallOnAllPlayerSpawned()
     {
+        Debug.Log("CallOnAllPlayerSpawned");
         OnAllPlayerSpawned?.Invoke();
     }
     

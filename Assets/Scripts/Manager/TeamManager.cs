@@ -10,7 +10,6 @@ public class TeamManager : Singleton<TeamManager>
     //[Header("Component")]
     //[Header("Settings")]
     //[Header("Debug")]
-    public Team selfTeam;
     
     private CharacterController blueTeamCharacter;
     private CharacterController redTeamCharacter;

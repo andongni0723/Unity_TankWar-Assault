@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Cinemachine;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -51,11 +52,6 @@ public class CharacterController : NetworkBehaviour
 
     public override void OnNetworkSpawn() => NetworkSpawnInitial();
     private void Awake() => InitialComponent();
-
-    private void OnEnable()
-    {
-        // EventHandler.OnAllPlayerSpawned += InitialSpawnPoint;
-    }
 
     public override void OnDestroy()
     {
@@ -121,8 +117,8 @@ public class CharacterController : NetworkBehaviour
         EventHandler.CallOnPlayerSpawned(this);
         
         // If you are the second player
-        if(IsHost && !IsOwner || !IsHost && IsOwner)
-            EventHandler.CallOnAllPlayerSpawned(); 
+        if(IsHost != IsOwner)
+            EventHandler.CallOnAllPlayerSpawned();
     }
 
     private void InitialInputSystemBinding()
@@ -228,7 +224,6 @@ public class CharacterController : NetworkBehaviour
     
     private void DesktopInputControl()
     {
-        // DesktopMovement(_moveDirection);
         DesktopRotate();
     } 
 
@@ -279,22 +274,6 @@ public class CharacterController : NetworkBehaviour
 
     }
     
-    // private void MobileCallShoot()
-    // {
-    //     // if(mobileShootTimer.isPlay) return;
-    //     // _characterShoot.ExecuteShoot();
-    //     // mobileShootTimer.Play();
-    // }
-    
-    // private void MobileCallStartShoot()
-    // {
-    //     _characterShoot.StartShoot();
-    // }
-    //
-    // private void MobileCallEndShoot()
-    // {
-    //     _characterShoot.StopShoot();
-    // }
     #endregion
     
     #region Desktop Control

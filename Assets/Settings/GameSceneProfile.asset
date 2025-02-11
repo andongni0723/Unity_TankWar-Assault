@@ -93,7 +93,7 @@ MonoBehaviour:
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 54.47
+    m_Value: 80
   gaussianEnd:
     m_OverrideState: 0
     m_Value: 109.13

@@ -112,3 +112,26 @@ public class Targeted
 {
     public bool isTargetEnemy; // true = enemy, false = self
 }
+
+[System.Serializable]
+public class Area
+{
+    // The sum of the two variables is 100
+    public float blueTeamOccupiedPercentage { private set; get; }
+    public float redTeamOccupiedPercentage { private set; get; }
+    
+    /// <summary>
+    /// Sets the occupied percentage for the specified team and adjusts the other team's percentage accordingly.
+    /// The total occupation will always sum to 100%.
+    /// </summary>
+    /// <param name="team"></param>
+    /// <param name="percentage"></param>
+    public void SetOccupiedPercentage(Team team, float percentage)
+    {
+        if(percentage is < 0 or > 100) Debug.LogError("Invalid percentage value ({percentage}). The percentage must be between 0 and 100.");
+        percentage = Mathf.Clamp(percentage, 0, 100);
+        
+        blueTeamOccupiedPercentage = team == Team.Blue ? percentage : 100 - percentage;
+        redTeamOccupiedPercentage = team == Team.Red ? percentage : 100 - percentage;
+    }
+}
