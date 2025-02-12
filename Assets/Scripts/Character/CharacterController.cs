@@ -241,9 +241,11 @@ public class CharacterController : NetworkBehaviour
 
         _rb.linearVelocity = -tankBody.transform.forward  * (forwardMovement * moveSpeed);
         tankBody.transform.Rotate(0, -rotation * turnSpeed * Time.fixedDeltaTime, 0);
+
+        Debug.Log("LLL " + -tankBody.transform.forward + " " + forwardMovement + " " + moveSpeed);
     }
-    
-    public void UpdateTankHeadRotation(float joystickX, float joystickY)
+
+    private void UpdateTankHeadRotation(float joystickX, float joystickY)
     {
         // 1. 當搖桿靜止時，更新 _previousAngle 為當前旋轉角度
         if (joystickX == 0 && joystickY == 0)
