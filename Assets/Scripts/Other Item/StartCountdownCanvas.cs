@@ -27,12 +27,15 @@ public class StartCountdownCanvas : MonoBehaviour
         EventHandler.OnOwnerSpawned += UpdateRotation;
         EventHandler.OnAllPlayerSpawned += StartCountdown;
         countdownTimer.OnTimerEnd += FadeOut;
+        countdownTimer.OnTimerEnd += EventHandler.CallOnGameStart;
     }
 
     private void OnDisable()
     {
         EventHandler.OnOwnerSpawned -= UpdateRotation;
         EventHandler.OnAllPlayerSpawned -= StartCountdown;
+        countdownTimer.OnTimerEnd -= FadeOut;
+        countdownTimer.OnTimerEnd -= EventHandler.CallOnGameStart; 
     }
 
     private void Update() => UpdateUI();

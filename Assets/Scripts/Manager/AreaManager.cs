@@ -32,28 +32,20 @@ public class AreaManager : Singleton<AreaManager>
     {
         EventHandler.OnAllPlayerSpawned += OnAllPlayerSpawned;
     }
+    
+    private void OnDisable()
+    {
+        EventHandler.OnAllPlayerSpawned -= OnAllPlayerSpawned;
+    }
 
+    #region Initialization
     private void OnAllPlayerSpawned()
     {
-        // if(!NetworkManager.Singleton.IsServer) return;
-        // GenerateAreaDataObjectSeverRpc();
         if (!NetworkManager.Singleton.IsServer) return;
         GenerateAreaDataObject();
         InitializeAreaOccupiedPercentage();
     }
-    //
-    // [ServerRpc]
-    // private void GenerateAreaDataObjectSeverRpc()
-    // {
-    //     GenerateAreaDataObjectClientRpc();
-    // }
-    //
-    // [ClientRpc]
-    // private void GenerateAreaDataObjectClientRpc()
-    // {
-    //     if(!NetworkManager.Singleton.IsServer) GenerateAreaDataObject();
-    // }
-
+    
     private void GenerateAreaDataObject()
     {
         var i = 0;
@@ -61,7 +53,6 @@ public class AreaManager : Singleton<AreaManager>
         foreach (var areaDetail in areaDetailsList)
         {
             // Area Data
-            // var area = NetworkObject.InstantiateAndSpawn(areaDataPrefab, NetworkManager.Singleton).GetComponent<AreaData>();
             var area = Instantiate(areaDataPrefab, transform).GetComponent<AreaData>();
             area.GetComponent<NetworkObject>().Spawn();
             area.Initialize(i);
@@ -69,8 +60,6 @@ public class AreaManager : Singleton<AreaManager>
             // Area Manager
             _areaDataList.Add(area);
             
-            // Area Controller
-            // areaControllerList[i].Initialize(area, !areaNameList[i].Contains("S")); // Spawn Area can't occupied
             i++;
         }
     }
@@ -81,11 +70,24 @@ public class AreaManager : Singleton<AreaManager>
         _areaDataList[1].CallUpdateOccupiedPercentage(Team.Blue, 50); // AB
         _areaDataList[3].CallUpdateOccupiedPercentage(Team.Red, 50); // AR
         _areaDataList[4].CallUpdateOccupiedPercentage(Team.Red, 100); // SR 
-        // var i = 0;
-        // foreach (var areaDetails in areaDetailsList)
-        // {
-        //     areaDetails.areaUI.UpdateUI(_areaDataList[i]);
-        //     i++;
-        // }
+    }    
+
+    #endregion
+
+    public Team GetWinnerTeam()
+    {
+        var blueOccupied = 0f;
+        var redOccupied = 0f;
+        
+        foreach (var areaObject in GameObject.FindGameObjectsWithTag("AreaData")) // Client don't have _areaDataList
+        {
+            areaObject.TryGetComponent(out AreaData areaData);
+            blueOccupied += areaData.blueTeamOccupiedPercentage.Value;
+            redOccupied += areaData.redTeamOccupiedPercentage.Value; 
+        }
+
+        Debug.Log(blueOccupied + " " + redOccupied);
+        return blueOccupied > redOccupied ? Team.Blue : Team.Red;
     }
+
 }

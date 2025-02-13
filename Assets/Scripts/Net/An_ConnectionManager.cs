@@ -79,6 +79,9 @@ public class An_ConnectionManager : Singleton<An_ConnectionManager>
     public async void LeaveSession()
     {
         if (_session != null)
+        {
+            EventHandler.CallOnLeaveSession();
             await _session.LeaveAsync();
+        }
     }
 }

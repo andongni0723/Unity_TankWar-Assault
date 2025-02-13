@@ -74,10 +74,14 @@ public class SkillBase : PoolableObject
                 // Find Character in Skill Range to Attack
                 foreach (var character in charactersList)
                 {
+                    Debug.Log(character.gameObject.name);
                     if(character == null) continue;
-                    var distance = Vector3.Distance(character.transform.position, transform.position);
+                    // var distance = Vector3.Distance(character.transform.position, transform.position);
+                    var distance = Vector2.Distance(new Vector2(character.transform.position.x, character.transform.position.z), 
+                                                        new Vector2(transform.position.x, transform.position.z));
                     // Check in Skill Range
-                    if(distance > currentSkillAction.aoe.radius) return;
+                    Debug.Log(distance);
+                    if(distance > currentSkillAction.aoe.radius) continue;
                     character.gameObject.GetComponent<IAttack>().TakeDamage(currentSkillAction.damage);
                     foreach (var effect in currentSkillAction.onApplyEffects)
                         character.gameObject.GetComponent<CharacterStatus>().AddStatusEffect(_skillDetails, effect, 1);

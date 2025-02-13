@@ -15,6 +15,8 @@ public class AreaController : MonoBehaviour
     
     //[Header("Settings")]
     //[Header("Debug")]
+    private int _currentPlayerInArea;
+    private bool _canOccupy;
 
     private void Awake()
     {
@@ -22,17 +24,46 @@ public class AreaController : MonoBehaviour
         _boxCollider.enabled = false;
     }
     
+    private void OnEnable()
+    {
+        EventHandler.OnGameStart += OnGameStart;
+    }
+    
+    private void OnDisable()
+    {
+        EventHandler.OnGameStart -= OnGameStart;
+    }
+    
     public void Initialize(AreaData areaData, bool canOccupy)
     {
         _areaData = areaData;
-        _boxCollider.enabled = canOccupy;
+        _canOccupy = canOccupy;
     }
+
+    private void OnGameStart()
+    {
+        _boxCollider.enabled = _canOccupy;
+    }
+    
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if(other.TryGetComponent(typeof(CharacterController), out _))
+    //         _currentPlayerInArea++;
+    // }
+    //
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if(other.TryGetComponent(typeof(CharacterController), out _))
+    //         _currentPlayerInArea--;
+    // }
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.name);
-        if (!other.TryGetComponent(out CharacterController characterController)) return;
-        Debug.Log("Player stay");
+        // Two or more players in the area or not player
+        // if(_currentPlayerInArea > 1 && _areaData.blueTeamOccupiedPercentage.Value + _areaData.redTeamOccupiedPercentage.Value >= 99) return;
+        if(_areaData == null) return;
+        if(!other.TryGetComponent(out CharacterController characterController)) return;
+        
         switch (characterController.team.Value)
         {
             case Team.Blue:

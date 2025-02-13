@@ -53,6 +53,18 @@ public class CharacterController : NetworkBehaviour
     public override void OnNetworkSpawn() => NetworkSpawnInitial();
     private void Awake() => InitialComponent();
 
+    private void OnEnable()
+    {
+        EventHandler.OnPlayerDied += OnPlayerDied;
+        EventHandler.OnPlayerRespawn += OnPlayerRespawn;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.OnPlayerDied -= OnPlayerDied;
+        EventHandler.OnPlayerRespawn -= OnPlayerRespawn;
+    }
+
     public override void OnDestroy()
     {
         _inputSystem.Disable();
@@ -70,6 +82,22 @@ public class CharacterController : NetworkBehaviour
         // Player Input Control
         HandlePlatformInputControl();
     }
+
+    #region Event
+
+    private void OnPlayerDied(bool isOwner)
+    {
+        if (isOwner)
+            _inputSystem.Disable();
+    }
+
+    private void OnPlayerRespawn(bool isOwner)
+    {
+        if (isOwner)
+            _inputSystem.Enable();
+    }
+
+    #endregion
 
     #region Initialize
     
@@ -172,7 +200,7 @@ public class CharacterController : NetworkBehaviour
         _inputSystem.Player.MouseDrag.canceled += _ => _characterMouseHandler.OnMouseClickCanceled();
     }
 
-    private void InitialSpawnPoint()
+    public void InitialSpawnPoint()
     {
         if(!IsOwner) return;
         StartCoroutine(WaitInitialSpawnPoint());
@@ -241,8 +269,6 @@ public class CharacterController : NetworkBehaviour
 
         _rb.linearVelocity = -tankBody.transform.forward  * (forwardMovement * moveSpeed);
         tankBody.transform.Rotate(0, -rotation * turnSpeed * Time.fixedDeltaTime, 0);
-
-        Debug.Log("LLL " + -tankBody.transform.forward + " " + forwardMovement + " " + moveSpeed);
     }
 
     private void UpdateTankHeadRotation(float joystickX, float joystickY)

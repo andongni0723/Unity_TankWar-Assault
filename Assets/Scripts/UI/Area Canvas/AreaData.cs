@@ -27,6 +27,7 @@ public class AreaData : NetworkBehaviour
         _areaUI = areaDetails.areaUI;
         areaDetails.areaController.Initialize(this, !areaDetails.areaName.Contains("S"));
         blueTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => _areaUI.UpdateUI(this);
+        redTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => _areaUI.UpdateUI(this);
         _areaUI.UpdateUI(this); 
     }
 

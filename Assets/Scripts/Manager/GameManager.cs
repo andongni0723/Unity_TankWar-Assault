@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.Netcode;
 
 public enum Team
 {
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject errorPanel;
     public TMP_Text errorText;
+
     
     //[Header("Settings")]
     // [Header("Debug")]
@@ -27,12 +30,14 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         Application.logMessageReceived += OpenPanelShowError;
+        
     }
-    
+
     private void OnDisable()
     {
         Application.logMessageReceived -= OpenPanelShowError;
     }
+
 
     #region Initialize
     private void UpdateGameVersionText() => versionText.text = $"v{Application.version}";
@@ -53,4 +58,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         errorPanel.SetActive(false);
     }
+    
+    
 }

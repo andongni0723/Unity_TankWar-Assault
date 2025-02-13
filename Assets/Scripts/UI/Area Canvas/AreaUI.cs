@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,6 +15,19 @@ public class AreaUI : MonoBehaviour
     
     //[Header("Settings")]
     //[Header("Debug")]
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        blueTeamOccupiedImage.fillAmount = 0;
+        redTeamOccupiedImage.fillAmount = 0;
+        selfTeamOccupiedText.text = "";
+        textShadow.text = "";
+    }
 
     public void UpdateUI(AreaData area)
     {

@@ -18,6 +18,7 @@ TagManager:
   - DragArea
   - SpawnPointBlue
   - SpawnPointRed
+  - AreaData
   layers:
   - Default
   - TransparentFX

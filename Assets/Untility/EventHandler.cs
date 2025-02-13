@@ -14,15 +14,24 @@ public static class EventHandler
     public static void CallOnPlayerSpawned(CharacterController characterController)
     {
         OnPlayerSpawned?.Invoke(characterController);
+        _callTime = 0;
     }
     
     public static Action OnAllPlayerSpawned;
     public static void CallOnAllPlayerSpawned()
     {
-        Debug.Log("CallOnAllPlayerSpawned");
         OnAllPlayerSpawned?.Invoke();
     }
-    
+
+    public static Action OnGameStart;
+    static int _callTime = 0;
+    public static void CallOnGameStart()
+    {
+        if(_callTime > 0) return;
+        Debug.Log("Start");
+        OnGameStart?.Invoke();
+        _callTime++;
+    }
     
     public static Action<CharacterController> OnOwnerSpawned;
     public static void CallOnOwnerSpawned(CharacterController characterController)
@@ -34,5 +43,23 @@ public static class EventHandler
     public static void CallOnPlayerDied(bool isOwner)
     {
         OnPlayerDied?.Invoke(isOwner);
+    }
+    
+    public static Action<bool> OnPlayerRespawn;
+    public static void CallOnPlayerRespawn(bool isOwner)
+    {
+        OnPlayerRespawn?.Invoke(isOwner);
+    } 
+    
+    public static Action<bool> OnGameEnd;
+    public static void CallOnGameEnd(bool isHost)
+    {
+        OnGameEnd?.Invoke(isHost);
+    }
+
+    public static Action OnLeaveSession;
+    public static void CallOnLeaveSession()
+    {
+        OnLeaveSession?.Invoke();
     }
 }

@@ -12,18 +12,18 @@ public class GameOverPanel : MonoBehaviour
     //[Header("Settings")]
     //[Header("Debug")]
 
-    private void OnEnable()
-    {
-        EventHandler.OnPlayerDied += OnPlayerDied;
-    }
-    private void OnDisable()
-    {
-        EventHandler.OnPlayerDied -= OnPlayerDied;
-    }
-
-    private void OnPlayerDied(bool isSelf)
-    {
-        if (isSelf) losePanel.SetActive(true);
-        else winPanel.SetActive(true);
-    }
+    // private void OnEnable()
+    // {
+    //     EventHandler.OnGameEnd+= OnGameEnd;
+    // }
+    // private void OnDisable()
+    // {
+    //     EventHandler.OnGameEnd -= OnGameEnd;
+    // }
+    //
+    // private void OnGameEnd(bool isSelf)
+    // {
+    //     if (isSelf) losePanel.SetActive(true);
+    //     else winPanel.SetActive(true);
+    // }
 }

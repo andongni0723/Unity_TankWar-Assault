@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
 {
     //[Header("Component")]
     [Header("Settings")]
-    [Range(0.1f, 100)]public float time = 1;
+    [Range(0.1f, 1000)]public float time = 1;
     public bool isLoop = false;
     public bool onAwakePlay = false;
     
