@@ -80,7 +80,6 @@ public class SkillBase : PoolableObject
                     var distance = Vector2.Distance(new Vector2(character.transform.position.x, character.transform.position.z), 
                                                         new Vector2(transform.position.x, transform.position.z));
                     // Check in Skill Range
-                    Debug.Log(distance);
                     if(distance > currentSkillAction.aoe.radius) continue;
                     character.gameObject.GetComponent<IAttack>().TakeDamage(currentSkillAction.damage);
                     foreach (var effect in currentSkillAction.onApplyEffects)

@@ -39,10 +39,10 @@ public static class EventHandler
         OnOwnerSpawned?.Invoke(characterController);
     }
     
-    public static Action<bool> OnPlayerDied;
-    public static void CallOnPlayerDied(bool isOwner)
+    public static Action<bool, Timer> OnPlayerDied;
+    public static void CallOnPlayerDied(bool isOwner, Timer respawnTimer)
     {
-        OnPlayerDied?.Invoke(isOwner);
+        OnPlayerDied?.Invoke(isOwner, respawnTimer);
     }
     
     public static Action<bool> OnPlayerRespawn;
@@ -50,6 +50,12 @@ public static class EventHandler
     {
         OnPlayerRespawn?.Invoke(isOwner);
     } 
+    
+    public static Action<Team, AreaName> OnAreaOccupied;
+    public static void CallOnAreaOccupied(Team team, AreaName areaName)
+    {
+        OnAreaOccupied?.Invoke(team, areaName);
+    }
     
     public static Action<bool> OnGameEnd;
     public static void CallOnGameEnd(bool isHost)

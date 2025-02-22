@@ -30,7 +30,7 @@ public class SpawnManager : Singleton<SpawnManager>
         EventHandler.OnPlayerRespawn -= OnPlayerRespawn;
     }
 
-    private void OnPlayerDied(bool isOwner)
+    private void OnPlayerDied(bool isOwner, Timer respawnTimer)
     {
         if (isOwner)
             skyCamera.gameObject.SetActive(true);

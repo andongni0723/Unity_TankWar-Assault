@@ -21,7 +21,7 @@ public class GameUIManager : Singleton<GameUIManager>
 
     [Space(15)] 
     public CanvasGroup PlayerDiedPanelCanvasGroup;
-    public TMP_Text RespawnTimerText;
+    public RespawnTimer RespawnTimerObject;
     
     [Space(15)]
     public WeaponGamePlayUI mainWeaponUI;
@@ -53,13 +53,14 @@ public class GameUIManager : Singleton<GameUIManager>
         EventHandler.OnPlayerRespawn -= OnPlayerRespawn;
     }
     
-    private void OnPlayerDied(bool isOwner)
+    private void OnPlayerDied(bool isOwner, Timer respawnTimer)
     {
         if(!isOwner) return;
         gamePlayUI.SetActive(false);
         PlayerDiedPanelCanvasGroup.alpha = 0;
         PlayerDiedPanelCanvasGroup.gameObject.SetActive(true);
         PlayerDiedPanelCanvasGroup.DOFade(1, 0.3f);
+        RespawnTimerObject.CallPlayRespawnAnimation(respawnTimer);
     }
     
     private void OnPlayerRespawn(bool isOwner)

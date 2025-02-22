@@ -85,7 +85,7 @@ public class CharacterController : NetworkBehaviour
 
     #region Event
 
-    private void OnPlayerDied(bool isOwner)
+    private void OnPlayerDied(bool isOwner, Timer respawnTimer)
     {
         if (isOwner)
             _inputSystem.Disable();

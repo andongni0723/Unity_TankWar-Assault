@@ -44,15 +44,6 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         EventHandler.OnGameEnd -= OnGameEnd;
     }
 
-    private void Update()
-    {
-        if (!IsOwner) return;
-
-        if (respawnTimer.isPlay)
-            GameUIManager.Instance.RespawnTimerText.text = ((int)respawnTimer.time - (int)respawnTimer.currentTime).ToString("0");
-    }
-
-
     private void InitialData()
     {
         currentHealth.Value = maxHealth;
@@ -83,7 +74,7 @@ public class CharacterHealth : NetworkBehaviour, IAttack
 
     private void PlayerDied()
     {
-        EventHandler.CallOnPlayerDied(IsOwner);
+        EventHandler.CallOnPlayerDied(IsOwner, respawnTimer);
         _cc.virtualCamera.gameObject.SetActive(false);
         transform.position = Vector3.down * 100;
     }

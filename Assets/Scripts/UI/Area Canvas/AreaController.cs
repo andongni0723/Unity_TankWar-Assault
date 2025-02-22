@@ -68,11 +68,13 @@ public class AreaController : MonoBehaviour
         {
             case Team.Blue:
                 if (blueTeamOccupiedCooldownTimer.isPlay) return;
+                if(_areaData.blueTeamOccupiedPercentage.Value >= 100) return;
                 _areaData.CallUpdateOccupiedPercentage(Team.Blue, 10);
                 blueTeamOccupiedCooldownTimer.Play();
                 break;
             case Team.Red:
                 if (redTeamOccupiedCooldownTimer.isPlay) return;
+                if(_areaData.redTeamOccupiedPercentage.Value >= 100) return;
                 _areaData.CallUpdateOccupiedPercentage(Team.Red, 10);
                 redTeamOccupiedCooldownTimer.Play();
                 break;

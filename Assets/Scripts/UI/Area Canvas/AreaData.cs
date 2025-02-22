@@ -7,12 +7,13 @@ using UnityEngine;
 public class AreaData : NetworkBehaviour
 {
     [Header("Component")]
-    private AreaUI _areaUI;
+    private List<AreaUI> _areaUIList;
     
     [Header("Settings")] 
+    public NetworkVariable<AreaName> areaName = new(writePerm: NetworkVariableWritePermission.Server);
     public NetworkVariable<int> areaID = new(-1, writePerm: NetworkVariableWritePermission.Server);
-    public NetworkVariable<float> blueTeamOccupiedPercentage = new(0, writePerm: NetworkVariableWritePermission.Server);
-    public NetworkVariable<float> redTeamOccupiedPercentage = new(0, writePerm: NetworkVariableWritePermission.Server);
+    public NetworkVariable<float> blueTeamOccupiedPercentage = new(writePerm: NetworkVariableWritePermission.Server);
+    public NetworkVariable<float> redTeamOccupiedPercentage = new(writePerm: NetworkVariableWritePermission.Server);
     
     //[Header("Debug")]
 
@@ -23,18 +24,28 @@ public class AreaData : NetworkBehaviour
         yield return new WaitUntil(() => areaID.Value != -1); // Wait until the areaID is set
         
         var areaDetails = AreaManager.Instance.areaDetailsList[areaID.Value];
-        gameObject.name = areaDetails.areaName;
-        _areaUI = areaDetails.areaUI;
-        areaDetails.areaController.Initialize(this, !areaDetails.areaName.Contains("S"));
-        blueTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => _areaUI.UpdateUI(this);
-        redTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => _areaUI.UpdateUI(this);
-        _areaUI.UpdateUI(this); 
+        gameObject.name = areaDetails.areaName.ToString();
+        _areaUIList = areaDetails.AreaUIList;
+        areaDetails.areaController.Initialize(this, !areaDetails.areaName.ToString().Contains("S"));
+        blueTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => CallUpdateAreaUI();
+        redTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => CallUpdateAreaUI();
+        CallUpdateAreaUI();
     }
 
     public void Initialize(int id)
     {
         if (!IsServer) return;
+        areaName.Value = AreaManager.Instance.areaDetailsList[id].areaName;
         areaID.Value = id;
+    }
+
+    private void CallUpdateAreaUI()
+    {
+        // _areaUI.UpdateUI(this);
+        foreach (var areaUI in _areaUIList)
+        {
+            areaUI.UpdateUI(this);
+        }
     }
 
     /// <summary>
@@ -45,6 +56,8 @@ public class AreaData : NetworkBehaviour
     /// <param name="percentage"></param>
     public void CallUpdateOccupiedPercentage(Team team, float percentage)
     {
+        EventHandler.CallOnAreaOccupied(team, areaName.Value);
+        
         if(IsServer) 
             UpdateOccupiedPercentageAction(team, percentage);
         else 
@@ -59,14 +72,9 @@ public class AreaData : NetworkBehaviour
 
     private void UpdateOccupiedPercentageAction(Team team, float percentage)
     {
-        // if(percentage is < 0 or > 100) Debug.LogError("Invalid percentage value ({percentage}). The percentage must be between 0 and 100.");
-        // blueTeamOccupiedPercentage.Value = team == Team.Blue ?
-        //     percentage : Mathf.Clamp(blueTeamOccupiedPercentage.Value, 0, 100 - percentage);
-        // redTeamOccupiedPercentage.Value = team == Team.Red ? 
-        //     percentage : Mathf.Clamp(redTeamOccupiedPercentage.Value, 0, 100 - percentage);
         
         percentage = Mathf.Clamp(percentage, 0, 100);
-
+        
         if (team == Team.Blue)
         {
             blueTeamOccupiedPercentage.Value = Mathf.Clamp(blueTeamOccupiedPercentage.Value + percentage, 0, 100);

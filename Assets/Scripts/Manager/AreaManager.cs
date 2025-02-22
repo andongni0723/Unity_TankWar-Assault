@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class AreaDetails
 {
-    public string areaName;
+    public AreaName areaName;
     public AreaController areaController;
-    public AreaUI areaUI;
+    public List<AreaUI> AreaUIList = new();
 }
 
 public class AreaManager : Singleton<AreaManager>
@@ -20,12 +21,7 @@ public class AreaManager : Singleton<AreaManager>
     
     [Header("Settings")]
     public List<AreaDetails> areaDetailsList = new();
-    // public List<string> areaNameList = new();
-    // public List<AreaController> areaControllerList = new();
-    // public List<AreaUI> areaUIList = new();
-    
     private List<AreaData> _areaDataList = new();
-    
     //[Header("Debug")]
 
     private void OnEnable()
@@ -48,19 +44,16 @@ public class AreaManager : Singleton<AreaManager>
     
     private void GenerateAreaDataObject()
     {
-        var i = 0;
-        
-        foreach (var areaDetail in areaDetailsList)
+        for (var i = 0; i < areaDetailsList.Count; i++)
         {
+            var areaDetail = areaDetailsList[i];
             // Area Data
             var area = Instantiate(areaDataPrefab, transform).GetComponent<AreaData>();
             area.GetComponent<NetworkObject>().Spawn();
             area.Initialize(i);
-            
+
             // Area Manager
             _areaDataList.Add(area);
-            
-            i++;
         }
     }
     
