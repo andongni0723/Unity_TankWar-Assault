@@ -269,35 +269,44 @@ public class CharacterController : NetworkBehaviour
 
         _rb.linearVelocity = -tankBody.transform.forward  * (forwardMovement * moveSpeed);
         tankBody.transform.Rotate(0, -rotation * turnSpeed * Time.fixedDeltaTime, 0);
+        tankHead.transform.Rotate(0, 0, -rotation * turnSpeed * Time.fixedDeltaTime);
     }
 
     private void UpdateTankHeadRotation(float joystickX, float joystickY)
     {
-        // 1. 當搖桿靜止時，更新 _previousAngle 為當前旋轉角度
-        if (joystickX == 0 && joystickY == 0)
-        {
-            _currentRotation = tankHead.transform.rotation.eulerAngles.y;
-            return;
-        }
+        // // 1. 當搖桿靜止時，更新 _previousAngle 為當前旋轉角度
+        // if (joystickX == 0 && joystickY == 0)
+        // {
+        //     _currentRotation = tankHead.transform.rotation.eulerAngles.y;
+        //     return;
+        // }
+        //
+        // // 2. 計算當前搖桿角度（0° ~ 360°）
+        // float currentAngle = Mathf.Atan2(joystickX, joystickY) * Mathf.Rad2Deg;
+        // if (currentAngle < 0) currentAngle += 360;
+        //
+        // // 3. 計算角度變化量
+        // float deltaAngle = Mathf.DeltaAngle(_previousAngle, currentAngle);
+        //
+        // // 4. 調整旋轉速度，累積旋轉角度
+        // _currentRotation += Mathf.Clamp(deltaAngle, -maxRotationSpeed, maxRotationSpeed) * Time.deltaTime * tankHeadRotateSpeed;
+        //
+        //
+        // // 5. 使用 Quaternion.RotateTowards 進行旋轉
+        // Quaternion targetRotation = Quaternion.Euler(-90, _currentRotation, 0);
+        // tankHead.transform.rotation = Quaternion.RotateTowards(tankHead.transform.rotation, targetRotation, maxRotationSpeed * Time.deltaTime);
+        //
+        // // 6. 更新上一幀角度
+        // _previousAngle = currentAngle;
 
-        // 2. 計算當前搖桿角度（0° ~ 360°）
-        float currentAngle = Mathf.Atan2(joystickX, joystickY) * Mathf.Rad2Deg;
-        if (currentAngle < 0) currentAngle += 360;
-
-        // 3. 計算角度變化量
-        float deltaAngle = Mathf.DeltaAngle(_previousAngle, currentAngle);
-
-        // 4. 調整旋轉速度，累積旋轉角度
-        _currentRotation += Mathf.Clamp(deltaAngle, -maxRotationSpeed, maxRotationSpeed) * Time.deltaTime * tankHeadRotateSpeed;
-
-
-        // 5. 使用 Quaternion.RotateTowards 進行旋轉
-        Quaternion targetRotation = Quaternion.Euler(-90, _currentRotation, 0);
-        tankHead.transform.rotation = Quaternion.RotateTowards(tankHead.transform.rotation, targetRotation, maxRotationSpeed * Time.deltaTime);
+        if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
         
-        // 6. 更新上一幀角度
-        _previousAngle = currentAngle;
-
+        // Head Rotate 
+        var inputDir = new Vector3(_headJoystick.Horizontal, 0, _headJoystick.Vertical);
+        var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
+        var addValue = team.Value == Team.Blue ? -90 : 90;
+        float angleY = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg + addValue;
+        tankHead.transform.localRotation = Quaternion.Euler(-90, angleY, 0); 
         // Debug.Log("Current Angle: " + currentAngle + " Previous Angle: " + _previousAngle + " Delta Angle: " + deltaAngle + " Current Rotation: " + _currentRotation);
 
     }

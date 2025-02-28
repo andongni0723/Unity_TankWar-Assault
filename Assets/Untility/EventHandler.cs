@@ -57,6 +57,12 @@ public static class EventHandler
         OnAreaOccupied?.Invoke(team, areaName);
     }
     
+    public static Action<AreaName> OnEnergyTowerDestroyed;
+    public static void CallOnEnergyTowerDestroyed(AreaName areaName)
+    {
+        OnEnergyTowerDestroyed?.Invoke(areaName);
+    }
+    
     public static Action<bool> OnGameEnd;
     public static void CallOnGameEnd(bool isHost)
     {

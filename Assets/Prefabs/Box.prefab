@@ -588,6 +588,7 @@ Transform:
   m_LocalScale: {x: 3.3, y: 3.3, z: 3.3}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 6445813865452422402}
   - {fileID: 3488428192416819771}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -677,8 +678,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05370210922df4320a3e643202bb3224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  isActive: 1
+  model: {fileID: 4261164296991813761}
+  maxHealth: 1
+  currentHealth: 0
   isDestructible: 0
+  respawnTimer: {fileID: 9013563304433251957}
+  openUI: 0
+  healthBar: {fileID: 0}
+  healthText: {fileID: 0}
 --- !u!1 &7681342440689573061
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,3 +859,80 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &1046807086235755802
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1441253052068607341}
+    m_Modifications:
+    - target: {fileID: 657353067937621103, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_Name
+      value: Respawn Timer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8327610283405923183, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+      propertyPath: time
+      value: 30
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+--- !u!4 &6445813865452422402 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6337445317983985688, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+  m_PrefabInstance: {fileID: 1046807086235755802}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9013563304433251957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8327610283405923183, guid: 2a54d8b4aab5b43079fe775c68f48fd9, type: 3}
+  m_PrefabInstance: {fileID: 1046807086235755802}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872e743c727d44f4aa103d2f7cf27554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

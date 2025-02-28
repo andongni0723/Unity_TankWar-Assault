@@ -14,6 +14,7 @@ public class AreaData : NetworkBehaviour
     public NetworkVariable<int> areaID = new(-1, writePerm: NetworkVariableWritePermission.Server);
     public NetworkVariable<float> blueTeamOccupiedPercentage = new(writePerm: NetworkVariableWritePermission.Server);
     public NetworkVariable<float> redTeamOccupiedPercentage = new(writePerm: NetworkVariableWritePermission.Server);
+    public NetworkVariable<bool> towerSpawned = new(false, writePerm: NetworkVariableWritePermission.Server);
     
     //[Header("Debug")]
 
@@ -31,12 +32,42 @@ public class AreaData : NetworkBehaviour
         redTeamOccupiedPercentage.OnValueChanged += (oldValue, newValue) => CallUpdateAreaUI();
         CallUpdateAreaUI();
     }
+    
+    private void OnEnable()
+    {
+        EventHandler.OnEnergyTowerDestroyed += OnEnergyTowerDestroyed;
+    }
+    
+    private void OnDisable()
+    {
+        EventHandler.OnEnergyTowerDestroyed -= OnEnergyTowerDestroyed;
+    }
 
     public void Initialize(int id)
     {
         if (!IsServer) return;
         areaName.Value = AreaManager.Instance.areaDetailsList[id].areaName;
         areaID.Value = id;
+    }
+    
+    public void CallTowerSpawned()
+    {
+        if (IsServer)
+            towerSpawned.Value = true;
+        else
+            TowerSpawnedServerRpc();
+    }
+    
+    [ServerRpc]
+    private void TowerSpawnedServerRpc()
+    {
+        towerSpawned.Value = true;
+    }
+    
+    private void OnEnergyTowerDestroyed(AreaName targetAreaName)
+    {
+        if (!IsServer || areaName.Value != targetAreaName) return;
+        towerSpawned.Value = false;
     }
 
     private void CallUpdateAreaUI()
@@ -72,7 +103,6 @@ public class AreaData : NetworkBehaviour
 
     private void UpdateOccupiedPercentageAction(Team team, float percentage)
     {
-        
         percentage = Mathf.Clamp(percentage, 0, 100);
         
         if (team == Team.Blue)

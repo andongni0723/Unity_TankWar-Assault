@@ -18,7 +18,6 @@ public class CharacterCameraAutoFollowEnemy : CharacterCameraController
         base.Awake();
         isAutoFollowEnemy = GameDataManager.Instance.isAutoFollowEnemy;
         dragSpeed = GameDataManager.Instance.cameraDragSpeed;
-        if (!isAutoFollowEnemy) enabled = false;
     }
 
     private void OnEnable()

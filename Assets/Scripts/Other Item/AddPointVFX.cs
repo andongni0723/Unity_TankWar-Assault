@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class AddPointVFX : MonoBehaviour
 {
@@ -11,8 +12,10 @@ public class AddPointVFX : MonoBehaviour
     
     [Header("Settings")]
     public AreaName areaName;
-    public Material redMaterial;
-    public Material blueMaterial;
+    // public Material redMaterial;
+    // public Material blueMaterial;
+    public VisualEffect redVFX;
+    public VisualEffect blueVFX;
     
     //[Header("Debug")]
 
@@ -34,7 +37,17 @@ public class AddPointVFX : MonoBehaviour
     private void OnAddPoint(Team team, AreaName targetAreaName)
     {
         if (areaName != targetAreaName) return;
-        _particleSystemRenderer.material = team == Team.Blue ? blueMaterial : redMaterial;
-        _particleSystem.Play();
+        // _particleSystemRenderer.material = team == Team.Blue ? blueMaterial : redMaterial;
+        // _particleSystemRenderer.material = team == Team.Blue ? blueVFX.material : redVFX.material;
+        if (team == Team.Blue)
+        {
+            blueVFX.gameObject.SetActive(true);
+            blueVFX.Play();
+        }
+        else
+        {
+            redVFX.gameObject.SetActive(true);
+            redVFX.Play();
+        }
     }
 }

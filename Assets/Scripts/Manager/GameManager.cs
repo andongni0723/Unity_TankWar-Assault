@@ -7,7 +7,8 @@ using Unity.Netcode;
 public enum Team
 {
     Red,
-    Blue
+    Blue,
+    None
 }
 
 public class GameManager : MonoBehaviour
