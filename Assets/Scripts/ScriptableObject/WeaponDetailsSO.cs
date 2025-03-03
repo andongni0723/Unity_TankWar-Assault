@@ -9,6 +9,9 @@ public class WeaponDetailsSO : ScriptableObject
     public Sprite weaponSprite;
     public string weaponName;
     public string weaponID;
+    public WeaponFireType fireType;
+    [ShowIf("fireType", WeaponFireType.AOE)] public float shootingRadius;
+    [ShowIf("fireType", WeaponFireType.AOE)] public float hitRadius;
     public float shootingInterval;
     public float spreadAngle;
     public bool infiniteAmmo;

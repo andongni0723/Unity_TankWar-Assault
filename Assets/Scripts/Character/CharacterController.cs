@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class CharacterController : NetworkBehaviour
@@ -18,6 +19,8 @@ public class CharacterController : NetworkBehaviour
     public GameObject tankBody;
     public GameObject tank;
     public GameObject groundCanvas;
+    public DecalProjector weaponShootArea;
+    public DecalProjector projectileHitArea;
     
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
@@ -113,8 +116,8 @@ public class CharacterController : NetworkBehaviour
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
         _mainCamera = Camera.main;
-        // cameraConfiner3D.BoundingVolume = GameObject.FindWithTag("CameraBound").GetComponent<BoxCollider>();
-
+        CloseSkillIndicator();
+        
 #if UNITY_EDITOR    
         InitialInputSystemBinding();
         DesktopMoveBinding();
@@ -151,8 +154,32 @@ public class CharacterController : NetworkBehaviour
 
     private void InitialInputSystemBinding()
     {
-        _inputSystem.Player.Fire.started += _ => _characterShoot.StartShoot();
-        _inputSystem.Player.Fire.canceled += _ => _characterShoot.StopShoot();
+        _inputSystem.Player.Fire.started += _ => 
+        {
+            switch (_characterShoot.currentWeaponData.weaponDetails.fireType)
+            {
+                case WeaponFireType.Direct:
+                    _characterShoot.StartShoot();
+                    break;
+                case WeaponFireType.AOE:
+                    OpenSkillIndicator();
+                    break;
+            }
+        };
+        _inputSystem.Player.Fire.canceled += _ =>
+        {
+            switch (_characterShoot.currentWeaponData.weaponDetails.fireType)
+            {
+                case WeaponFireType.Direct:
+                    _characterShoot.StopShoot();
+                    break;
+                case WeaponFireType.AOE:
+                    _characterShoot.OneShoot();
+                    CloseSkillIndicator();
+                    break;
+            }
+            
+        };
         _inputSystem.Player.StopTank.performed += _ => StopTankMove();
         DragMouseBinding();
     }
@@ -248,11 +275,13 @@ public class CharacterController : NetworkBehaviour
     {
         LeftAndRightSliderValueGetArrowDirection(_leftTrackSlider.value, _rightTrackSlider.value);
         UpdateTankHeadRotation(_headJoystick.Horizontal, _headJoystick.Vertical);
+        IndicatorAction();
     }
     
     private void DesktopInputControl()
     {
         DesktopRotate();
+        IndicatorAction();
     } 
 
     #endregion
@@ -274,31 +303,6 @@ public class CharacterController : NetworkBehaviour
 
     private void UpdateTankHeadRotation(float joystickX, float joystickY)
     {
-        // // 1. 當搖桿靜止時，更新 _previousAngle 為當前旋轉角度
-        // if (joystickX == 0 && joystickY == 0)
-        // {
-        //     _currentRotation = tankHead.transform.rotation.eulerAngles.y;
-        //     return;
-        // }
-        //
-        // // 2. 計算當前搖桿角度（0° ~ 360°）
-        // float currentAngle = Mathf.Atan2(joystickX, joystickY) * Mathf.Rad2Deg;
-        // if (currentAngle < 0) currentAngle += 360;
-        //
-        // // 3. 計算角度變化量
-        // float deltaAngle = Mathf.DeltaAngle(_previousAngle, currentAngle);
-        //
-        // // 4. 調整旋轉速度，累積旋轉角度
-        // _currentRotation += Mathf.Clamp(deltaAngle, -maxRotationSpeed, maxRotationSpeed) * Time.deltaTime * tankHeadRotateSpeed;
-        //
-        //
-        // // 5. 使用 Quaternion.RotateTowards 進行旋轉
-        // Quaternion targetRotation = Quaternion.Euler(-90, _currentRotation, 0);
-        // tankHead.transform.rotation = Quaternion.RotateTowards(tankHead.transform.rotation, targetRotation, maxRotationSpeed * Time.deltaTime);
-        //
-        // // 6. 更新上一幀角度
-        // _previousAngle = currentAngle;
-
         if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
         
         // Head Rotate 
@@ -326,6 +330,37 @@ public class CharacterController : NetworkBehaviour
             float angleY = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg + 90;
             tankHead.transform.rotation = Quaternion.Euler(-90, -angleY, 0);
         }
+    }
+    #endregion
+
+    #region Skill Indicator
+    
+    private void OpenSkillIndicator()
+    {
+        if (!IsOwner) return;
+        weaponShootArea.gameObject.SetActive(true);
+        projectileHitArea.gameObject.SetActive(true);
+        
+        //Initial Indicator Size
+        var shootRadius = _characterShoot.currentWeaponData.weaponDetails.shootingRadius * 10;
+        var hitRadius = _characterShoot.currentWeaponData.weaponDetails.hitRadius * 10;
+        weaponShootArea.size = new Vector3(shootRadius, shootRadius, 20f);
+        projectileHitArea.size = new Vector3(hitRadius, hitRadius, 20f);
+        // weaponShootArea.transform.position = transform.position;
+    }
+    
+    private void CloseSkillIndicator()
+    {
+        if (!IsOwner) return;
+        weaponShootArea.gameObject.SetActive(false);
+        projectileHitArea.gameObject.SetActive(false);
+    }
+    
+    private void IndicatorAction()
+    {
+        var hitRadius = _characterShoot.currentWeaponData.weaponDetails.hitRadius * 10;
+        var joystickPos = new Vector3(_headJoystick.Horizontal * hitRadius / 2, _headJoystick.Vertical * hitRadius / 2, 3);
+        projectileHitArea.transform.localPosition = Vector3.zero + joystickPos;
     }
     #endregion
 }

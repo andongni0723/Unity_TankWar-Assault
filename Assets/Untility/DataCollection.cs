@@ -26,6 +26,14 @@ public class GameWeaponData
     public int currentAmmo;
 }
 
+public enum WeaponFireType
+{
+    None,
+    Direct,
+    AOE,
+    Point,
+}
+
 [Serializable]
 public class ActionTimeline<T> where T : ActionTimeline<T>
 {

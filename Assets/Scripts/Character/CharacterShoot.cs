@@ -115,14 +115,36 @@ public class CharacterShoot : NetworkBehaviour
     public void StartShoot() => isShooting = true;
     public void StopShoot() => isShooting = false;
     
+    public void OneShoot()
+    {
+        isShooting = true;
+        ExecuteShoot();
+        isShooting = false;
+    }
+    
     private void ExecuteShoot()
     {
         if(!IsOwner || !isShooting || currentWeaponData.shootTimer.isPlay || !CheckEnoughAmmo()) return;
         currentWeaponData.shootTimer.Play();
         var position = _currentFirePoint.transform.position;
+        var targetPosition = _cc.projectileHitArea.transform.position; //TODO: Get target position, CharacterController.cs
         var rotation = _currentFirePoint.transform.rotation;
-        ShootServerRpc(position, rotation);
-        Shoot(position, rotation);
+        
+        switch (currentWeaponData.weaponDetails.fireType)
+        {
+            case WeaponFireType.Direct:
+                ShootServerRpc(position, rotation);
+                Shoot(position, rotation);
+                break;
+            case WeaponFireType.AOE:
+                ShootAOEServerRpc(position, targetPosition);
+                ShootAOE(position, targetPosition);
+                break;
+            case WeaponFireType.Point:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
     
     private bool CheckEnoughAmmo() => currentWeaponData.currentAmmo > 0 || currentWeaponData.weaponDetails.infiniteAmmo;
@@ -147,7 +169,30 @@ public class CharacterShoot : NetworkBehaviour
         bullet.gameObject.layer = _cc.team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Skill") : LayerMask.NameToLayer("Red Skill");
         bullet.Initialize(pos, rot, Random.Range(-currentWeaponData.weaponDetails.spreadAngle, currentWeaponData.weaponDetails.spreadAngle));
         if(!currentWeaponData.weaponDetails.infiniteAmmo) currentWeaponData.currentAmmo--;
-    }    
+    }
+    
+    [ServerRpc]
+    private void ShootAOEServerRpc(Vector3 startPos, Vector3 targetPos)
+    {
+        ShootAOEClientRpc(startPos, targetPos);
+    }
+    
+    [ClientRpc]
+    private void ShootAOEClientRpc(Vector3 startPos, Vector3 targetPos)
+    {
+        if(!IsOwner) ShootAOE(startPos, targetPos);
+    }
+
+
+    private void ShootAOE(Vector3 startPos, Vector3 targetPos)
+    {
+        var bulletPoolKey = currentWeaponType.Value == TankWeaponType.MainWeapon ? mainWeaponBulletPoolKey.Value : subWeaponBulletPoolKey.Value;
+        var bullet = ObjectPoolManager.Instance.GetObject(bulletPoolKey).GetComponent<Bullet>();
+        bullet.gameObject.tag = _cc.team.Value == Team.Blue ? "Blue Skill" : "Red Skill";
+        bullet.gameObject.layer = _cc.team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Skill") : LayerMask.NameToLayer("Red Skill");
+        bullet.Initialize(startPos, targetPos, Random.Range(-currentWeaponData.weaponDetails.spreadAngle, currentWeaponData.weaponDetails.spreadAngle));
+        if(!currentWeaponData.weaponDetails.infiniteAmmo) currentWeaponData.currentAmmo--; 
+    }
     #endregion
 
 

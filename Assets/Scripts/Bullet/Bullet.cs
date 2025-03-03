@@ -12,8 +12,8 @@ public class Bullet : PoolableObject
     
     [Header("Settings")]
     public ProjectileDetailsSO projectileDetails;
-    public float speed = 10;
-    [Range(0, 10)] public int damage = 1;
+    private float _speed = 10;
+    private int _damage = 1;
     public PoolKey VFXPoolKey = PoolKey.RedHitVFX;
     
     //[Header("Debug")]
@@ -41,19 +41,28 @@ public class Bullet : PoolableObject
     /// </summary>
     /// <param name="pos">start position</param>
     /// <param name="rot">start direction</param>
-    public void Initialize(Vector3 pos, Quaternion rot, float offset = 0)
+    public virtual void Initialize(Vector3 pos, Quaternion rot, float offset = 0)
     {
         transform.position = pos;
         transform.rotation = rot;
         transform.Rotate(Vector3.forward, offset);
-        _rb.linearVelocity = transform.up * speed; // Reset velocity
+        _rb.linearVelocity = transform.up * _speed; // Reset velocity
+    }
+
+    public virtual void Initialize(Vector3 startPos, Vector3 targetPos, float offset = 0)
+    {
+        var p = transform.position;
+        p = startPos;
+        p = new Vector3(p.x + offset, 1, p.z + offset);
     }
     
-    private void InitialComponent()
+    
+    protected virtual void InitialComponent()
     {
         _rb = GetComponent<Rigidbody>();
         _trailRenderer = GetComponent<TrailRenderer>();
-        damage = projectileDetails.projectileDamage;
+        _damage = projectileDetails.projectileDamage;
+        _speed = projectileDetails.projectileSpeed;
         destroyTimer.time = projectileDetails.projectileLifeTime;
     }
     
@@ -78,7 +87,7 @@ public class Bullet : PoolableObject
     {
         if (other.TryGetComponent<IAttack>(out var target))
         {
-            target.TakeDamage(damage);
+            target.TakeDamage(_damage);
             BackToPoolWithEffect();
         }
     }

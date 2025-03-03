@@ -19,6 +19,5 @@ MonoBehaviour:
   redPrefabPoolKey: 6
   bluePrefabPoolKey: 6
   isOnEndAction: 0
-  onEndEffects:
-  - {fileID: 0}
+  onEndEffects: []
   onEndSkills: []

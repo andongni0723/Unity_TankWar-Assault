@@ -10,6 +10,7 @@ public enum PoolKey
     RedBurningBullet, BlueBurningBullet,
     MachineGunBullet, MachineGunHitVFX,
     RedBurningArea, BlueBurningArea,
+    MortarProjectile, MortarHitVFX,
 }
 
 public class ObjectPoolManager : Singleton<ObjectPoolManager>

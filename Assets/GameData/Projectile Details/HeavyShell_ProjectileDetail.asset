@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: HeavyShell_ProjectileDetail
   m_EditorClassIdentifier: 
   projectileName: Heavy Shell
-  projectileSpeed: 25
+  projectileSpeed: 50
   projectileLifeTime: 5
   projectileDamage: 50
+  projectileHurtRadius: 0
   redPrefabPoolKey: 0
   bluePrefabPoolKey: 1
   isOnEndAction: 0
