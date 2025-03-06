@@ -16,12 +16,12 @@ MonoBehaviour:
   weaponName: Mortar
   weaponID: WS002
   fireType: 2
-  shootingRadius: 5
-  hitRadius: 2
+  shootingRadius: 3
+  hitRadius: 1
   shootingInterval: 0.5
-  spreadAngle: 5
+  spreadAngle: 0
   infiniteAmmo: 0
-  capacity: 1
+  capacity: 10
   reloadTime: 3
   projectileDetails: {fileID: 11400000, guid: 48f6255e03b124973b69dc43e363b9d4, type: 2}
   featureText: 

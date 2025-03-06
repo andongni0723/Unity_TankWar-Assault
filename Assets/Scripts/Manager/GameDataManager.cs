@@ -12,6 +12,8 @@ public enum SaveDataKey
     auto_follow_enemy,
     camera_drag_speed,
     drag_camera,
+    stop_button_expand,
+    start_button_expand_time,
 }
 
 public enum TankWeaponType
@@ -33,9 +35,11 @@ public class GameDataManager : Singleton<GameDataManager>
     [SerializeField] public bool isDebugMode { get; private set; }
     [SerializeField] public bool isReverseX { get; private set; }
     [SerializeField] public bool isAutoFollowEnemy { get; private set; }
-    [SerializeField] public float cameraDragSpeed { get; private set; }
     [SerializeField] public bool canDragCamera { get; private set; }
-    
+    [SerializeField] public float cameraDragSpeed { get; private set; }
+    [SerializeField] public bool stopButtonEffectExpand { get; private set; }
+    [SerializeField] public float startButtonExpandTime { get; private set; }
+
     [Header("Tank Settings")]
     [SerializeField] public WeaponDetailsSO tankMainWeaponDetails { get; private set; }
     [SerializeField] public WeaponDetailsSO tankSubWeaponDetails { get; private set; }
@@ -69,15 +73,24 @@ public class GameDataManager : Singleton<GameDataManager>
                 PlayerPrefs.SetInt("auto_follow_enemy", (bool)dataValue ? 1 : 0);
                 isAutoFollowEnemy = (bool)dataValue;
                 break;
-            case SaveDataKey.camera_drag_speed:
-                PlayerPrefs.SetFloat("camera_drag_speed", float.Parse(dataValue.ToString()));
-                cameraDragSpeed = float.Parse(dataValue.ToString());
-                break;
             case SaveDataKey.drag_camera:
                 PlayerPrefs.SetInt("drag_camera", (bool)dataValue ? 1 : 0);
                 canDragCamera = (bool)dataValue;
                 break;
+            case SaveDataKey.camera_drag_speed:
+                PlayerPrefs.SetFloat("camera_drag_speed", float.Parse(dataValue.ToString()));
+                cameraDragSpeed = float.Parse(dataValue.ToString());
+                break;
+            case SaveDataKey.stop_button_expand:
+                PlayerPrefs.SetInt("stop_button_expand", (bool)dataValue ? 1 : 0);
+                stopButtonEffectExpand = (bool)dataValue;
+                break;
+            case SaveDataKey.start_button_expand_time:
+                PlayerPrefs.SetFloat("start_button_expand_time", float.Parse(dataValue.ToString()));
+                startButtonExpandTime = float.Parse(dataValue.ToString());
+                break;
         }
+
         ExecuteDataAction();
     }
 
@@ -107,8 +120,10 @@ public class GameDataManager : Singleton<GameDataManager>
         isDebugMode = PlayerPrefs.GetInt("debug_mode", 1) == 1;
         isReverseX = PlayerPrefs.GetInt("reverse_x", 0) == 1;
         isAutoFollowEnemy = PlayerPrefs.GetInt("auto_follow_enemy", 0) == 1;
+        stopButtonEffectExpand = PlayerPrefs.GetInt("stop_button_expand", 0) == 1;
         cameraDragSpeed = PlayerPrefs.GetFloat("camera_drag_speed", 0.5f);
         canDragCamera = PlayerPrefs.GetInt("drag_camera", 1) == 1;
+        startButtonExpandTime = PlayerPrefs.GetFloat("start_button_expand_time", 0.3f);
     }
     
     private void RestoreTankData()

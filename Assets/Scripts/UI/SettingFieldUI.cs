@@ -29,6 +29,7 @@ public class SettingFieldUI : MonoBehaviour
     [ShowIf("fieldType", SettingFieldType.Dropdown)] public float startDropdownValue;
     [ShowIf("fieldType", SettingFieldType.Toggle)] public bool startToggleValue;
     [ShowIf("fieldType", SettingFieldType.InputField)] public string startInputFieldValue;
+    [ShowIf("fieldType", SettingFieldType.InputField)] [MinMaxSlider(-10, 30, true)] public Vector2 inputFieldNumberRange;
     
     private void Awake()
     {
@@ -51,7 +52,8 @@ public class SettingFieldUI : MonoBehaviour
             
             case SettingFieldType.InputField:
                 _inputField = GetComponentInChildren<TMP_InputField>();
-                _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
+                // _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
+                _inputField.onEndEdit.AddListener(OnInputFieldValueChanged);
                 _inputField.text = PlayerPrefs.GetString(settingKey.ToString(), startInputFieldValue);
                 break;
         }
@@ -69,6 +71,19 @@ public class SettingFieldUI : MonoBehaviour
     
     private void OnInputFieldValueChanged(string newValue)
     {
+        if (float.TryParse(newValue, out var number))
+        {
+            // Out of range
+            if (number < inputFieldNumberRange.x)
+                _inputField.text = inputFieldNumberRange.x.ToString();
+            else if (number > inputFieldNumberRange.y)
+                _inputField.text = inputFieldNumberRange.y.ToString();
+        }
+        
+        if (string.IsNullOrEmpty(newValue))
+            _inputField.text = startInputFieldValue;
+        
+        newValue = _inputField.text;
         GameDataManager.Instance.UpdateSettingData(settingKey, newValue);
     }
 }

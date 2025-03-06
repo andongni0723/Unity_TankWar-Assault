@@ -24,7 +24,7 @@ public class Bullet : PoolableObject
         InitialComponent();
     }
     
-    private void OnEnable()
+    protected void OnEnable()
     {
         destroyTimer.OnTimerEnd += BackToPoolWithEffect;
         _isReleased = false;
@@ -35,12 +35,13 @@ public class Bullet : PoolableObject
         destroyTimer.OnTimerEnd -= BackToPoolWithEffect;
         _trailRenderer.Clear();
     }
-    
+
     /// <summary>
     /// Call by CharacterShoot.cs when bullet is released
     /// </summary>
     /// <param name="pos">start position</param>
     /// <param name="rot">start direction</param>
+    /// <param name="offset">bullet shoot direction offset</param>
     public virtual void Initialize(Vector3 pos, Quaternion rot, float offset = 0)
     {
         transform.position = pos;
@@ -49,11 +50,18 @@ public class Bullet : PoolableObject
         _rb.linearVelocity = transform.up * _speed; // Reset velocity
     }
 
+    /// <summary>
+    /// Call by CharacterShoot.cs when bullet is released
+    /// </summary>
+    /// <param name="startPos">start position</param>
+    /// <param name="targetPos">target position</param>
+    /// <param name="offset">bullet target position offset</param>
     public virtual void Initialize(Vector3 startPos, Vector3 targetPos, float offset = 0)
     {
         var p = transform.position;
+        _rb.linearVelocity = (targetPos - startPos).normalized * _speed;
         p = startPos;
-        p = new Vector3(p.x + offset, 1, p.z + offset);
+        p += new Vector3(offset, 1, offset);
     }
     
     
@@ -66,7 +74,7 @@ public class Bullet : PoolableObject
         destroyTimer.time = projectileDetails.projectileLifeTime;
     }
     
-    private void BackToPoolWithEffect()
+    protected void BackToPoolWithEffect()
     {
         if (_isReleased) return;
         _isReleased = true;
@@ -83,7 +91,7 @@ public class Bullet : PoolableObject
         hitVFX.transform.rotation = Quaternion.identity;
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<IAttack>(out var target))
         {

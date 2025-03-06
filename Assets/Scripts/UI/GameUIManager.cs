@@ -15,6 +15,7 @@ public class GameUIManager : Singleton<GameUIManager>
     public Slider leftTrackSlider;
     public Slider rightTrackSlider;
     public Button fireButton;
+    public Button cancelFireButton;
     public VariableJoystick tankHeadJoystick; 
     public List<RectTransform> dragAreas;
     public TMP_Text gameTimeText;

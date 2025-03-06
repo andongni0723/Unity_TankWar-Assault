@@ -21,6 +21,7 @@ public class CharacterController : NetworkBehaviour
     public GameObject groundCanvas;
     public DecalProjector weaponShootArea;
     public DecalProjector projectileHitArea;
+    public Timer stopEffectExtendTimer;
     
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
@@ -28,6 +29,8 @@ public class CharacterController : NetworkBehaviour
     private Slider _leftTrackSlider;
     private Slider _rightTrackSlider;
     private VariableJoystick _headJoystick;
+    private Button _fireButton;
+    private Button _cancelFireButton;
     
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
@@ -60,12 +63,16 @@ public class CharacterController : NetworkBehaviour
     {
         EventHandler.OnPlayerDied += OnPlayerDied;
         EventHandler.OnPlayerRespawn += OnPlayerRespawn;
+        _headJoystick.OnPointerDownEvent += OpenSkillIndicatorCheck;
+        _headJoystick.OnPointerUpEvent += CheckStartFireWithJoystickRelease;
     }
 
     private void OnDisable()
     {
         EventHandler.OnPlayerDied -= OnPlayerDied;
         EventHandler.OnPlayerRespawn -= OnPlayerRespawn;
+        _headJoystick.OnPointerDownEvent -= OpenSkillIndicatorCheck;
+        _headJoystick.OnPointerUpEvent -= CheckStartFireWithJoystickRelease;
     }
 
     public override void OnDestroy()
@@ -99,6 +106,7 @@ public class CharacterController : NetworkBehaviour
         if (isOwner)
             _inputSystem.Enable();
     }
+    
 
     #endregion
 
@@ -112,6 +120,8 @@ public class CharacterController : NetworkBehaviour
         _leftTrackSlider = GameUIManager.Instance.leftTrackSlider;
         _rightTrackSlider = GameUIManager.Instance.rightTrackSlider;
         _headJoystick = GameUIManager.Instance.tankHeadJoystick;
+        _fireButton = GameUIManager.Instance.fireButton;
+        _cancelFireButton = GameUIManager.Instance.cancelFireButton;
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
@@ -140,10 +150,13 @@ public class CharacterController : NetworkBehaviour
             SetTeamLayerServerRpc(team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Player") : LayerMask.NameToLayer("Red Player")); 
         }
         
+        // Character Data Setting
         name = team.Value == Team.Blue ? "Blue Player" : "Red Player";
         virtualCamera.gameObject.SetActive(IsOwner);
         groundCanvas.SetActive(IsOwner);
         _characterSetColor.SetColorBasedOnOwner();
+        stopEffectExtendTimer.time = GameDataManager.Instance.stopButtonEffectExpand ? 
+            GameDataManager.Instance.startButtonExpandTime : 0;
         
         EventHandler.CallOnPlayerSpawned(this);
         
@@ -162,7 +175,6 @@ public class CharacterController : NetworkBehaviour
                     _characterShoot.StartShoot();
                     break;
                 case WeaponFireType.AOE:
-                    OpenSkillIndicator();
                     break;
             }
         };
@@ -173,15 +185,27 @@ public class CharacterController : NetworkBehaviour
                 case WeaponFireType.Direct:
                     _characterShoot.StopShoot();
                     break;
+            }
+        };
+        _inputSystem.Player.CancelFire.performed += _ =>
+        {
+            switch (_characterShoot.currentWeaponData.weaponDetails.fireType)
+            {
                 case WeaponFireType.AOE:
-                    _characterShoot.OneShoot();
                     CloseSkillIndicator();
                     break;
             }
-            
         };
-        _inputSystem.Player.StopTank.performed += _ => StopTankMove();
+        _inputSystem.Player.StopTank.performed += _ => StopTankMove(); 
         DragMouseBinding();
+    }
+    
+    private void CheckStartFireWithJoystickRelease()
+    {
+        // Is AOE weapon and didn't press Cancel button before release joystick
+        if (_characterShoot.currentWeaponData.weaponDetails.fireType == WeaponFireType.AOE && weaponShootArea.gameObject.activeSelf)
+            _characterShoot.OneShoot();
+        CloseSkillIndicator();
     }
 
     private void DesktopMoveBinding()
@@ -192,6 +216,7 @@ public class CharacterController : NetworkBehaviour
 
     private void DesktopLeftTrackMovement(InputAction.CallbackContext ctx)
     {
+        if(stopEffectExtendTimer.isPlay) return;
         _leftTrackSlider.value = ctx.control.name switch
         {
             "1" => 2,
@@ -204,6 +229,7 @@ public class CharacterController : NetworkBehaviour
     
     private void DesktopRightTrackMovement(InputAction.CallbackContext ctx)
     {
+        if(stopEffectExtendTimer.isPlay) return;
         _rightTrackSlider.value = ctx.control.name switch
         {
             "3" => 2,
@@ -214,8 +240,9 @@ public class CharacterController : NetworkBehaviour
         };
     }
 
-    private void StopTankMove()
+    private void StopTankMove() //TODO: Stop effect extend  
     {
+        stopEffectExtendTimer.Play();
         _leftTrackSlider.value = 0;
         _rightTrackSlider.value = 0;
     }
@@ -334,12 +361,20 @@ public class CharacterController : NetworkBehaviour
     #endregion
 
     #region Skill Indicator
+
+    private void OpenSkillIndicatorCheck()
+    {
+        if(_characterShoot.currentWeaponData.weaponDetails.fireType == WeaponFireType.AOE)
+            OpenSkillIndicator();
+    }
     
     private void OpenSkillIndicator()
     {
         if (!IsOwner) return;
         weaponShootArea.gameObject.SetActive(true);
         projectileHitArea.gameObject.SetActive(true);
+        _cancelFireButton.gameObject.SetActive(true);
+        _fireButton.gameObject.SetActive(false);
         
         //Initial Indicator Size
         var shootRadius = _characterShoot.currentWeaponData.weaponDetails.shootingRadius * 10;
@@ -354,12 +389,16 @@ public class CharacterController : NetworkBehaviour
         if (!IsOwner) return;
         weaponShootArea.gameObject.SetActive(false);
         projectileHitArea.gameObject.SetActive(false);
+        _cancelFireButton.gameObject.SetActive(false);
+        _fireButton.gameObject.SetActive(true);
     }
     
     private void IndicatorAction()
     {
-        var hitRadius = _characterShoot.currentWeaponData.weaponDetails.hitRadius * 10;
-        var joystickPos = new Vector3(_headJoystick.Horizontal * hitRadius / 2, _headJoystick.Vertical * hitRadius / 2, 3);
+        if (_headJoystick.Horizontal == 0 && _headJoystick.Vertical == 0) return;
+        
+        var shootRadius = _characterShoot.currentWeaponData.weaponDetails.shootingRadius * 10;
+        var joystickPos = new Vector3(_headJoystick.Horizontal * shootRadius / 2f, _headJoystick.Vertical * shootRadius / 2f, 3);
         projectileHitArea.transform.localPosition = Vector3.zero + joystickPos;
     }
     #endregion

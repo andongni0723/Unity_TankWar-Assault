@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "CancelFire",
+                    "type": "Button",
+                    "id": "7dbd1955-9d7d-47ff-b107-d0f4182b24ca",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "TankMoveLeft",
                     "type": "Button",
                     "id": "27b41c4c-5ccf-4a5c-a6f9-072958e35ac5",
@@ -395,6 +404,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "StopTank",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f870899b-c2dc-42c7-987e-302f68ffbd9e",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad",
+                    "action": "CancelFire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

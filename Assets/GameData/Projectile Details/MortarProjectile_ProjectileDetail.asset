@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MortarProjectile_ProjectileDetail
   m_EditorClassIdentifier: 
   projectileName: Mortar Projectile
-  fireType: 0
-  hitTimerDelay: 0
+  fireType: 2
+  hitTimerDelay: 2
   projectileSpeed: 25
   projectileLifeTime: 10
   projectileDamage: 50

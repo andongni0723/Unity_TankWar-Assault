@@ -73,6 +73,15 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""CancelFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""7dbd1955-9d7d-47ff-b107-d0f4182b24ca"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""TankMoveLeft"",
                     ""type"": ""Button"",
                     ""id"": ""27b41c4c-5ccf-4a5c-a6f9-072958e35ac5"",
@@ -417,6 +426,17 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""StopTank"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f870899b-c2dc-42c7-987e-302f68ffbd9e"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;Gamepad"",
+                    ""action"": ""CancelFire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1009,6 +1029,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_MouseDrag = m_Player.FindAction("MouseDrag", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_CancelFire = m_Player.FindAction("CancelFire", throwIfNotFound: true);
         m_Player_TankMoveLeft = m_Player.FindAction("TankMoveLeft", throwIfNotFound: true);
         m_Player_TankMoveRight = m_Player.FindAction("TankMoveRight", throwIfNotFound: true);
         m_Player_StopTank = m_Player.FindAction("StopTank", throwIfNotFound: true);
@@ -1096,6 +1117,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_MouseDrag;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_CancelFire;
     private readonly InputAction m_Player_TankMoveLeft;
     private readonly InputAction m_Player_TankMoveRight;
     private readonly InputAction m_Player_StopTank;
@@ -1108,6 +1130,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
         public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputAction @MouseDrag => m_Wrapper.m_Player_MouseDrag;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @CancelFire => m_Wrapper.m_Player_CancelFire;
         public InputAction @TankMoveLeft => m_Wrapper.m_Player_TankMoveLeft;
         public InputAction @TankMoveRight => m_Wrapper.m_Player_TankMoveRight;
         public InputAction @StopTank => m_Wrapper.m_Player_StopTank;
@@ -1135,6 +1158,9 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @CancelFire.started += instance.OnCancelFire;
+            @CancelFire.performed += instance.OnCancelFire;
+            @CancelFire.canceled += instance.OnCancelFire;
             @TankMoveLeft.started += instance.OnTankMoveLeft;
             @TankMoveLeft.performed += instance.OnTankMoveLeft;
             @TankMoveLeft.canceled += instance.OnTankMoveLeft;
@@ -1163,6 +1189,9 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @CancelFire.started -= instance.OnCancelFire;
+            @CancelFire.performed -= instance.OnCancelFire;
+            @CancelFire.canceled -= instance.OnCancelFire;
             @TankMoveLeft.started -= instance.OnTankMoveLeft;
             @TankMoveLeft.performed -= instance.OnTankMoveLeft;
             @TankMoveLeft.canceled -= instance.OnTankMoveLeft;
@@ -1359,6 +1388,7 @@ public partial class @PlayerInputControl: IInputActionCollection2, IDisposable
         void OnMousePosition(InputAction.CallbackContext context);
         void OnMouseDrag(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnCancelFire(InputAction.CallbackContext context);
         void OnTankMoveLeft(InputAction.CallbackContext context);
         void OnTankMoveRight(InputAction.CallbackContext context);
         void OnStopTank(InputAction.CallbackContext context);

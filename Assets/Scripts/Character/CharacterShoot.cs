@@ -127,7 +127,7 @@ public class CharacterShoot : NetworkBehaviour
         if(!IsOwner || !isShooting || currentWeaponData.shootTimer.isPlay || !CheckEnoughAmmo()) return;
         currentWeaponData.shootTimer.Play();
         var position = _currentFirePoint.transform.position;
-        var targetPosition = _cc.projectileHitArea.transform.position; //TODO: Get target position, CharacterController.cs
+        var targetPosition = _cc.projectileHitArea.transform.position; 
         var rotation = _currentFirePoint.transform.rotation;
         
         switch (currentWeaponData.weaponDetails.fireType)
