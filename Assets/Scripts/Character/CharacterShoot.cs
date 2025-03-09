@@ -90,7 +90,7 @@ public class CharacterShoot : NetworkBehaviour
         currentWeaponData.reloadTimer.Play();
         if(IsOwner) currentWeaponType.Value = newWeaponType;
         // currentWeaponData = GetCurrentWeaponData();
-        currentWeaponData.reloadTimer.Stop();
+        currentWeaponData.reloadTimer.Pause();
     }
     
     

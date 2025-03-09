@@ -38,6 +38,7 @@ public class MortarProjectile : Bullet
         hurtArea.radius = projectileDetails.projectileHurtRadius * _HURT_RADIUS_TO_DECAL_RADIUS;
         warningArea.transform.localScale = Vector3.one * (projectileDetails.projectileHurtRadius * _HURT_RADIUS_TO_WARNING_SCALE);
         warningArea.SetActive(true);
+        model.SetActive(true);
         MoveAction();
     }
 
@@ -69,6 +70,7 @@ public class MortarProjectile : Bullet
         sequence.OnComplete(() =>
         {
             hurtArea.enabled = true;
+            model.SetActive(false);
         });
     }
     

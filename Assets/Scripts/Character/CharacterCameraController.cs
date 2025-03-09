@@ -24,6 +24,7 @@ public class CharacterCameraController : MonoBehaviour
     {
         _character = GetComponent<CharacterController>();
         _mouseHandler = GetComponent<CharacterMouseHandler>();
+        dragSpeed = GameDataManager.Instance.cameraDragSpeed;
     }
     
     private void Update()
