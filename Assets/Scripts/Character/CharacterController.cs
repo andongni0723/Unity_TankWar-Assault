@@ -50,6 +50,8 @@ public class CharacterController : NetworkBehaviour
     public NetworkVariable<Team> team = new(0, writePerm: NetworkVariableWritePermission.Owner);
     
     [Header("Debug")]
+    public const float SHOOT_RADIUS_TO_SHOOT_AREA_SIZE = 10f;
+    public const float HIT_RADIUS_TO_HIT_AREA_SIZE = 6.5f; // 13 / 2
     private Vector2 _moveDirection;
     private Camera _mainCamera;
     private float _previousAngle;    // 上一幀搖桿角度
@@ -377,11 +379,10 @@ public class CharacterController : NetworkBehaviour
         _fireButton.gameObject.SetActive(false);
         
         //Initial Indicator Size
-        var shootRadius = _characterShoot.currentWeaponData.weaponDetails.shootingRadius * 10;
-        var hitRadius = _characterShoot.currentWeaponData.weaponDetails.hitRadius * 10;
+        var shootRadius = _characterShoot.currentWeaponData.weaponDetails.shootingRadius * SHOOT_RADIUS_TO_SHOOT_AREA_SIZE;
+        var hitRadius = _characterShoot.currentWeaponData.weaponDetails.hitRadius * HIT_RADIUS_TO_HIT_AREA_SIZE;
         weaponShootArea.size = new Vector3(shootRadius, shootRadius, 20f);
         projectileHitArea.size = new Vector3(hitRadius, hitRadius, 20f);
-        // weaponShootArea.transform.position = transform.position;
     }
     
     private void CloseSkillIndicator()

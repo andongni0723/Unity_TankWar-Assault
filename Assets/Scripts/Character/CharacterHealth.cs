@@ -100,18 +100,12 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         else
             GameUIManager.Instance.losePanel.SetActive(true);   
     }
-
-    [ServerRpc]
-    private void RequestDespawnServerRpc()
-    {
-        NetworkObject.Despawn(gameObject);
-    }
-
+    
     public void TakeDamage(int damage)
     {
         if (!IsOwner) return;
 
         currentHealth.Value -= damage;
-        _damageSpawner.SpawnDamageText(-damage, transform.position);
-}
+        _damageSpawner.CallSpawnDamageText(-damage, transform.position);
+    }
 }

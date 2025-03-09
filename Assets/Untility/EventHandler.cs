@@ -3,6 +3,19 @@ using UnityEngine;
 
 public static class EventHandler
 {
+    public static Action<float, float, float> CameraShake;
+    
+    /// <summary>
+    /// duration and startTimeToFade are optional
+    /// </summary>
+    /// <param name="intensity"></param>
+    /// <param name="duration"></param>
+    /// <param name="startTimeToFade"></param>
+    public static void CallCameraShake(float intensity, float duration = -1, float startTimeToFade = -1)
+    {
+        CameraShake?.Invoke(intensity, duration, startTimeToFade);
+    }
+    
     public static Action<WeaponDetailsSO> OnWeaponSelectToggleSelected;
     public static void CallOnWeaponSelectToggleSelected(WeaponDetailsSO weaponDetails)
     {

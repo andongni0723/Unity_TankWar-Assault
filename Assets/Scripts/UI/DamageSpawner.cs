@@ -6,11 +6,31 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class DamageSpawner : MonoBehaviour
+public class DamageSpawner : NetworkBehaviour
 {
     public GameObject damageTextPrefab; // 拖入 DamageText Prefab
     public Canvas canvas;
-
+    
+    public void CallSpawnDamageText(int damage, Vector3 position)
+    {
+        if (IsServer)
+            SpawnDamageTextClientRpc(damage, position);
+        else
+            SpawnDamageTextServerRpc(damage, position);
+    }
+    
+    [ServerRpc]
+    public void SpawnDamageTextServerRpc(int damage, Vector3 position)
+    {
+        SpawnDamageTextClientRpc(damage, position);
+    }
+    
+    [ClientRpc]
+    public void SpawnDamageTextClientRpc(int damage, Vector3 position)
+    {
+        SpawnDamageText(damage, position);
+    }
+    
     public void SpawnDamageText(int damage, Vector3 position)
     {
         // 從 Resources 加載 Prefab
@@ -23,4 +43,5 @@ public class DamageSpawner : MonoBehaviour
         DamageText damageText = damageTextObj.GetComponent<DamageText>();
         damageText.ShowDamage(damage, position);
     }
+
 }

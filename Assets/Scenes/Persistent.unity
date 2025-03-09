@@ -1334,6 +1334,7 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: ae766c7a8f2ac4b4eb0d6bf687fe7382, type: 2}
     - {fileID: 11400000, guid: 650144cc7d20a475b8f83703c81d4701, type: 2}
+    - {fileID: 11400000, guid: c2f6f499884a74823829bff424423dfc, type: 2}
     - {fileID: 11400000, guid: b47d269e0d51341c4a3ec7847f545731, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -1352,12 +1353,18 @@ MonoBehaviour:
     - Name: isAutoFollowEnemy
       Entry: 5
       Data: false
-    - Name: cameraDragSpeed
-      Entry: 4
-      Data: 0
     - Name: canDragCamera
       Entry: 5
       Data: false
+    - Name: cameraDragSpeed
+      Entry: 4
+      Data: 0
+    - Name: stopButtonEffectExpand
+      Entry: 5
+      Data: false
+    - Name: startButtonExpandTime
+      Entry: 4
+      Data: 0
     - Name: tankMainWeaponDetails
       Entry: 6
       Data: 
@@ -1422,7 +1429,7 @@ MonoBehaviour:
       Data: WS002
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 8
       Data: 

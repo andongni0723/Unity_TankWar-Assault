@@ -17,7 +17,7 @@ public class Bullet : PoolableObject
     public PoolKey VFXPoolKey = PoolKey.RedHitVFX;
     
     //[Header("Debug")]
-    private bool _isReleased;
+    protected bool _isReleased;
 
     private void Awake()
     {
@@ -74,7 +74,7 @@ public class Bullet : PoolableObject
         destroyTimer.time = projectileDetails.projectileLifeTime;
     }
     
-    protected void BackToPoolWithEffect()
+    protected virtual void BackToPoolWithEffect()
     {
         if (_isReleased) return;
         _isReleased = true;
@@ -83,8 +83,8 @@ public class Bullet : PoolableObject
         SpawnHitVFX();
         ReturnToPool();
     }
-    
-    private void SpawnHitVFX()
+
+    protected void SpawnHitVFX()
     {
         var hitVFX = ObjectPoolManager.Instance.GetObject(VFXPoolKey);
         hitVFX.transform.position = transform.position;
@@ -99,13 +99,13 @@ public class Bullet : PoolableObject
             BackToPoolWithEffect();
         }
     }
-    
-    private void ExecuteOnEndEffect()
+
+    protected void ExecuteOnEndEffect()
     {
         
     }
 
-    private void ExecuteOnEndSkill()
+    protected void ExecuteOnEndSkill()
     {
         foreach (var skill in projectileDetails.onEndSkills)
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,6 +10,7 @@ public class MortarProjectile : Bullet
 {
     [Header("Component")] 
     public GameObject model;
+    public GameObject warningArea;
     public SphereCollider hurtArea;
     // public Timer moveTimer;
     
@@ -16,10 +18,12 @@ public class MortarProjectile : Bullet
     public float moveHeight = 10;
     
     [Header("Debug")] private Vector3 _targetPoint;
+    
+    private const float _HURT_RADIUS_TO_DECAL_RADIUS = 5; // 10 / 2
+    private const float _HURT_RADIUS_TO_WARNING_SCALE = 3.8f; // 7.6 / 2
 
     protected override void InitialComponent()
     {
-        // hurtArea = GetComponentInChildren<SphereCollider>();
         hurtArea = GetComponent<SphereCollider>();
         base.InitialComponent();
     }
@@ -30,10 +34,21 @@ public class MortarProjectile : Bullet
         _targetPoint = new Vector3(targetPos.x + offset, 1, targetPos.z + offset);
         transform.position = startPos;
         model.transform.localPosition = Vector3.zero;
-        // moveTimer.time = projectileDetails.hitTimerDelay;
         destroyTimer.time = projectileDetails.hitTimerDelay;
-        hurtArea.radius = projectileDetails.projectileHurtRadius;
+        hurtArea.radius = projectileDetails.projectileHurtRadius * _HURT_RADIUS_TO_DECAL_RADIUS;
+        warningArea.transform.localScale = Vector3.one * (projectileDetails.projectileHurtRadius * _HURT_RADIUS_TO_WARNING_SCALE);
+        warningArea.SetActive(true);
         MoveAction();
+    }
+
+    private void Update()
+    {
+        UpdateWarningArea();
+    }
+
+    private void UpdateWarningArea()
+    {
+        warningArea.transform.position = _targetPoint;
     }
 
     private void MoveAction()
@@ -54,25 +69,17 @@ public class MortarProjectile : Bullet
         sequence.OnComplete(() =>
         {
             hurtArea.enabled = true;
-            // Invoke(nameof(BackToPoolWithEffect), 1);
         });
     }
-
-    // protected override void OnTriggerEnter(Collider other)
-    // {
-    //     // Projectile will back to pool 不管 it whether hit the enemy
-    //     base.OnTriggerEnter(other);
-    //     BackToPoolWithEffect();
-    // }
-
-    // public static Vector3 CalculateParabolaPoint(Vector3 start, Vector3 end, float height, float t)
-    // {
-    //     // 基本線性插值：在起點和終點之間計算位置
-    //     Vector3 linearPoint = Vector3.Lerp(start, end, t);
-    //     // 使用拋物線公式 4t(1-t) 獲得一個在 t=0.5 時達到最大值 1 的值，
-    //     // 然後乘上 height 獲得垂直方向的偏移量
-    //     float parabolicOffset = 4 * t * (1 - t);
-    //     // 返回計算結果，將垂直偏移加到線性位置上
-    //     return linearPoint + Vector3.up * height * parabolicOffset;
-    // }
+    
+    protected override void BackToPoolWithEffect()
+    {
+        if (_isReleased) return;
+        _isReleased = true;
+        EventHandler.CallCameraShake(10, 1, 0.5f);
+        ExecuteOnEndEffect();
+        ExecuteOnEndSkill();
+        SpawnHitVFX();
+        Invoke(nameof(ReturnToPool), 1f);
+    }
 }

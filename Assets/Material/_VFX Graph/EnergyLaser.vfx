@@ -143,16 +143,7 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614993}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615016}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614995}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615219}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615457}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661615010}
@@ -164,46 +155,10 @@ MonoBehaviour:
     - model: {fileID: 8926484042661615098}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615109}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615113}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615119}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615125}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615436}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661615052}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615063}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615066}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615072}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615078}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615430}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661615083}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615233}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615463}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661615147}
@@ -260,37 +215,16 @@ MonoBehaviour:
     - model: {fileID: 8926484042661615164}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615176}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615170}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615179}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615193}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615419}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661615149}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615196}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615445}
       id: 0
       isStickyNote: 0
   stickyNoteInfos: []
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -613
+    x: -584
     y: -784
-    width: 4040
+    width: 4012
     height: 1985
 --- !u!114 &114350483966674976
 MonoBehaviour:
@@ -9408,6 +9342,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615263}
+  - {fileID: 8926484042661615475}
   m_UIPosition: {x: -398, y: -340}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
@@ -12857,6 +12792,102 @@ MonoBehaviour:
   m_MasterSlot: {fileID: 8926484042661615474}
   m_MasterData:
     m_Owner: {fileID: 8926484042661615472}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: True
+    m_Space: -1
+  m_Property:
+    name: _vfx_enabled
+    m_serializedType:
+      m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+  m_Direction: 0
+  m_LinkedSlots: []
+--- !u!114 &8926484042661615475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a971fa2e110a0ac42ac1d8dae408704b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 8926484042661615248}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 0
+  m_UISuperCollapsed: 0
+  m_InputSlots:
+  - {fileID: 8926484042661615476}
+  m_OutputSlots: []
+  m_Disabled: 0
+  m_ActivationSlot: {fileID: 8926484042661615477}
+  attribute: lifetime
+  Composition: 0
+  Source: 0
+  Random: 0
+  channels: 6
+--- !u!114 &8926484042661615476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661615476}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661615475}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 2
+    m_Space: -1
+  m_Property:
+    name: _Lifetime
+    m_serializedType:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+  m_Direction: 0
+  m_LinkedSlots: []
+--- !u!114 &8926484042661615477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c11ff25089a324daf359f4b0629b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661615477}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661615475}
     m_Value:
       m_Type:
         m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
