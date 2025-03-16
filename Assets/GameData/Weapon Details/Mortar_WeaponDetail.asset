@@ -17,7 +17,7 @@ MonoBehaviour:
   weaponID: WS002
   fireType: 2
   shootingRadius: 3
-  hitRadius: 2
+  hitRadius: 1
   shootingInterval: 0.5
   spreadAngle: 0
   infiniteAmmo: 0

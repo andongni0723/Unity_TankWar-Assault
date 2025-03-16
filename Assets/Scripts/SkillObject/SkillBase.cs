@@ -74,7 +74,6 @@ public class SkillBase : PoolableObject
                 // Find Character in Skill Range to Attack
                 foreach (var character in charactersList)
                 {
-                    Debug.Log(character.gameObject.name);
                     if(character == null) continue;
                     // var distance = Vector3.Distance(character.transform.position, transform.position);
                     var distance = Vector2.Distance(new Vector2(character.transform.position.x, character.transform.position.z), 

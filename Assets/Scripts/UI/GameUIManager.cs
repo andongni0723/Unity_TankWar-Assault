@@ -12,6 +12,7 @@ public class GameUIManager : Singleton<GameUIManager>
     [Header("Component")] 
     [Header("GamePlay UI")]
     public GameObject gamePlayUI;
+    public CanvasGroup gamePlayCanvasGroup;
     public Slider leftTrackSlider;
     public Slider rightTrackSlider;
     public Button fireButton;
@@ -40,6 +41,7 @@ public class GameUIManager : Singleton<GameUIManager>
         base.Awake();
         gamePlayUI.SetActive(false);
         PlayerDiedPanelCanvasGroup.gameObject.SetActive(false);
+        gamePlayCanvasGroup.alpha = GameDataManager.Instance.gameplayUIAlpha;
     }
 
     private void OnEnable()

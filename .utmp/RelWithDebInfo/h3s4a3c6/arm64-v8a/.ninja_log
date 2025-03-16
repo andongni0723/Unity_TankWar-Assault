@@ -1,0 +1,19 @@
+# ninja log v5
+0	853	1742143642386070757	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	5c3b55ef60b0cf92
+0	643	1742143642175698559	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	f27192c13393a275
+1	754	1742143642286336987	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	7eb0a65a6afc3bd8
+3	639	1742143642171029641	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	667caac40950316b
+2	586	1742143642118854380	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	8bb13a4761009db
+0	587	1742143642119977287	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	2b9b112e2d6449e
+1	578	1742143642108794049	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	47f026581ac7b336
+853	963	1742143642491365354	/Users/andongni/Documents/Myself_Folder/01_Unity_Repository/Unity_TankWar-Assault-PROJECT/Unity_TankWar-Assault/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/h3s4a3c6/obj/arm64-v8a/libgame.so	cb5acbf002984c25
+2	552	1742143642081102537	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	f38c71d52eec523b
+3	820	1742146308166850430	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	47f026581ac7b336
+2	822	1742146308170485082	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	2b9b112e2d6449e
+4	822	1742146308166819888	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	f38c71d52eec523b
+2	828	1742146308179048062	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	8bb13a4761009db
+4	849	1742146308200279094	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	667caac40950316b
+3	877	1742146308220049406	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	f27192c13393a275
+3	978	1742146308328489290	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	7eb0a65a6afc3bd8
+1	1041	1742146308392002259	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	5c3b55ef60b0cf92
+1041	1249	1742146308596641727	/Users/andongni/Documents/Myself_Folder/01_Unity_Repository/Unity_TankWar-Assault-PROJECT/Unity_TankWar-Assault/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/h3s4a3c6/obj/arm64-v8a/libgame.so	cb5acbf002984c25

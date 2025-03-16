@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: BuringShell_ProjectileDetail
   m_EditorClassIdentifier: 
   projectileName: Buring Shell
+  fireType: 0
+  hitTimerDelay: 0
   projectileSpeed: 35
-  projectileLifeTime: 1
+  projectileLifeTime: 0.5
   projectileDamage: 20
   projectileHurtRadius: 0
   redPrefabPoolKey: 4

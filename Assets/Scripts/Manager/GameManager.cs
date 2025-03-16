@@ -54,8 +54,7 @@ public class GameManager : MonoBehaviour
     {
         errorPanel.SetActive(true);
         errorText.text = errorContent;
-        // copy the stacktrace
-        GUIUtility.systemCopyBuffer = errorContent + '\n' + stacktrace;
+        GUIUtility.systemCopyBuffer = errorContent + '\n' + stacktrace; // copy the stacktrace
         yield return new WaitForSeconds(3);
         errorPanel.SetActive(false);
     }

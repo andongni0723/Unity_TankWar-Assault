@@ -75,8 +75,17 @@ public class CharacterShoot : NetworkBehaviour
     {
         weaponData.currentAmmo = weaponData.weaponDetails.capacity;
     }
-
+    
     #endregion
+    
+    /// <summary>
+    /// Call All Weapon ammo to full
+    /// </summary>
+    public void CallAllWeaponReload()
+    {
+        OnReloadTimerEnd(mainWeaponData);
+        OnReloadTimerEnd(subWeaponData);
+    }
 
     #region Change Weapon
     public void ChangeWeapon(TankWeaponType newWeaponType, WeaponDetailsSO newWeaponDetail)
@@ -89,7 +98,6 @@ public class CharacterShoot : NetworkBehaviour
     {
         currentWeaponData.reloadTimer.Play();
         if(IsOwner) currentWeaponType.Value = newWeaponType;
-        // currentWeaponData = GetCurrentWeaponData();
         currentWeaponData.reloadTimer.Pause();
     }
     

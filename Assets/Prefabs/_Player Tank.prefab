@@ -1727,8 +1727,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   useMobileRotate: 1
-  tankHeadRotateSpeed: 1.5
-  maxRotationSpeed: 360
   team:
     m_InternalValue: 0
 --- !u!114 &8930088967599161619
@@ -1905,6 +1903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea84734e11724ef5a67cc33c42ee7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   damageTextPrefab: {fileID: 2463447232471844388, guid: 5513cf51d1be54f6183063698f38fef0, type: 3}
   canvas: {fileID: 8909009696691664788}
 --- !u!114 &1818403806536089766
@@ -2505,7 +2504,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1536
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

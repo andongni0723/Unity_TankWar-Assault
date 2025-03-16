@@ -35,6 +35,7 @@ public class CharacterController : NetworkBehaviour
     private CharacterShoot _characterShoot;
     private CharacterSetColor _characterSetColor;
     private CharacterMouseHandler _characterMouseHandler;
+    private CharacterCameraController _characterCameraController;
     
     [Header("Settings")]
     public float moveSpeed = 5f;
@@ -43,9 +44,6 @@ public class CharacterController : NetworkBehaviour
     private const float GRAVITY = -9.81f;
     public LayerMask groundLayer;
     public bool useMobileRotate;
-    
-    public float tankHeadRotateSpeed = 30;
-    public float maxRotationSpeed = 360f;
     
     public NetworkVariable<Team> team = new(0, writePerm: NetworkVariableWritePermission.Owner);
     
@@ -127,6 +125,7 @@ public class CharacterController : NetworkBehaviour
         _characterShoot = GetComponent<CharacterShoot>();
         _characterSetColor = GetComponent<CharacterSetColor>();
         _characterMouseHandler = GetComponent<CharacterMouseHandler>();
+        _characterCameraController = GetComponent<CharacterCameraController>();
         _mainCamera = Camera.main;
         CloseSkillIndicator();
         
@@ -265,10 +264,10 @@ public class CharacterController : NetworkBehaviour
     private IEnumerator WaitInitialSpawnPoint()
     {
         yield return null;
-        // var spawnPoint = team.Value == Team.Blue ? GameObject.FindWithTag("SpawnPointBlue") : GameObject.FindWithTag("SpawnPointRed");
         var spawnPoint = SpawnManager.Instance.GetStartSpawnPoint(team.Value);
         transform.position = spawnPoint.transform.position;
         tank.transform.rotation = spawnPoint.transform.rotation;
+        _characterCameraController.UpdateCameraAngleWithStartByTeam();
     }
     
     [ServerRpc]

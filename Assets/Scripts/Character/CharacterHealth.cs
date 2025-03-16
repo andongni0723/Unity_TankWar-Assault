@@ -10,6 +10,7 @@ public class CharacterHealth : NetworkBehaviour, IAttack
 {
     [Header("Component")] 
     private CharacterController _cc;
+    private CharacterShoot _shoot;
     private DamageSpawner _damageSpawner;
     public Slider healthBar;
     public TMP_Text healthText;
@@ -25,7 +26,7 @@ public class CharacterHealth : NetworkBehaviour, IAttack
 
     private void Awake()
     {
-        InitialData();
+        InitializeComponent();
         int a = 10;
         int b = 20;
 
@@ -44,13 +45,14 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         EventHandler.OnGameEnd -= OnGameEnd;
     }
 
-    private void InitialData()
+    private void InitializeComponent()
     {
         currentHealth.Value = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth.Value;
         healthText.text = currentHealth.Value + " / " + maxHealth; 
         _cc = GetComponent<CharacterController>();
+        _shoot = GetComponent<CharacterShoot>();
         _damageSpawner = GetComponent<DamageSpawner>();
         respawnTimer.OnTimerEnd += Respawn;
     }
@@ -60,13 +62,17 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         healthBar.value = newvalue;
         healthText.text = newvalue + " / " + maxHealth;
         
-        #if PLATFORM_ANDROID
+        // #if PLATFORM_ANDROID && !UNITY_EDITOR
+        // // VibratorHelper.Vibrate(500, 0.3f);
+        // // Handheld.Vibrate();
+        // #else
+        // Handheld.Vibrate();
+        // #endif
+        
         Handheld.Vibrate();
-        #endif
         
         if (newvalue <= 0)
         {
-            // RequestDespawnServerRpc();
             PlayerDied();
             respawnTimer.Play();
         } 
@@ -83,7 +89,8 @@ public class CharacterHealth : NetworkBehaviour, IAttack
     {
         EventHandler.CallOnPlayerRespawn(IsOwner);
         _cc.InitialSpawnPoint();
-
+        _shoot.CallAllWeaponReload();
+        
         if (IsOwner)
         {
             _cc.virtualCamera.gameObject.SetActive(true);

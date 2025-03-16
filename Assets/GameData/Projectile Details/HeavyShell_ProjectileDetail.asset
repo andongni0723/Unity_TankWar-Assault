@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: HeavyShell_ProjectileDetail
   m_EditorClassIdentifier: 
   projectileName: Heavy Shell
-  projectileSpeed: 50
+  fireType: 1
+  hitTimerDelay: 0
+  projectileSpeed: 70
   projectileLifeTime: 5
   projectileDamage: 50
   projectileHurtRadius: 0

@@ -12,7 +12,9 @@ public enum SettingFieldType
     None,
     Dropdown,
     Toggle,
-    InputField
+    InputField_String,
+    InputField_Int,
+    InputField_Float,
 }
 
 public class SettingFieldUI : MonoBehaviour
@@ -26,39 +28,88 @@ public class SettingFieldUI : MonoBehaviour
     public SettingFieldType fieldType;
     public SaveDataKey settingKey;
     
-    [ShowIf("fieldType", SettingFieldType.Dropdown)] public float startDropdownValue;
-    [ShowIf("fieldType", SettingFieldType.Toggle)] public bool startToggleValue;
-    [ShowIf("fieldType", SettingFieldType.InputField)] public string startInputFieldValue;
-    [ShowIf("fieldType", SettingFieldType.InputField)] [MinMaxSlider(-10, 30, true)] public Vector2 inputFieldNumberRange;
+    [ShowIf("fieldType", SettingFieldType.Dropdown)]
+    public float startDropdownValue;
+    
+    [ShowIf("fieldType", SettingFieldType.Toggle)] 
+    public bool startToggleValue;
+    
+    private bool ShouldShowInputFieldValue =>
+        fieldType is SettingFieldType.InputField_String or SettingFieldType.InputField_Int or SettingFieldType.InputField_Float;
+    
+    private bool ShouldShowInputFieldNumberRange => 
+        fieldType is SettingFieldType.InputField_Int or SettingFieldType.InputField_Float;
+
+    
+    [ShowIf("ShouldShowInputFieldValue")]
+    public string startInputFieldValue;
+    
+    [ShowIf("ShouldShowInputFieldNumberRange")]
+    [MinMaxSlider(-10, 30, true)] 
+    public Vector2 inputFieldNumberRange;
     
     private void Awake()
+    {
+        Initialize();
+        UpdateFieldValue();
+    }
+
+    private void OnEnable()
+    {
+        UpdateFieldValue();
+    }
+
+    private void Initialize()
     {
         switch (fieldType)
         {
             case SettingFieldType.Dropdown:
                 _dropdown = GetComponentInChildren<TMP_Dropdown>();
                 _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-                // value data to key
+                break;
+            
+            case SettingFieldType.Toggle:
+                _toggle = GetComponentInChildren<Toggle>();
+                _toggle.onValueChanged.AddListener(OnToggleValueChanged);
+                break;
+            
+            case SettingFieldType.InputField_String:
+            case SettingFieldType.InputField_Int:
+            case SettingFieldType.InputField_Float:
+                _inputField = GetComponentInChildren<TMP_InputField>();
+                _inputField.onEndEdit.AddListener(OnInputFieldValueChanged);
+                break;
+        } 
+    }
+
+    private void UpdateFieldValue()
+    {
+        switch (fieldType)
+        {
+            case SettingFieldType.Dropdown:
                 var savedOptionValue = PlayerPrefs.GetInt(settingKey.ToString(), (int)startDropdownValue);
                 var matchedIndex = _dropdown.options.FindIndex(option => int.Parse(option.text) == savedOptionValue);
                 _dropdown.value = matchedIndex;
                 break;
             
             case SettingFieldType.Toggle:
-                _toggle = GetComponentInChildren<Toggle>();
-                _toggle.onValueChanged.AddListener(OnToggleValueChanged);
                 _toggle.isOn = PlayerPrefs.GetInt(settingKey.ToString(), startToggleValue ? 1 : 0) == 1;
                 break;
             
-            case SettingFieldType.InputField:
-                _inputField = GetComponentInChildren<TMP_InputField>();
-                // _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
-                _inputField.onEndEdit.AddListener(OnInputFieldValueChanged);
+            case SettingFieldType.InputField_String:
                 _inputField.text = PlayerPrefs.GetString(settingKey.ToString(), startInputFieldValue);
+                break;
+            
+            case SettingFieldType.InputField_Int:
+                _inputField.text = PlayerPrefs.GetInt(settingKey.ToString(), int.Parse(startInputFieldValue)).ToString();
+                break; 
+            
+            case SettingFieldType.InputField_Float:
+                _inputField.text = PlayerPrefs.GetFloat(settingKey.ToString(), float.Parse(startInputFieldValue)).ToString();
                 break;
         }
     }
-
+    
     private void OnDropdownValueChanged(int newValue)
     {
         GameDataManager.Instance.UpdateSettingData(settingKey, int.Parse(_dropdown.options[newValue].text));

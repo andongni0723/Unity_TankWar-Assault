@@ -1,0 +1,2 @@
+/Users/andongni/Documents/Myself_Folder/01_Unity_Repository/Unity_TankWar-Assault-PROJECT/Unity_TankWar-Assault/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/CMakeLists.txt
+/Users/andongni/Documents/Myself_Folder/01_Unity_Repository/Unity_TankWar-Assault-PROJECT/Unity_TankWar-Assault/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/CMakeLists.txt

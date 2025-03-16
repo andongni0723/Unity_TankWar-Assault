@@ -32,6 +32,14 @@ public class CharacterCameraController : MonoBehaviour
         UpdateCameraOrbitHorizontalAxisWithMouseDrag();
         camDirPoint.transform.localRotation = Quaternion.Euler(0, 90, -camOrbitalFollow.transform.eulerAngles.x);
     }
+    
+    /// <summary>
+    /// Initial the camera angle with the team
+    /// </summary>
+    public void UpdateCameraAngleWithStartByTeam()
+    {
+        camOrbitalFollow.HorizontalAxis.Value = _character.team.Value == Team.Blue ? 90 : -90;
+    }
 
     private void UpdateCameraOrbitHorizontalAxisWithMouseDrag()
     {
