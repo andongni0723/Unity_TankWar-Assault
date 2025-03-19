@@ -93,8 +93,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: e0d159b3ff9f84ab294897ff3dfc0cad, type: 2}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000004, guid: e16929729ab9d48f882972611dc31e64, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 0efbe6ff2f1434a2087c0f316a88c975, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1363,6 +1363,9 @@ MonoBehaviour:
       Entry: 5
       Data: false
     - Name: startButtonExpandTime
+      Entry: 4
+      Data: 0
+    - Name: gameplayUIAlpha
       Entry: 4
       Data: 0
     - Name: tankMainWeaponDetails

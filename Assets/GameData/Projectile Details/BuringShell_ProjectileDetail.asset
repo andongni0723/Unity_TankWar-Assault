@@ -16,7 +16,7 @@ MonoBehaviour:
   fireType: 0
   hitTimerDelay: 0
   projectileSpeed: 35
-  projectileLifeTime: 0.5
+  projectileLifeTime: 1
   projectileDamage: 20
   projectileHurtRadius: 0
   redPrefabPoolKey: 4
