@@ -27,6 +27,7 @@ public class SettingFieldUI : MonoBehaviour
     [Header("Settings")]
     public SettingFieldType fieldType;
     public SaveDataKey settingKey;
+    private SettingFieldDropdownData _dropdownData;
     
     [ShowIf("fieldType", SettingFieldType.Dropdown)]
     public float startDropdownValue;
@@ -66,6 +67,7 @@ public class SettingFieldUI : MonoBehaviour
             case SettingFieldType.Dropdown:
                 _dropdown = GetComponentInChildren<TMP_Dropdown>();
                 _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+                _dropdownData = GetComponentInChildren<SettingFieldDropdownData>();
                 break;
             
             case SettingFieldType.Toggle:
@@ -88,7 +90,7 @@ public class SettingFieldUI : MonoBehaviour
         {
             case SettingFieldType.Dropdown:
                 var savedOptionValue = PlayerPrefs.GetInt(settingKey.ToString(), (int)startDropdownValue);
-                var matchedIndex = _dropdown.options.FindIndex(option => int.Parse(option.text) == savedOptionValue);
+                var matchedIndex = _dropdownData.dropdownData.FindIndex(option => int.Parse(option) == savedOptionValue);
                 _dropdown.value = matchedIndex;
                 break;
             
@@ -112,7 +114,7 @@ public class SettingFieldUI : MonoBehaviour
     
     private void OnDropdownValueChanged(int newValue)
     {
-        GameDataManager.Instance.UpdateSettingData(settingKey, int.Parse(_dropdown.options[newValue].text));
+        GameDataManager.Instance.UpdateSettingData(settingKey, int.Parse(_dropdownData.dropdownData[newValue]));
     }
     
     private void OnToggleValueChanged(bool newValue)

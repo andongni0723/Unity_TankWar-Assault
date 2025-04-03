@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Sirenix.Serialization;
 using UnityEngine;
 
 public enum SaveDataKey
@@ -15,6 +13,7 @@ public enum SaveDataKey
     stop_button_expand,
     stop_button_expand_time,
     gameplay_ui_alpha,
+    tank_move_operation,
 }
 
 public enum TankWeaponType
@@ -41,6 +40,8 @@ public class GameDataManager : Singleton<GameDataManager>
     [SerializeField] public bool stopButtonEffectExpand { get; private set; }
     [SerializeField] public float startButtonExpandTime { get; private set; }
     [SerializeField] public float gameplayUIAlpha { get; private set; }
+    
+    [SerializeField] public TankMoveOperation tankMoveOperation { get; private set; }
 
     [Header("Tank Settings")]
     [SerializeField] public WeaponDetailsSO tankMainWeaponDetails { get; private set; }
@@ -95,6 +96,10 @@ public class GameDataManager : Singleton<GameDataManager>
                 PlayerPrefs.SetFloat("gameplay_ui_alpha", float.Parse(dataValue.ToString()));
                 gameplayUIAlpha = float.Parse(dataValue.ToString());
                 break;
+            case SaveDataKey.tank_move_operation:
+                PlayerPrefs.SetInt("tank_move_operation", (int)dataValue);
+                tankMoveOperation = (TankMoveOperation)dataValue;
+                break;
         }
 
         ExecuteDataAction();
@@ -131,13 +136,13 @@ public class GameDataManager : Singleton<GameDataManager>
         canDragCamera = PlayerPrefs.GetInt("drag_camera", 1) == 1;
         startButtonExpandTime = PlayerPrefs.GetFloat("stop_button_expand_time", 0.3f);
         gameplayUIAlpha = PlayerPrefs.GetFloat("gameplay_ui_alpha", 1f);
+        tankMoveOperation = (TankMoveOperation)PlayerPrefs.GetInt("tank_move_operation", 1);
     }
     
     private void RestoreTankData()
     {
         tankMainWeaponDetails = UseWeaponIDGetWeaponDetails(PlayerPrefs.GetString("tank_main_weapon_id", "WM001"));
         tankSubWeaponDetails = UseWeaponIDGetWeaponDetails(PlayerPrefs.GetString("tank_sub_weapon_id", "WS001"));
-        
     }
     #endregion
     

@@ -17,6 +17,7 @@ public class GameUIManager : Singleton<GameUIManager>
     public Slider rightTrackSlider;
     public Button fireButton;
     public Button cancelFireButton;
+    public VariableJoystick moveJoystick;
     public VariableJoystick tankHeadJoystick; 
     public List<RectTransform> dragAreas;
     public TMP_Text gameTimeText;
@@ -42,6 +43,9 @@ public class GameUIManager : Singleton<GameUIManager>
         gamePlayUI.SetActive(false);
         PlayerDiedPanelCanvasGroup.gameObject.SetActive(false);
         gamePlayCanvasGroup.alpha = GameDataManager.Instance.gameplayUIAlpha;
+        leftTrackSlider.gameObject.SetActive(GameDataManager.Instance.tankMoveOperation == TankMoveOperation.Complex);
+        rightTrackSlider.gameObject.SetActive(GameDataManager.Instance.tankMoveOperation == TankMoveOperation.Complex);
+        moveJoystick.gameObject.SetActive(GameDataManager.Instance.tankMoveOperation == TankMoveOperation.Easy);
     }
 
     private void OnEnable()

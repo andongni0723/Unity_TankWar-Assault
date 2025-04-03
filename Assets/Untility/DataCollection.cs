@@ -26,6 +26,13 @@ public class GameWeaponData
     public int currentAmmo;
 }
 
+public enum TankMoveOperation
+{
+    None,
+    Easy,
+    Complex,
+}
+
 public enum WeaponFireType
 {
     None,

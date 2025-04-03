@@ -25,9 +25,9 @@ public class CharacterController : NetworkBehaviour
     
     private Rigidbody _rb;
     private PlayerInputControl _inputSystem;
-    private VariableJoystick _moveJoystick;
     private Slider _leftTrackSlider;
     private Slider _rightTrackSlider;
+    private VariableJoystick _moveJoystick;
     private VariableJoystick _headJoystick;
     private Button _fireButton;
     private Button _cancelFireButton;
@@ -119,6 +119,7 @@ public class CharacterController : NetworkBehaviour
         _inputSystem.Enable();
         _leftTrackSlider = GameUIManager.Instance.leftTrackSlider;
         _rightTrackSlider = GameUIManager.Instance.rightTrackSlider;
+        _moveJoystick = GameUIManager.Instance.moveJoystick;
         _headJoystick = GameUIManager.Instance.tankHeadJoystick;
         _fireButton = GameUIManager.Instance.fireButton;
         _cancelFireButton = GameUIManager.Instance.cancelFireButton;
@@ -302,6 +303,7 @@ public class CharacterController : NetworkBehaviour
     private void MobileInputControl()
     {
         LeftAndRightSliderValueGetArrowDirection(_leftTrackSlider.value, _rightTrackSlider.value);
+        MoveJoystickControl();
         UpdateTankHeadRotation(_headJoystick.Horizontal, _headJoystick.Vertical);
         IndicatorAction();
     }
@@ -327,6 +329,21 @@ public class CharacterController : NetworkBehaviour
         _rb.linearVelocity = -tankBody.transform.forward  * (forwardMovement * moveSpeed);
         tankBody.transform.Rotate(0, -rotation * turnSpeed * Time.fixedDeltaTime, 0);
         tankHead.transform.Rotate(0, 0, -rotation * turnSpeed * Time.fixedDeltaTime);
+    }
+
+    private void MoveJoystickControl()
+    {
+        if(_moveJoystick.Horizontal == 0 && _moveJoystick.Vertical == 0) return;
+        
+        // Tank Move
+        var inputDir = new Vector3(_moveJoystick.Horizontal, 0, _moveJoystick.Vertical);
+        var localDir = cameraDirPoint.transform.TransformDirection(inputDir);
+        var addValue = team.Value == Team.Blue ? -90 : 90; 
+        float angle = Mathf.Atan2(-localDir.z, localDir.x) * Mathf.Rad2Deg + addValue;
+        tankBody.transform.localRotation = Quaternion.Euler(0, angle, 0);
+        
+        var dir = cameraDirPoint.transform.TransformDirection(new Vector3(-_moveJoystick.Vertical, 0, _moveJoystick.Horizontal));
+        _rb.linearVelocity = dir.normalized * (moveSpeed * 2);
     }
 
     private void UpdateTankHeadRotation(float joystickX, float joystickY)

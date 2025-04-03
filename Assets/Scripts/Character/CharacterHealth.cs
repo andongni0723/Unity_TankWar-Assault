@@ -57,10 +57,10 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         respawnTimer.OnTimerEnd += Respawn;
     }
 
-    private void OnHealthChanged(float previousvalue, float newvalue)
+    private void OnHealthChanged(float previousValue, float newValue)
     {
-        healthBar.value = newvalue;
-        healthText.text = newvalue + " / " + maxHealth;
+        healthBar.value = newValue;
+        healthText.text = newValue + " / " + maxHealth;
         
         // #if PLATFORM_ANDROID && !UNITY_EDITOR
         // // VibratorHelper.Vibrate(500, 0.3f);
@@ -69,9 +69,10 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         // Handheld.Vibrate();
         // #endif
         
+        EventHandler.CallCameraShake(5, 0.5f, 0);
         Handheld.Vibrate();
         
-        if (newvalue <= 0)
+        if (newValue <= 0)
         {
             PlayerDied();
             respawnTimer.Play();

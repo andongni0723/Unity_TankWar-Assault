@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Sirenix.Serialization;
+using Unity.Collections;
 using Random = UnityEngine.Random;
 
 public class CharacterShoot : NetworkBehaviour
@@ -17,6 +14,9 @@ public class CharacterShoot : NetworkBehaviour
     [Header("Settings")]
     public NetworkVariable<PoolKey> mainWeaponBulletPoolKey = new(PoolKey.BlueBullet, writePerm: NetworkVariableWritePermission.Owner);
     public NetworkVariable<PoolKey> subWeaponBulletPoolKey = new(PoolKey.MachineGunBullet, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<FixedString32Bytes> mainWeaponID = new(writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<FixedString32Bytes> subWeaponID = new(writePerm: NetworkVariableWritePermission.Owner);
+    
     // [OdinSerialize]public Dictionary<WeaponDetailsSO, GameObject> firePointDict = new();
     public GameWeaponData mainWeaponData;
     public GameWeaponData subWeaponData;
@@ -24,7 +24,7 @@ public class CharacterShoot : NetworkBehaviour
 
     [Header("Debug")]
     public NetworkVariable<TankWeaponType> currentWeaponType = new(TankWeaponType.MainWeapon, writePerm: NetworkVariableWritePermission.Owner);
-    private bool isShooting;
+    private bool _isShooting;
 
     private void Awake()
     {
@@ -35,16 +35,8 @@ public class CharacterShoot : NetworkBehaviour
     {
         currentWeaponType.OnValueChanged += (pre, now) => 
             currentWeaponData = GetCurrentWeaponData(now);
-        
-        // Update bullet pool key
-        if (!IsOwner) return;
-        mainWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue? 
-            mainWeaponData.weaponDetails.projectileDetails.bluePrefabPoolKey : 
-            mainWeaponData.weaponDetails.projectileDetails.redPrefabPoolKey;
-        
-        subWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue?
-            subWeaponData.weaponDetails.projectileDetails.bluePrefabPoolKey :
-            subWeaponData.weaponDetails.projectileDetails.redPrefabPoolKey;
+
+        StartCoroutine(NetworkInitial());
     }
 
     private void Update()
@@ -58,8 +50,34 @@ public class CharacterShoot : NetworkBehaviour
     {
         _cc = GetComponent<CharacterController>();
         currentWeaponData = mainWeaponData;
-        SettingWeaponData(mainWeaponData, GameDataManager.Instance.tankMainWeaponDetails);
-        SettingWeaponData(subWeaponData, GameDataManager.Instance.tankSubWeaponDetails);
+    }
+    
+    private IEnumerator NetworkInitial()
+    {
+        if (IsOwner) SettingWeaponID();
+        yield return new WaitUntil(() => !mainWeaponID.Value.IsEmpty && !subWeaponID.Value.IsEmpty);
+        SettingWeaponData(mainWeaponData, GameDataManager.Instance.UseWeaponIDGetWeaponDetails(mainWeaponID.Value.ToString()));
+        SettingWeaponData(subWeaponData, GameDataManager.Instance.UseWeaponIDGetWeaponDetails(subWeaponID.Value.ToString()));
+        if (IsOwner) SettingProjectilePoolKey();
+    }
+
+    private void SettingWeaponID()
+    {
+        if (!IsOwner) return;
+        mainWeaponID.Value = GameDataManager.Instance.tankMainWeaponDetails.weaponID;
+        subWeaponID.Value = GameDataManager.Instance.tankSubWeaponDetails.weaponID;
+    }
+    
+    private void SettingProjectilePoolKey()
+    {
+        if (!IsOwner) return;
+        mainWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue? 
+            mainWeaponData.weaponDetails.projectileDetails.bluePrefabPoolKey : 
+            mainWeaponData.weaponDetails.projectileDetails.redPrefabPoolKey;
+        
+        subWeaponBulletPoolKey.Value = _cc.team.Value == Team.Blue?
+            subWeaponData.weaponDetails.projectileDetails.bluePrefabPoolKey :
+            subWeaponData.weaponDetails.projectileDetails.redPrefabPoolKey; 
     }
 
     private void SettingWeaponData(GameWeaponData weaponData, WeaponDetailsSO weaponDetails)
@@ -120,24 +138,23 @@ public class CharacterShoot : NetworkBehaviour
     #endregion
     
     #region Shoot
-    public void StartShoot() => isShooting = true;
-    public void StopShoot() => isShooting = false;
+    public void StartShoot() => _isShooting = true;
+    public void StopShoot() => _isShooting = false;
     
     public void OneShoot()
     {
-        isShooting = true;
+        _isShooting = true;
         ExecuteShoot();
-        isShooting = false;
+        _isShooting = false;
     }
     
     private void ExecuteShoot()
     {
-        if(!IsOwner || !isShooting || currentWeaponData.shootTimer.isPlay || !CheckEnoughAmmo()) return;
+        if(!IsOwner || !_isShooting || currentWeaponData.shootTimer.isPlay || !CheckEnoughAmmo()) return;
         currentWeaponData.shootTimer.Play();
         var position = _currentFirePoint.transform.position;
         var targetPosition = _cc.projectileHitArea.transform.position; 
         var rotation = _currentFirePoint.transform.rotation;
-        
         switch (currentWeaponData.weaponDetails.fireType)
         {
             case WeaponFireType.Direct:
@@ -176,6 +193,8 @@ public class CharacterShoot : NetworkBehaviour
         bullet.gameObject.tag = _cc.team.Value == Team.Blue ? "Blue Skill" : "Red Skill";
         bullet.gameObject.layer = _cc.team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Skill") : LayerMask.NameToLayer("Red Skill");
         bullet.Initialize(pos, rot, Random.Range(-currentWeaponData.weaponDetails.spreadAngle, currentWeaponData.weaponDetails.spreadAngle));
+        Debug.Log("shoot");
+        EventHandler.CallCameraShake(5, 0.1f);
         if(!currentWeaponData.weaponDetails.infiniteAmmo) currentWeaponData.currentAmmo--;
     }
     

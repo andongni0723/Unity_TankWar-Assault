@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000004, guid: e16929729ab9d48f882972611dc31e64, type: 2}
+  m_LightingDataAsset: {fileID: 112000004, guid: 1febef140a1204a468982d1acadc4425, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 0efbe6ff2f1434a2087c0f316a88c975, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -255,6 +255,77 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75666193}
   m_CullTransparentMesh: 1
+--- !u!1 &284223646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 284223648}
+  - component: {fileID: 284223647}
+  m_Layer: 0
+  m_Name: Network Simulator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &284223647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284223646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d9db9626104da59357651088226725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PresetAsset: {fileID: 0}
+  m_PresetReference:
+    rid: 2459975922805899389
+  m_Scenario:
+    rid: -2
+  m_IsScenarioSettingsFolded: 0
+  AutoRunScenario: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2459975922805899389
+      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
+      data:
+        <Name>k__BackingField: 'Mobile 4G [4G, LTE, ''13]'
+        <Description>k__BackingField: 'Suitable for synchronous multiplayer, except
+          that ping (and overall connection quality and stability) may be quite poor.
+
+
+          Expect
+          to handle players dropping all packets in bursts of 1-60s. I.e. Ensure
+          you handle reconnections.'
+        <PacketDelayMs>k__BackingField: 100
+        <PacketJitterMs>k__BackingField: 20
+        <PacketLossInterval>k__BackingField: 0
+        <PacketLossPercent>k__BackingField: 4
+--- !u!4 &284223648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284223646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &625911665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,11 +1124,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 5000
-  field of view: 40
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 45
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 58.9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1081,8 +1152,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763418506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0019129765, y: 0.9496814, z: 0.0058012805, w: -0.31315818}
-  m_LocalPosition: {x: 53.55, y: 2.65, z: -3.16}
+  m_LocalRotation: {x: 0.006011302, y: -0.90621614, z: 0.01289128, w: 0.4225755}
+  m_LocalPosition: {x: 29.446724, y: 5.4510074, z: -3.0796695}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1368,6 +1439,9 @@ MonoBehaviour:
     - Name: gameplayUIAlpha
       Entry: 4
       Data: 0
+    - Name: tankMoveOperation
+      Entry: 3
+      Data: 0
     - Name: tankMainWeaponDetails
       Entry: 6
       Data: 
@@ -1538,5 +1612,6 @@ SceneRoots:
   - {fileID: 1105021578}
   - {fileID: 1742338428}
   - {fileID: 1907219257}
+  - {fileID: 284223648}
   - {fileID: 765355101}
   - {fileID: 1012458214}
