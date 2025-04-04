@@ -4848,8 +4848,8 @@ GameObject:
   - component: {fileID: 7275988223961486334}
   - component: {fileID: 5623878876307425536}
   - component: {fileID: 8379828533852755120}
-  - component: {fileID: 5269301888027380641}
   - component: {fileID: 8160627648412037184}
+  - component: {fileID: 5269301888027380641}
   m_Layer: 9
   m_Name: Red Bullet
   m_TagString: Red Skill
@@ -5094,7 +5094,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5746248267764288696}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05370210922df4320a3e643202bb3224, type: 3}
   m_Name: 
@@ -5108,27 +5108,6 @@ MonoBehaviour:
   openUI: 0
   healthBar: {fileID: 0}
   healthText: {fileID: 0}
---- !u!65 &5269301888027380641
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5746248267764288696}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.5, y: 3, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &8160627648412037184
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5146,9 +5125,30 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.8
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &5269301888027380641
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5746248267764288696}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 3, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3203901523880664000
 PrefabInstance:

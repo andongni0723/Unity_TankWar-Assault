@@ -4847,9 +4847,8 @@ GameObject:
   - component: {fileID: 8674965034392290277}
   - component: {fileID: 7341879652186619347}
   - component: {fileID: 7571396145064630849}
-  - component: {fileID: 2956989594868385865}
-  - component: {fileID: 5977725785425417657}
   - component: {fileID: 6291355339684920867}
+  - component: {fileID: 5977725785425417657}
   m_Layer: 9
   m_Name: Red Buring Bullet
   m_TagString: Red Skill
@@ -5087,48 +5086,6 @@ MonoBehaviour:
   destroyTimer: {fileID: 3802733165258471218}
   projectileDetails: {fileID: 11400000, guid: 77b2f708a5f084e1aaaac0f585d26268, type: 2}
   VFXPoolKey: 2
---- !u!114 &2956989594868385865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3530127335178954699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05370210922df4320a3e643202bb3224, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isActive: 1
-  model: {fileID: 0}
-  maxHealth: 1
-  currentHealth: 0
-  isDestructible: 0
-  respawnTimer: {fileID: 0}
-  openUI: 0
-  healthBar: {fileID: 0}
-  healthText: {fileID: 0}
---- !u!65 &5977725785425417657
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3530127335178954699}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.5, y: 3, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &6291355339684920867
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5146,9 +5103,30 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.8
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &5977725785425417657
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3530127335178954699}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 3, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &5140745471016248413
 PrefabInstance:

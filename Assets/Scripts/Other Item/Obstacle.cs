@@ -63,7 +63,7 @@ public class Obstacle : MonoBehaviour, IAttack
         model.SetActive(true);
     }
     
-    protected async void ModelOnDisable()
+    protected async Task ModelOnDisable()
     {
         _collider.enabled = false;
         await ModelBeforeDisable();

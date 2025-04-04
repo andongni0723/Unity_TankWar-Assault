@@ -99,6 +99,15 @@ public class Bullet : PoolableObject
             BackToPoolWithEffect();
         }
     }
+    
+    protected virtual void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.TryGetComponent<IAttack>(out var target))
+        {
+            target.TakeDamage(_damage);
+            BackToPoolWithEffect();
+        }
+    }
 
     protected void ExecuteOnEndEffect()
     {

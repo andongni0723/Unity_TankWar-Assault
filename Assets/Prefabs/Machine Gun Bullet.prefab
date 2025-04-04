@@ -99,8 +99,8 @@ GameObject:
   - component: {fileID: 8006744681336183092}
   - component: {fileID: 4470011894890748119}
   - component: {fileID: 2484522851971330588}
+  - component: {fileID: 1273621561941177158}
   - component: {fileID: 4461528005882845734}
-  - component: {fileID: 3964783957551527255}
   m_Layer: 10
   m_Name: Machine Gun Bullet
   m_TagString: Blue Skill
@@ -266,7 +266,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &4470011894890748119
 MonoBehaviour:
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808835884145737690}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05370210922df4320a3e643202bb3224, type: 3}
   m_Name: 
@@ -305,6 +305,27 @@ MonoBehaviour:
   openUI: 0
   healthBar: {fileID: 0}
   healthText: {fileID: 0}
+--- !u!65 &1273621561941177158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6808835884145737690}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.3, y: 1.1519282, z: 0.27098256}
+  m_Center: {x: 0, y: 0.026450992, z: 0.02950874}
 --- !u!65 &4461528005882845734
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -322,30 +343,9 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.5, y: 3, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &3964783957551527255
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6808835884145737690}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 0.8
+  m_Size: {x: 1.5, y: 3, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8954172887454930537
 PrefabInstance:

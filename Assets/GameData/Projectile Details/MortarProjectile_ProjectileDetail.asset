@@ -18,7 +18,7 @@ MonoBehaviour:
   projectileSpeed: 25
   projectileLifeTime: 10
   projectileDamage: 50
-  projectileHurtRadius: 1
+  projectileHurtRadius: 2
   redPrefabPoolKey: 10
   bluePrefabPoolKey: 10
   isOnEndAction: 0
