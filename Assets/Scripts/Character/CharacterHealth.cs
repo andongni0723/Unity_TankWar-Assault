@@ -21,16 +21,12 @@ public class CharacterHealth : NetworkBehaviour, IAttack
     
     //[Header("Debug")]
     // private float currentHealth;
-    private NetworkVariable<float> currentHealth = new(10, writePerm: NetworkVariableWritePermission.Owner);
+    private NetworkVariable<float> currentHealth = new(10, writePerm: NetworkVariableWritePermission.Server);
 
 
     private void Awake()
     {
         InitializeComponent();
-        int a = 10;
-        int b = 20;
-
-        (a, b) = (b, a);
     }
 
     private void OnEnable()
@@ -91,12 +87,10 @@ public class CharacterHealth : NetworkBehaviour, IAttack
         EventHandler.CallOnPlayerRespawn(IsOwner);
         _cc.InitialSpawnPoint();
         _shoot.CallAllWeaponReload();
-        
-        if (IsOwner)
-        {
-            _cc.virtualCamera.gameObject.SetActive(true);
-            currentHealth.Value = maxHealth;
-        }
+
+        if (!IsOwner) return;
+        _cc.virtualCamera.gameObject.SetActive(true);
+        RespawnHealthServerRpc();
     }
     
     private void OnGameEnd(bool isHost)
@@ -111,9 +105,22 @@ public class CharacterHealth : NetworkBehaviour, IAttack
     
     public void TakeDamage(int damage)
     {
-        if (!IsOwner) return;
+        if (_cc.IsOwner) return;
+        Debug.Log("Hurt");
+        DamageServerRpc(damage);
+    }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void DamageServerRpc(int damage)
+    {
+        Debug.Log("Hurt DamageServerRpc");
         currentHealth.Value -= damage;
         _damageSpawner.CallSpawnDamageText(-damage, transform.position);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void RespawnHealthServerRpc()
+    {
+        currentHealth.Value = maxHealth;
     }
 }

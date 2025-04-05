@@ -16,10 +16,12 @@ MonoBehaviour:
   weaponName: Machine Gun
   weaponID: WS001
   fireType: 1
+  shootingRadius: 0
+  hitRadius: 0
   shootingInterval: 0.02
   spreadAngle: 5
   infiniteAmmo: 0
-  capacity: 100
+  capacity: 200
   reloadTime: 5
   projectileDetails: {fileID: 11400000, guid: 4efc6f3c17f0a41f9a8edcd098c4fa16, type: 2}
   featureText: 

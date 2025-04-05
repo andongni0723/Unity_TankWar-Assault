@@ -193,7 +193,6 @@ public class CharacterShoot : NetworkBehaviour
         bullet.gameObject.tag = _cc.team.Value == Team.Blue ? "Blue Skill" : "Red Skill";
         bullet.gameObject.layer = _cc.team.Value == Team.Blue ? LayerMask.NameToLayer("Blue Skill") : LayerMask.NameToLayer("Red Skill");
         bullet.Initialize(pos, rot, Random.Range(-currentWeaponData.weaponDetails.spreadAngle, currentWeaponData.weaponDetails.spreadAngle));
-        Debug.Log("shoot");
         EventHandler.CallCameraShake(5, 0.1f);
         if(!currentWeaponData.weaponDetails.infiniteAmmo) currentWeaponData.currentAmmo--;
     }

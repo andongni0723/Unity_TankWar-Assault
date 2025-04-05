@@ -98,7 +98,6 @@ GameObject:
   - component: {fileID: 2099588626992991850}
   - component: {fileID: 8006744681336183092}
   - component: {fileID: 4470011894890748119}
-  - component: {fileID: 2484522851971330588}
   - component: {fileID: 1273621561941177158}
   - component: {fileID: 4461528005882845734}
   m_Layer: 10
@@ -284,27 +283,6 @@ MonoBehaviour:
   destroyTimer: {fileID: 1139975453732472070}
   projectileDetails: {fileID: 11400000, guid: 4efc6f3c17f0a41f9a8edcd098c4fa16, type: 2}
   VFXPoolKey: 7
---- !u!114 &2484522851971330588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6808835884145737690}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05370210922df4320a3e643202bb3224, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isActive: 1
-  model: {fileID: 0}
-  maxHealth: 1
-  currentHealth: 0
-  isDestructible: 0
-  respawnTimer: {fileID: 0}
-  openUI: 0
-  healthBar: {fileID: 0}
-  healthText: {fileID: 0}
 --- !u!65 &1273621561941177158
 BoxCollider:
   m_ObjectHideFlags: 0
