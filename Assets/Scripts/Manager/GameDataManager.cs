@@ -53,6 +53,7 @@ public class GameDataManager : Singleton<GameDataManager>
         RestoreSettingData();
         RestoreTankData();
         ExecuteDataAction();
+        Debug.Log(SaveDataKey.debug_mode.ToString());
     }
 
     #region Data Action

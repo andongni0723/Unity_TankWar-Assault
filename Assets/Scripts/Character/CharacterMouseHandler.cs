@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
+using UnityEngine.InputSystem.Controls;
 
 public class CharacterMouseHandler : MonoBehaviour
 {
@@ -13,46 +11,63 @@ public class CharacterMouseHandler : MonoBehaviour
     //[Header("Debug")]
     
     [Header("Drag Areas")]
-    public List<RectTransform> dragAreas; // 可拖曳區域的父子組合
-
-    public bool isDragging; // 是否正在拖曳
+    public List<RectTransform> dragAreas;
+    public bool isDragging;
     public Vector2 mouseDelta;
+    
+    #if UNITY_ANDROID || UNITY_IOS
+    private TouchControl _mobileTouch;
+    #endif
+    
+    private void Start() => Initialize();
 
-    private void Start()
+    private void Update() => UpdateMouseDeltaValue();
+
+    private void Initialize()
     {
         if (!GameDataManager.Instance.canDragCamera) enabled = false;
         dragAreas = GameUIManager.Instance.dragAreas;
     }
 
-    private void Update()
+    private void UpdateMouseDeltaValue()
     {
-        if (!isDragging) return;
-        
-#if UNITY_EDITOR    
-        mouseDelta = Mouse.current.delta.ReadValue();
-#elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
-        mouseDelta = Mouse.current.delta.ReadValue();
-#elif UNITY_ANDROID || UNITY_IOS
-        mouseDelta = Touchscreen.current.delta.ReadValue();
-#endif
+        #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+            mouseDelta = isDragging ? Mouse.current.delta.ReadValue() : Vector2.zero;
+        #elif UNITY_ANDROID || UNITY_IOS
+            mouseDelta = _mobileTouch != null && _mobileTouch.press.isPressed ? _mobileTouch.delta.ReadValue() : Vector2.zero;
+        #endif
     }
 
+    /// <summary>
+    /// Call by CharacterController when "camera drag" input event is start
+    /// </summary>
     public void OnMouseClickStarted()
     {
-        if (IsMouseInAnyDragArea())
-            isDragging = true;
+        #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+            if (IsMouseInAnyDragArea()) isDragging = true;
+        
+        #elif UNITY_ANDROID || UNITY_IOS
+            var touches = Touchscreen.current?.touches;
+            if (touches == null) return;
+            _mobileTouch = touches.Cast<TouchControl>().FirstOrDefault(IsTouchInAnyDragArea);
+            isDragging = _mobileTouch != null; // Have finger in area or not
+        #endif
     }
 
+    /// <summary>
+    /// Call by CharacterController when "camera drag" input event was canceled
+    /// </summary>
     public void OnMouseClickCanceled() => isDragging = false;
 
-    private bool IsMouseInAnyDragArea()
-    {
-#if UNITY_EDITOR 
-        return dragAreas.Any(area => RectTransformUtility.RectangleContainsScreenPoint(area, Mouse.current.position.ReadValue()));
-#elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
-        return dragAreas.Any(area => RectTransformUtility.RectangleContainsScreenPoint(area, Mouse.current.position.ReadValue()));
-#elif UNITY_ANDROID || UNITY_IOS
-        return dragAreas.Any(area => RectTransformUtility.RectangleContainsScreenPoint(area, Touchscreen.current.position.ReadValue()));
-#endif
-    }
+    #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+    private bool IsMouseInAnyDragArea() => 
+        dragAreas.Any(area => 
+            RectTransformUtility.RectangleContainsScreenPoint(area, Mouse.current.position.ReadValue()));
+    #endif
+    
+    #if UNITY_ANDROID || UNITY_IOS
+    private bool IsTouchInAnyDragArea(TouchControl touch) => 
+        dragAreas.Any(area => 
+            RectTransformUtility.RectangleContainsScreenPoint(area, touch.position.ReadValue()));
+    #endif
 }
