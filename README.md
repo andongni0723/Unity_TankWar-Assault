@@ -1,6 +1,6 @@
 # TankWar-Assault
 
-![tankwar-readme-header](Assets/Readme Asset/tankwar-header.jpg) 
+![tankwar-readme-header](<Assets/ReadmeAsset/tankwar-header.jpg>) 
 
 ## 📄 Game Description
 > This is a multiplayer tank combat project supporting up to 20 concurrent players. 
